@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Season Data</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="icon"
+      href="assets/images/football.ico"
+      type="image/x-icon"
+      class="circular-favicon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
+    />
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #4cc9f0;
+        --dark: #2b2d42;
+        --light: #f8f9fa;
+        --danger: #ef476f;
+        --success: #06d6a0;
+        --warning: #ffd166;
+        --gray-dark: #343a40;
+        --gray: #6c757d;
+        --gray-light: #e9ecef;
+        --transition: all 0.3s ease;
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        --border-radius: 0.75rem;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background-color: #f5f7fa;
+        color: var(--dark);
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        background-color: var(--primary);
+        box-shadow: var(--shadow);
+        padding: 0.75rem 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1030;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        letter-spacing: -0.5px;
+        color: white;
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar-brand:before {
+        content: "";
+        display: inline-block;
+        width: 1.75rem;
+        height: 1.75rem;
+        margin-right: 0.75rem;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        position: relative;
+      }
+
+      .navbar-brand:after {
+        content: "";
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        background-color: white;
+        border-radius: 0.25rem;
+        transform: rotate(45deg);
+        margin-left: 0.375rem;
+      }
+
+      .navbar .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        transition: var(--transition);
+        border-radius: var(--border-radius);
+        margin: 0 0.25rem;
+      }
+
+      .navbar .nav-link:hover,
+      .navbar .nav-link.active {
+        color: white;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .logout-btn {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: white !important;
+        border-radius: var(--border-radius);
+        margin-left: 0.75rem;
+        padding: 0.5rem 1.25rem !important;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+      }
+
+      .logout-btn:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        background: white;
+        box-shadow: var(--shadow);
+        padding-top: 4.5rem;
+        z-index: 1020;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--gray);
+        margin: 0.75rem 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--gray-light);
+      }
+
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 0.875rem 1.5rem;
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+        margin: 0.25rem 0.75rem;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+      }
+
+      .sidebar a:hover,
+      .sidebar a.active {
+        background-color: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+      }
+
+      .sidebar a i {
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+        color: var(--gray);
+        transition: var(--transition);
+        width: 2rem;
+        text-align: center;
+      }
+
+      .sidebar a:hover i,
+      .sidebar a.active i {
+        color: var(--primary);
+      }
+
+      .sidebar-footer {
+        padding: 1.5rem;
+        border-top: 1px solid var(--gray-light);
+      }
+
+      .sidebar-footer .logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--gray-light);
+        color: var(--gray-dark) !important;
+        width: 100%;
+        padding: 0.75rem !important;
+        font-weight: 600;
+      }
+
+      .sidebar-footer .logout-btn:hover {
+        background-color: var(--danger);
+        color: white !important;
+      }
+
+      .sidebar-footer .logout-btn i {
+        color: inherit;
+      }
+
+      /* Sidebar Toggle Button */
+      .sidebar-toggle {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3.5rem;
+        height: 3.5rem;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-lg);
+        cursor: pointer;
+        z-index: 1040;
+        transition: var(--transition);
+      }
+
+      .sidebar-toggle:hover {
+        background-color: var(--primary-dark);
+        transform: scale(1.05);
+      }
+
+      .sidebar-toggle i {
+        font-size: 1.5rem;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 280px;
+        padding: 6rem 2rem 2rem;
+        min-height: 100vh;
+        transition: var(--transition);
+      }
+
+      .content-section {
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      .content-section.active {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Dashboard Cards & Components */
+      .content-section h3 {
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        color: var(--dark);
+        position: relative;
+        padding-bottom: 0.75rem;
+      }
+
+      .content-section h3:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 4rem;
+        height: 4px;
+        background: var(--primary);
+        border-radius: 2px;
+      }
+
+      .dashboard-card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: var(--transition);
+      }
+
+      .dashboard-card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-5px);
+      }
+
+      /* Buttons and UI Components */
+      .btn {
+        padding: 0.5rem 1.25rem;
+        font-weight: 500;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+      }
+
+      .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+      }
+
+      .btn-danger {
+        background-color: var(--danger);
+        border-color: var(--danger);
+      }
+
+      .btn-success {
+        background-color: var(--success);
+        border-color: var(--success);
+      }
+
+      .btn-warning {
+        background-color: var(--warning);
+        border-color: var(--warning);
+        color: var(--dark);
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        border: 1px solid currentColor;
+      }
+
+      .btn-outline-primary {
+        color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .btn-outline-primary:hover {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      /* Team Selection Styles */
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .team-card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+        border: 2px solid transparent;
+      }
+
+      .team-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .team-card.selected {
+        border-color: var(--primary);
+        background-color: rgba(67, 97, 238, 0.05);
+      }
+
+      .team-card img {
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
+        margin-bottom: 0.75rem;
+      }
+
+      .team-card h5 {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin: 0;
+        color: var(--dark);
+      }
+
+      .league-section {
+        margin-bottom: 2rem;
+      }
+
+      .league-section h4 {
+        margin-bottom: 1rem;
+        font-weight: 600;
+        color: var(--dark);
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--gray-light);
+      }
+
+      /* Competition Stats Styles */
+      .competition-card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .competition-card h5 {
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+      }
+
+      .competition-card h5 i {
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+      }
+
+      .competition-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+
+      .stat-input-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--gray-dark);
+      }
+
+      /* Accolades Section */
+      .accolade-checkbox {
+        margin-bottom: 1rem;
+      }
+
+      .form-check-label {
+        font-weight: 500;
+        padding-left: 0.5rem;
+      }
+
+      /* Summary Section */
+      .summary-section {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .summary-section h4 {
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--gray-light);
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .summary-card {
+        background: var(--light);
+        border-radius: var(--border-radius);
+        padding: 1.25rem;
+        border-left: 4px solid var(--primary);
+      }
+
+      .summary-card h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+      }
+
+      .summary-stat {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+      }
+
+      .summary-stat-label {
+        font-weight: 500;
+        color: var(--gray);
+      }
+
+      .summary-stat-value {
+        font-weight: 600;
+        color: var(--dark);
+      }
+
+      /* Progression Navigation */
+      .progression-nav {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 992px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.25rem;
+        }
+
+        .main-content {
+          padding: 5.5rem 1rem 1.5rem;
+        }
+
+        .team-grid {
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          gap: 1rem;
+        }
+
+        .competition-stat-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a id="wow" class="navbar-brand" href="#">Virtual XI</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html">
+                <i class="bi bi-house me-1 active"></i>Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">
+                <i class="bi bi-bar-chart-steps me-1 active"></i>Season Data
+              </a>
+            </li class="nav-item">
+              <a class="nav-link" href="yearlydata.html">
+                <i class="bi bi-bar-chart me-1"></i>Yearly Data
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="stats.html">
+                <i class="bi bi-graph-up-arrow me-1"></i>Stats
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="trophies.html">
+                <i class="bi bi-trophy me-1"></i>Trophy Cabinet
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="awards.html">
+                <i class="bi bi-award me-1"></i>Awards
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link logout-btn" href="index.html">
+                <i class="bi bi-box-arrow-right me-1"></i>Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div>
+        <h4>Player Dashboard</h4>
+        <a href="dashboard.html"> <i class="bi bi-house"></i> Dashboard </a>
+        <a href="#" class="active">
+          <i class="bi bi bi-bar-chart-steps active"></i> Season Data
+        </a>
+        <a href="yearlydata.html">
+          <i class="bi bi-bar-chart"></i> Yearly Data
+        </a>
+        <a href="stats.html"> <i class="bi bi-graph-up-arrow"></i> Stats </a
+        ><a href="trophies.html">
+          <i class="bi bi-trophy"></i> Trophy Cabinet
+        </a>
+        <a href="awards.html"> <i class="bi bi-award"></i> Awards </a>
+      </div>
+      <div class="sidebar-footer">
+        <a class="logout-btn" href="index.html">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Toggle Button -->
+    <div class="sidebar-toggle" onclick="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Team Selection Section -->
+      <div id="teamSelectionSection" class="content-section active">
+        <h3>Select Your Team</h3>
+        <p>
+          Choose the team you played for during the season. This will help us customize 
+          the competitions and data entry fields specific to your team.
+        </p>
+
+        <!-- Premier League Teams -->
+        <div class="league-section">
+          <h4><i class="bi bi-trophy-fill me-2"></i>Premier League</h4>
+          <div class="team-grid">
+            <div class="team-card" data-team="Arsenal" data-league="premier-league">
+              <img src="assets/images/teams/Arsenal FC.png" alt="Arsenal" />
+              <h5>Arsenal</h5>
+            </div>
+            <div class="team-card" data-team="Aston Villa" data-league="premier-league">
+              <img src="assets/images/teams/Aston Villa.png" alt="Aston Villa" />
+              <h5>Aston Villa</h5>
+            </div>
+            <div class="team-card" data-team="Chelsea" data-league="premier-league">
+              <img src="assets/images/teams/Chelsea FC.png" alt="Chelsea" />
+              <h5>Chelsea</h5>
+            </div>
+            <div class="team-card" data-team="Liverpool" data-league="premier-league">
+              <img src="assets/images/teams/Liverpool FC.png" alt="Liverpool" />
+              <h5>Liverpool</h5>
+            </div>
+            <div class="team-card" data-team="Manchester City" data-league="premier-league">
+              <img src="assets/images/teams/Manchester City.png" alt="Manchester City" />
+              <h5>Manchester City</h5>
+            </div>
+            <div class="team-card" data-team="Manchester United" data-league="premier-league">
+              <img src="assets/images/teams/Manchester United.png" alt="Manchester United" />
+              <h5>Manchester United</h5>
+            </div>
+            <div class="team-card" data-team="Tottenham Hotspur" data-league="premier-league">
+              <img src="assets/images/teams/Tottenham Hotspur.png" alt="Tottenham Hotspur" />
+              <h5>Tottenham</h5>
+            </div>
+            <div class="team-card" data-team="Newcastle United" data-league="premier-league">
+              <img src="assets/images/teams/Newcastle United.png" alt="Newcastle United" />
+              <h5>Newcastle</h5>
+            </div>
+          </div>
+        </div>
+
+        <!-- La Liga Teams -->
+        <div class="league-section">
+          <h4><i class="bi bi-trophy-fill me-2"></i>La Liga</h4>
+          <div class="team-grid">
+            <div class="team-card" data-team="Barcelona" data-league="laliga">
+              <img src="assets/images/teams/FC Barcelona.png" alt="Barcelona" />
+              <h5>Barcelona</h5>
+            </div>
+            <div class="team-card" data-team="Real Madrid" data-league="laliga">
+              <img src="assets/images/teams/Real Madrid.png" alt="Real Madrid" />
+              <h5>Real Madrid</h5>
+            </div>
+            <div class="team-card" data-team="Atletico Madrid" data-league="laliga">
+              <img src="assets/images/teams/Atlético de Madrid.png" alt="Atletico Madrid" />
+              <h5>Atletico Madrid</h5>
+            </div>
+            <div class="team-card" data-team="Sevilla" data-league="laliga">
+              <img src="assets/images/teams/Sevilla FC.png" alt="Sevilla" />
+              <h5>Sevilla</h5>
+            </div>
+            <div class="team-card" data-team="Valencia" data-league="laliga">
+              <img src="assets/images/teams/Valencia CF.png" alt="Valencia" />
+              <h5>Valencia</h5>
+            </div>
+            <div class="team-card" data-team="Villarreal" data-league="laliga">
+              <img src="assets/images/teams/Villarreal CF.png" alt="Villarreal" />
+              <h5>Villarreal</h5>
+            </div>
+          </div>
+        </div>
+
+        <!-- Serie A Teams -->
+        <div class="league-section">
+          <h4><i class="bi bi-trophy-fill me-2"></i>Serie A</h4>
+          <div class="team-grid">
+            <div class="team-card" data-team="AC Milan" data-league="serie-a">
+              <img src="assets/images/teams/AC Milan.png" alt="AC Milan" />
+              <h5>AC Milan</h5>
+            </div>
+            <div class="team-card" data-team="Inter Milan" data-league="serie-a">
+              <img src="assets/images/teams/Inter Milan.png" alt="Inter Milan" />
+              <h5>Inter Milan</h5>
+            </div>
+            <div class="team-card" data-team="Juventus" data-league="serie-a">
+              <img src="assets/images/teams/Juventus FC.png" alt="Juventus" />
+              <h5>Juventus</h5>
+            </div>
+            <div class="team-card" data-team="Napoli" data-league="serie-a">
+              <img src="assets/images/teams/SSC Napoli.png" alt="Napoli" />
+              <h5>Napoli</h5>
+            </div>
+            <div class="team-card" data-team="Roma" data-league="serie-a">
+              <img src="assets/images/teams/AS Roma.png" alt="Roma" />
+              <h5>Roma</h5>
+            </div>
+            <div class="team-card" data-team="Lazio" data-league="serie-a">
+              <img src="assets/images/teams/SS Lazio.png" alt="Lazio" />
+              <h5>Lazio</h5>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bundesliga Teams -->
+        <div class="league-section">
+          <h4><i class="bi bi-trophy-fill me-2"></i>Bundesliga</h4>
+          <div class="team-grid">
+            <div class="team-card" data-team="Bayern Munich" data-league="bundesliga">
+              <img src="assets/images/teams/Bayern Munich.png" alt="Bayern Munich" />
+              <h5>Bayern Munich</h5>
+            </div>
+            <div class="team-card" data-team="Borussia Dortmund" data-league="bundesliga">
+              <img src="assets/images/teams/Borussia Dortmund.png" alt="Borussia Dortmund" />
+              <h5>Dortmund</h5>
+            </div>
+            <div class="team-card" data-team="RB Leipzig" data-league="bundesliga">
+              <img src="assets/images/teams/RB Leipzig.png" alt="RB Leipzig" />
+              <h5>RB Leipzig</h5>
+            </div>
+            <div class="team-card" data-team="Bayer Leverkusen" data-league="bundesliga">
+              <img src="assets/images/teams/Bayer 04 Leverkusen.png" alt="Bayer Leverkusen" />
+              <h5>Leverkusen</h5>
+            </div>
+            <div class="team-card" data-team="Borussia Monchengladbach" data-league="bundesliga">
+              <img src="assets/images/teams/Borussia Mönchengladbach.png" alt="Borussia Monchengladbach" />
+              <h5>Gladbach</h5>
+            </div>
+            <div class="team-card" data-team="Eintracht Frankfurt" data-league="bundesliga">
+              <img src="assets/images/teams/Eintracht Frankfurt.png" alt="Eintracht Frankfurt" />
+              <h5>Frankfurt</h5>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ligue 1 Teams -->
+        <div class="league-section">
+          <h4><i class="bi bi-trophy-fill me-2"></i>Ligue 1</h4>
+          <div class="team-grid">
+            <div class="team-card" data-team="Paris Saint-Germain" data-league="ligue-1">
+              <img src="assets/images/teams/Paris Saint-Germain.png" alt="Paris Saint-Germain" />
+              <h5>PSG</h5>
+            </div>
+            <div class="team-card" data-team="Marseille" data-league="ligue-1">
+              <img src="assets/images/teams/Olympique Marseille.png" alt="Marseille" />
+              <h5>Marseille</h5>
+            </div>
+            <div class="team-card" data-team="Lyon" data-league="ligue-1">
+              <img src="assets/images/teams/Olympique Lyon.png" alt="Lyon" />
+              <h5>Lyon</h5>
+            </div>
+            <div class="team-card" data-team="Monaco" data-league="ligue-1">
+              <img src="assets/images/teams/AS Monaco.png" alt="Monaco" />
+              <h5>Monaco</h5>
+            </div>
+            <div class="team-card" data-team="Lille" data-league="ligue-1">
+              <img src="assets/images/teams/LOSC Lille.png" alt="Lille" />
+              <h5>Lille</h5>
+            </div>
+            <div class="team-card" data-team="Nice" data-league="ligue-1">
+              <img src="assets/images/teams/OGC Nice.png" alt="Nice" />
+              <h5>Nice</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="progression-nav">
+          <button class="btn btn-primary" id="teamNextBtn" disabled>
+            Continue <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Season Information Section -->
+      <div id="seasonInfoSection" class="content-section">
+        <h3>Season Information</h3>
+        <div class="dashboard-card">
+          <h5 class="mb-3">Selected Team: <span id="selectedTeamDisplay" class="text-primary"></span></h5>
+          
+          <div class="mb-3">
+            <label for="seasonYear" class="form-label">Season Year</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="seasonYear" 
+              placeholder="e.g. 2023/24"
+              pattern="[0-9]{4}/[0-9]{2}"
+            >
+            <div class="form-text">Enter the season in YYYY/YY format (e.g. 2023/24)</div>
+          </div>
+
+          <div class="progression-nav">
+            <button class="btn btn-outline-secondary" id="seasonBackBtn">
+              <i class="bi bi-arrow-left me-2"></i> Back
+            </button>
+            <button class="btn btn-primary" id="seasonNextBtn">
+              Continue <i class="bi bi-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Competition Stats Section -->
+      <div id="competitionStatsSection" class="content-section">
+        <h3>Competition Statistics</h3>
+        <p class="mb-4">Enter your performance statistics for each competition you participated in during the <span id="seasonYearDisplay"></span> season with <span id="teamNameDisplay" class="fw-bold"></span>.</p>
+
+        <div id="competitionStatsCards">
+          <!-- Competition cards will be dynamically generated based on team selection -->
+        </div>
+
+        <div class="progression-nav">
+          <button class="btn btn-outline-secondary" id="compStatsBackBtn">
+            <i class="bi bi-arrow-left me-2"></i> Back
+          </button>
+          <button class="btn btn-primary" id="compStatsNextBtn">
+            Continue <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Accolades Section -->
+      <div id="accoladesSection" class="content-section">
+        <h3>Individual Accolades</h3>
+        <p class="mb-4">Record any individual awards and honors you received during the <span class="seasonYearDisplay"></span> season.</p>
+
+        <div class="dashboard-card">
+          <h5 class="mb-3"><i class="bi bi-award me-2"></i>Major Awards</h5>
+          
+          <div class="mb-4">
+            <div class="form-check accolade-checkbox">
+              <input class="form-check-input" type="checkbox" id="ballonDor">
+              <label class="form-check-label" for="ballonDor">
+                Ballon d'Or
+              </label>
+            </div>
+            
+            <div class="form-check accolade-checkbox">
+              <input class="form-check-input" type="checkbox" id="goldenBoot">
+              <label class="form-check-label" for="goldenBoot">
+                Golden Boot
+              </label>
+              <div id="goldenBootDetails" class="mt-2 ms-4" style="display: none;">
+                <div class="mb-3">
+                  <label for="goalsScoredForBoot" class="form-label">Goals Scored</label>
+                  <input type="number" class="form-control" id="goalsScoredForBoot" min="0">
+                </div>
+                <div class="mb-3">
+                  <label for="competitionForBoot" class="form-label">Competition</label>
+                  <select class="form-select" id="competitionForBoot">
+                    <option value="" disabled selected>Select competition</option>
+                    <!-- Options will be dynamically populated based on team selection -->
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-check accolade-checkbox">
+              <input class="form-check-input" type="checkbox" id="bestPlayer">
+              <label class="form-check-label" for="bestPlayer">
+                Player of the Year
+              </label>
+              <div id="bestPlayerDetails" class="mt-2 ms-4" style="display: none;">
+                <div class="mb-3">
+                  <label for="bestPlayerCompetition" class="form-label">Competition/Organization</label>
+                  <select class="form-select" id="bestPlayerCompetition">
+                    <option value="" disabled selected>Select organization</option>
+                    <option value="FIFA">FIFA</option>
+                    <option value="UEFA">UEFA</option>
+                    <option value="League">League</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h5 class="mb-3"><i class="bi bi-star me-2"></i>Team of the Year/Season</h5>
+          
+          <div class="mb-4">
+            <div class="form-check accolade-checkbox">
+              <input class="form-check-input" type="checkbox" id="leagueTeamOfSeason">
+              <label class="form-check-label" for="leagueTeamOfSeason">
+                League Team of the Season
+              </label>
+            </div>
+            
+            <div class="form-check accolade-checkbox">
+              <input class="form-check-input" type="checkbox" id="uefaTeamOfYear">
+              <label class="form-check-label" for="uefaTeamOfYear">
+                UEFA Team of the Year
+              </label>
+            </div>
+            
+            <div class="form-check accolade-checkbox">
+              <input class="form-check-input" type="checkbox" id="fifaTeamOfYear">
+              <label class="form-check-label" for="fifaTeamOfYear">
+                FIFA FIFPro World XI
+              </label>
+            </div>
+          </div>
+
+          <h5 class="mb-3"><i class="bi bi-trophy me-2"></i>Other Awards</h5>
+          
+          <div id="otherAwardsContainer">
+            <div class="row mb-3 other-award-row">
+              <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Award name">
+              </div>
+              <div class="col-md-5">
+                <input type="text" class="form-control" placeholder="Competition/Organization">
+              </div>
+              <div class="col-md-1">
+                <button class="btn btn-danger remove-award"><i class="bi bi-trash"></i></button>
+              </div>
+            </div>
+          </div>
+          
+          <button id="addAwardBtn" class="btn btn-outline-primary mt-2">
+            <i class="bi bi-plus-circle me-2"></i>Add Another Award
+          </button>
+        </div>
+
+        <div class="progression-nav">
+          <button class="btn btn-outline-secondary" id="accoladesBackBtn">
+            <i class="bi bi-arrow-left me-2"></i> Back
+          </button>
+          <button class="btn btn-primary" id="accoladesNextBtn">
+            Continue <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- International Stats Section -->
+      <div id="internationalStatsSection" class="content-section">
+        <h3>International Performance</h3>
+        <p class="mb-4">Record your statistics with your national team during the <span class="seasonYearDisplay"></span> season.</p>
+
+        <div class="dashboard-card">
+          <div class="mb-3">
+            <label for="nationalTeam" class="form-label">National Team</label>
+            <input type="text" class="form-control" id="nationalTeam" placeholder="e.g. England, Brazil, Germany">
+          </div>
+          
+          <div id="internationalCompetitions">
+            <div class="competition-card">
+              <h5><i class="bi bi-globe me-2"></i>Friendly Matches</h5>
+              <div class="competition-stat-grid">
+                <div class="stat-input-group">
+                  <label class="form-label">Appearances</label>
+                  <input type="number" class="form-control" id="friendlyApps" min="0" value="0">
+                </div>
+                <div class="stat-input-group">
+                  <label class="form-label">Goals</label>
+                  <input type="number" class="form-control" id="friendlyGoals" min="0" value="0">
+                </div>
+                <div class="stat-input-group">
+                  <label class="form-label">Assists</label>
+                  <input type="number" class="form-control" id="friendlyAssists" min="0" value="0">
+                </div>
+                <div class="stat-input-group">
+                  <label class="form-label">Average Rating</label>
+                  <input type="number" class="form-control" id="friendlyRating" min="0" max="10" step="0.1" value="0.0">
+                </div>
+              </div>
+            </div>
+
+            <div class="competition-card">
+              <h5><i class="bi bi-trophy me-2"></i>Major Tournament</h5>
+              
+              <div class="mb-3">
+                <label for="tournamentName" class="form-label">Tournament Name</label>
+                <select class="form-select" id="tournamentName">
+                  <option value="" selected disabled>Select tournament</option>
+                  <option value="FIFA World Cup">FIFA World Cup</option>
+                  <option value="UEFA Euro">UEFA Euro</option>
+                  <option value="Copa America">Copa America</option>
+                  <option value="Africa Cup of Nations">Africa Cup of Nations</option>
+                  <option value="AFC Asian Cup">AFC Asian Cup</option>
+                  <option value="CONCACAF Gold Cup">CONCACAF Gold Cup</option>
+                  <option value="FIFA Confederations Cup">FIFA Confederations Cup</option>
+                  <option value="Other">Other (specify)</option>
+                </select>
+                <input type="text" class="form-control mt-2" id="otherTournament" placeholder="Specify tournament name" style="display: none;">
+              </div>
+              
+              <div class="competition-stat-grid">
+                <div class="stat-input-group">
+                  <label class="form-label">Appearances</label>
+                  <input type="number" class="form-control" id="tournamentApps" min="0" value="0">
+                </div>
+                <div class="stat-input-group">
+                  <label class="form-label">Goals</label>
+                  <input type="number" class="form-control" id="tournamentGoals" min="0" value="0">
+                </div>
+                <div class="stat-input-group">
+                  <label class="form-label">Assists</label>
+                  <input type="number" class="form-control" id="tournamentAssists" min="0" value="0">
+                </div>
+                <div class="stat-input-group">
+                  <label class="form-label">Average Rating</label>
+                  <input type="number" class="form-control" id="tournamentRating" min="0" max="10" step="0.1" value="0.0">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="progression-nav">
+          <button class="btn btn-outline-secondary" id="internationalBackBtn">
+            <i class="bi bi-arrow-left me-2"></i> Back
+          </button>
+          <button class="btn btn-primary" id="internationalNextBtn">
+            Continue <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Trophies Section -->
+      <div id="trophiesSection" class="content-section">
+        <h3>Trophies Won</h3>
+        <p class="mb-4">Record all trophies you won with your club and national team during the <span class="seasonYearDisplay"></span> season.</p>
+
+        <div class="dashboard-card">
+          <h5 class="mb-3"><i class="bi bi-trophy-fill me-2"></i>Club Trophies</h5>
+          
+          <div id="clubTrophiesContainer">
+            <!-- Club trophies checkboxes will be dynamically generated based on team selection -->
+          </div>
+          
+          <h5 class="mb-3 mt-4"><i class="bi bi-globe me-2"></i>International Trophies</h5>
+          
+          <div id="internationalTrophiesContainer">
+            <div class="form-check accolade-checkbox">
+              <input class="form-check-input" type="checkbox" id="worldCup">
+              <label class="form-check-label" for="worldCup">
+                FIFA World Cup
+              </label>
+            </div>
+            
+            <div class="form-check accolade-checkbox">
+              <input class="form-check-input" type="checkbox" id="continentalCup">
+              <label class="form-check-label" for="continentalCup">
+                Continental Cup
+              </label>
+              <div id="continentalCupDetails" class="mt-2 ms-4" style="display: none;">
+                <div class="mb-3">
+                  <label for="continentalCupName" class="form-label">Tournament</label>
+                  <select class="form-select" id="continentalCupName">
+                    <option value="" selected disabled>Select tournament</option>
+                    <option value="UEFA Euro">UEFA Euro</option>
+                    <option value="Copa America">Copa America</option>
+                    <option value="Africa Cup of Nations">Africa Cup of Nations</option>
+                    <option value="AFC Asian Cup">AFC Asian Cup</option>
+                    <option value="CONCACAF Gold Cup">CONCACAF Gold Cup</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <input type="text" class="form-control mt-2" id="otherContinentalCup" placeholder="Specify cup name" style="display: none;">
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-check accolade-checkbox">
+              <input class="form-check-input" type="checkbox" id="otherIntlTrophy">
+              <label class="form-check-label" for="otherIntlTrophy">
+                Other International Trophy
+              </label>
+              <div id="otherIntlTrophyDetails" class="mt-2 ms-4" style="display: none;">
+                <div class="mb-3">
+                  <input type="text" class="form-control" id="otherIntlTrophyName" placeholder="Trophy name">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="progression-nav">
+          <button class="btn btn-outline-secondary" id="trophiesBackBtn">
+            <i class="bi bi-arrow-left me-2"></i> Back
+          </button>
+          <button class="btn btn-primary" id="trophiesNextBtn">
+            Continue <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary Section -->
+      <div id="summarySection" class="content-section">
+        <h3>Season Summary</h3>
+        <p class="mb-4">Review your performance during the <span class="seasonYearDisplay"></span> season with <span id="summaryTeamName" class="fw-bold"></span>.</p>
+
+        <div class="dashboard-card">
+          <h4 class="mb-4">Season Overview</h4>
+          
+          <div class="summary-grid">
+            <div class="summary-card">
+              <h5>Club Performance</h5>
+              <div class="summary-stat">
+                <span class="summary-stat-label">Total Appearances:</span>
+                <span class="summary-stat-value" id="summaryTotalApps">0</span>
+              </div>
+              <div class="summary-stat">
+                <span class="summary-stat-label">Total Goals:</span>
+                <span class="summary-stat-value" id="summaryTotalGoals">0</span>
+              </div>
+              <div class="summary-stat">
+                <span class="summary-stat-label">Total Assists:</span>
+                <span class="summary-stat-value" id="summaryTotalAssists">0</span>
+              </div>
+              <div class="summary-stat">
+                <span class="summary-stat-label">Average Rating:</span>
+                <span class="summary-stat-value" id="summaryAvgRating">0.0</span>
+              </div>
+            </div>
+            
+            <div class="summary-card">
+              <h5>International Performance</h5>
+              <div class="summary-stat">
+                <span class="summary-stat-label">Team:</span>
+                <span class="summary-stat-value" id="summaryNationalTeam">-</span>
+              </div>
+              <div class="summary-stat">
+                <span class="summary-stat-label">Appearances:</span>
+                <span class="summary-stat-value" id="summaryIntlApps">0</span>
+              </div>
+              <div class="summary-stat">
+                <span class="summary-stat-label">Goals:</span>
+                <span class="summary-stat-value" id="summaryIntlGoals">0</span>
+              </div>
+              <div class="summary-stat">
+                <span class="summary-stat-label">Assists:</span>
+                <span class="summary-stat-value" id="summaryIntlAssists">0</span>
+              </div>
+            </div>
+            
+            <div class="summary-card">
+              <h5>Accolades</h5>
+              <div id="summaryAccolades">
+                <p class="text-muted">No accolades recorded</p>
+              </div>
+            </div>
+            
+            <div class="summary-card">
+              <h5>Trophies Won</h5>
+              <div id="summaryTrophies">
+                <p class="text-muted">No trophies recorded</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="progression-nav">
+          <button class="btn btn-outline-secondary" id="summaryBackBtn">
+            <i class="bi bi-arrow-left me-2"></i> Back
+          </button>
+          <button class="btn btn-success" id="saveSeasonBtn">
+            <i class="bi bi-check-circle me-2"></i>Save Season Data
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+// Global variables for form state
+let selectedTeam = null;
+let selectedLeague = null;
+let seasonYear = null;
+
+// Player profile information
+let playerName = null;
+let playerPosition = null;
+let playerNumber = null;
+let playerAge = null;
+
+// Competition statistics variables
+let competitionStats = {};
+
+// Accolades variables
+let hasBallonDOr = false;
+let hasGoldenBoot = false;
+let goldenBootCompetition = null;
+let goldenBootGoals = 0;
+let hasBestPlayer = false;
+let bestPlayerCompetition = null;
+let otherAwards = [];
+
+// International variables
+let nationalTeam = null;
+let internationalTournament = null;
+let internationalAppearances = 0;
+let internationalGoals = 0;
+let internationalAssists = 0;
+
+// Trophy variables
+let hasDomesticLeague = false;
+let hasDomesticCup = false;
+let hasSuperCup = false;
+let hasContinentalCup = false;
+let continentalCupName = null;
+let hasWorldCup = false;
+let hasContinentalInternational = false;
+let continentalInternationalName = null;
+let hasOtherInternationalTrophy = false;
+let otherInternationalTrophyName = null;
+
+// Consolidated player data object (for export and summary)
+let playerData = {
+  playerInfo: {
+    name: null,
+    position: null,
+    number: null,
+    age: null,
+  },
+  team: null,
+  league: null,
+  season: null,
+  competitions: {},
+  accolades: [],
+  international: {
+    team: null,
+    stats: {},
+  },
+  trophies: [],
+};
+
+// Competition templates based on league
+const leagueCompetitions = {
+  "premier-league": [
+    { name: "Premier League", icon: "bi-trophy" },
+    { name: "FA Cup", icon: "bi-cup" },
+    { name: "EFL Cup", icon: "bi-cup-fill" },
+    { name: "UEFA Champions League", icon: "bi-stars" },
+    { name: "UEFA Europa League", icon: "bi-star" },
+    { name: "UEFA Conference League", icon: "bi-star-half" },
+    { name: "FA Community Shield", icon: "bi-shield" },
+  ],
+  laliga: [
+    { name: "La Liga", icon: "bi-trophy" },
+    { name: "Copa del Rey", icon: "bi-cup" },
+    { name: "Supercopa de España", icon: "bi-shield" },
+    { name: "UEFA Champions League", icon: "bi-stars" },
+    { name: "UEFA Europa League", icon: "bi-star" },
+    { name: "UEFA Conference League", icon: "bi-star-half" },
+    { name: "UEFA Super Cup", icon: "bi-award" },
+  ],
+  "serie-a": [
+    { name: "Serie A", icon: "bi-trophy" },
+    { name: "Coppa Italia", icon: "bi-cup" },
+    { name: "Supercoppa Italiana", icon: "bi-shield" },
+    { name: "UEFA Champions League", icon: "bi-stars" },
+    { name: "UEFA Europa League", icon: "bi-star" },
+    { name: "UEFA Conference League", icon: "bi-star-half" },
+  ],
+  bundesliga: [
+    { name: "Bundesliga", icon: "bi-trophy" },
+    { name: "DFB-Pokal", icon: "bi-cup" },
+    { name: "DFL-Supercup", icon: "bi-shield" },
+    { name: "UEFA Champions League", icon: "bi-stars" },
+    { name: "UEFA Europa League", icon: "bi-star" },
+    { name: "UEFA Conference League", icon: "bi-star-half" },
+  ],
+  "ligue-1": [
+    { name: "Ligue 1", icon: "bi-trophy" },
+    { name: "Coupe de France", icon: "bi-cup" },
+    { name: "Trophée des Champions", icon: "bi-shield" },
+    { name: "UEFA Champions League", icon: "bi-stars" },
+    { name: "UEFA Europa League", icon: "bi-star" },
+    { name: "UEFA Conference League", icon: "bi-star-half" },
+  ],
+};
+
+// DOM Ready
+$(document).ready(function () {
+  // Add player info fields to season info section
+  addPlayerInfoFields();
+
+  // Sidebar toggle function
+  window.toggleSidebar = function () {
+    $("#sidebar").toggleClass("active");
+  };
+
+  // Team selection
+  $(".team-card").click(function () {
+    $(".team-card").removeClass("selected");
+    $(this).addClass("selected");
+    selectedTeam = $(this).data("team");
+    selectedLeague = $(this).data("league");
+    $("#teamNextBtn").prop("disabled", false);
+
+    // Update the player data
+    playerData.team = selectedTeam;
+    playerData.league = selectedLeague;
+  });
+
+  // Navigate to season info section
+  $("#teamNextBtn").click(function () {
+    $("#teamSelectionSection").removeClass("active");
+    $("#seasonInfoSection").addClass("active");
+    $("#selectedTeamDisplay").text(selectedTeam);
+  });
+
+  // Player info inputs handling
+  $("#playerName").on("input", function() {
+    playerName = $(this).val();
+    playerData.playerInfo.name = playerName;
+    validateSeasonInfoSection();
+  });
+
+  $("#playerPosition").on("input", function() {
+    playerPosition = $(this).val();
+    playerData.playerInfo.position = playerPosition;
+    validateSeasonInfoSection();
+  });
+
+  $("#playerNumber").on("input", function() {
+    playerNumber = parseInt($(this).val()) || null;
+    playerData.playerInfo.number = playerNumber;
+    validateSeasonInfoSection();
+  });
+
+  $("#playerAge").on("input", function() {
+    playerAge = parseInt($(this).val()) || null;
+    playerData.playerInfo.age = playerAge;
+    validateSeasonInfoSection();
+  });
+
+  // Season info validation and navigation
+  $("#seasonYear").on("input", function () {
+    const pattern = /^[0-9]{4}\/[0-9]{2}$/;
+    const isValid = pattern.test($(this).val());
+    
+    if (isValid) {
+      seasonYear = $(this).val();
+      playerData.season = seasonYear;
+    } else {
+      seasonYear = null;
+      playerData.season = null;
+    }
+    
+    validateSeasonInfoSection();
+  });
+
+  // Navigate back to team selection
+  $("#seasonBackBtn").click(function () {
+    $("#seasonInfoSection").removeClass("active");
+    $("#teamSelectionSection").addClass("active");
+  });
+
+  // Navigate to competition stats section
+  $("#seasonNextBtn").click(function () {
+    // Save player info
+    savePlayerInfo();
+    
+    $("#seasonInfoSection").removeClass("active");
+    $("#competitionStatsSection").addClass("active");
+
+    // Set the season and team display
+    $("#seasonYearDisplay, .seasonYearDisplay").text(seasonYear);
+    $("#teamNameDisplay").text(selectedTeam);
+    $("#playerNameDisplay").text(playerName);
+
+    // Generate competition cards based on selected league
+    generateCompetitionCards();
+  });
+
+  // Handle competition stats inputs
+  $(document).on("input", ".comp-apps, .comp-goals, .comp-assists, .comp-rating", function() {
+    const card = $(this).closest(".competition-card");
+    const compName = card.data("competition");
+    
+    if (!competitionStats[compName]) {
+      competitionStats[compName] = {};
+    }
+    
+    const apps = parseInt(card.find(".comp-apps").val()) || 0;
+    const goals = parseInt(card.find(".comp-goals").val()) || 0;
+    const assists = parseInt(card.find(".comp-assists").val()) || 0;
+    const rating = parseFloat(card.find(".comp-rating").val()) || 0;
+    
+    competitionStats[compName] = {
+      appearances: apps,
+      goals: goals,
+      assists: assists,
+      rating: rating
+    };
+  });
+
+  // Navigate back to season info
+  $("#compStatsBackBtn").click(function () {
+    $("#competitionStatsSection").removeClass("active");
+    $("#seasonInfoSection").addClass("active");
+  });
+
+  // Navigate to accolades section
+  $("#compStatsNextBtn").click(function () {
+    // Save competition stats data
+    saveCompetitionStats();
+
+    $("#competitionStatsSection").removeClass("active");
+    $("#accoladesSection").addClass("active");
+  });
+
+  // Toggle and handle Ballon d'Or
+  $("#ballonDor").change(function() {
+    hasBallonDOr = this.checked;
+  });
+
+  // Toggle and handle golden boot details
+  $("#goldenBoot").change(function () {
+    hasGoldenBoot = this.checked;
+    $("#goldenBootDetails").toggle(this.checked);
+
+    // Populate the competition dropdown
+    if (this.checked && $("#competitionForBoot option").length <= 1) {
+      populateCompetitionDropdown();
+    }
+  });
+
+  // Handle golden boot inputs
+  $("#competitionForBoot").change(function() {
+    goldenBootCompetition = $(this).val();
+  });
+
+  $("#goalsScoredForBoot").on("input", function() {
+    goldenBootGoals = parseInt($(this).val()) || 0;
+  });
+
+  // Toggle and handle best player details
+  $("#bestPlayer").change(function () {
+    hasBestPlayer = this.checked;
+    $("#bestPlayerDetails").toggle(this.checked);
+  });
+
+  // Handle best player competition
+  $("#competitionForBestPlayer").change(function() {
+    bestPlayerCompetition = $(this).val();
+  });
+
+  // Add another award
+  $("#addAwardBtn").click(function () {
+    const newRow = `
+            <div class="row mb-3 other-award-row">
+              <div class="col-md-6">
+                <input type="text" class="form-control award-name" placeholder="Award name">
+              </div>
+              <div class="col-md-5">
+                <input type="text" class="form-control award-org" placeholder="Competition/Organization">
+              </div>
+              <div class="col-md-1">
+                <button class="btn btn-danger remove-award"><i class="bi bi-trash"></i></button>
+              </div>
+            </div>
+          `;
+    $("#otherAwardsContainer").append(newRow);
+  });
+
+  // Handle other award inputs
+  $(document).on("input", ".award-name, .award-org", function() {
+    updateOtherAwards();
+  });
+
+  // Remove award
+  $(document).on("click", ".remove-award", function () {
+    $(this).closest(".other-award-row").remove();
+    updateOtherAwards();
+  });
+
+  // Navigate back to competition stats
+  $("#accoladesBackBtn").click(function () {
+    $("#accoladesSection").removeClass("active");
+    $("#competitionStatsSection").addClass("active");
+  });
+
+  // Navigate to international stats
+  $("#accoladesNextBtn").click(function () {
+    // Save accolades data
+    saveAccolades();
+
+    $("#accoladesSection").removeClass("active");
+    $("#internationalStatsSection").addClass("active");
+  });
+
+  // Handle international inputs
+  $("#nationalTeam").on("input", function() {
+    nationalTeam = $(this).val();
+  });
+
+  // Handle tournament selection
+  $("#tournamentName").change(function () {
+    const isOther = $(this).val() === "Other";
+    $("#otherTournament").toggle(isOther);
+    
+    if (!isOther) {
+      internationalTournament = $(this).val();
+    }
+  });
+
+  // Handle other tournament input
+  $("#otherTournamentName").on("input", function() {
+    if ($("#tournamentName").val() === "Other") {
+      internationalTournament = $(this).val();
+    }
+  });
+
+  // Handle international stats inputs
+  $("#intlAppearances").on("input", function() {
+    internationalAppearances = parseInt($(this).val()) || 0;
+  });
+
+  $("#intlGoals").on("input", function() {
+    internationalGoals = parseInt($(this).val()) || 0;
+  });
+
+  $("#intlAssists").on("input", function() {
+    internationalAssists = parseInt($(this).val()) || 0;
+  });
+
+  // Navigate back to accolades
+  $("#internationalBackBtn").click(function () {
+    $("#internationalStatsSection").removeClass("active");
+    $("#accoladesSection").addClass("active");
+  });
+
+  // Navigate to trophies section
+  $("#internationalNextBtn").click(function () {
+    // Save international stats
+    saveInternationalStats();
+
+    $("#internationalStatsSection").removeClass("active");
+    $("#trophiesSection").addClass("active");
+
+    // Generate club trophies based on league
+    generateClubTrophies();
+  });
+
+  // Handle trophy checkboxes
+  $("#domesticLeague").change(function() {
+    hasDomesticLeague = this.checked;
+  });
+
+  $("#domesticCup").change(function() {
+    hasDomesticCup = this.checked;
+  });
+
+  $("#superCup").change(function() {
+    hasSuperCup = this.checked;
+  });
+
+  // Toggle and handle continental cup details
+  $("#continentalCup").change(function () {
+    hasContinentalCup = this.checked;
+    $("#continentalCupDetails").toggle(this.checked);
+  });
+
+  // Handle continental cup selection
+  $("#continentalCupName").change(function () {
+    const isOther = $(this).val() === "Other";
+    $("#otherContinentalCup").toggle(isOther);
+    
+    if (!isOther) {
+      continentalCupName = $(this).val();
+    }
+  });
+
+  // Handle other continental cup input
+  $("#otherContinentalCupName").on("input", function() {
+    if ($("#continentalCupName").val() === "Other") {
+      continentalCupName = $(this).val();
+    }
+  });
+
+  // Handle world cup checkbox
+  $("#worldCup").change(function() {
+    hasWorldCup = this.checked;
+  });
+
+  // Handle continental international trophy
+  $("#continentalIntl").change(function() {
+    hasContinentalInternational = this.checked;
+  });
+
+  $("#continentalIntlName").on("input", function() {
+    continentalInternationalName = $(this).val();
+  });
+
+  // Toggle and handle other international trophy details
+  $("#otherIntlTrophy").change(function () {
+    hasOtherInternationalTrophy = this.checked;
+    $("#otherIntlTrophyDetails").toggle(this.checked);
+  });
+
+  $("#otherIntlTrophyName").on("input", function() {
+    otherInternationalTrophyName = $(this).val();
+  });
+
+  // Navigate back to international stats
+  $("#trophiesBackBtn").click(function () {
+    $("#trophiesSection").removeClass("active");
+    $("#internationalStatsSection").addClass("active");
+  });
+
+  // Navigate to summary section
+  $("#trophiesNextBtn").click(function () {
+    // Save trophies data
+    saveTrophies();
+
+    $("#trophiesSection").removeClass("active");
+    $("#summarySection").addClass("active");
+
+    // Generate summary
+    generateSummary();
+  });
+
+  // Navigate back to trophies section
+  $("#summaryBackBtn").click(function () {
+    $("#summarySection").removeClass("active");
+    $("#trophiesSection").addClass("active");
+  });
+
+  // Save the season data
+  $("#saveSeasonBtn").click(function () {
+    // Final data processing and saving logic
+    updatePlayerData();
+
+    alert("Season data saved successfully!");
+
+    // For demo purposes, log the collected data
+    console.log("Player Season Data:", playerData);
+    
+    // Export data to JSON
+    exportToJSON();
+  });
+});
+
+// Function to add player info fields to season info section
+function addPlayerInfoFields() {
+  const playerInfoHtml = `
+    <div class="form-group mb-3">
+      <label for="playerName" class="form-label">Player Name</label>
+      <input type="text" class="form-control" id="playerName" placeholder="Enter player name">
+    </div>
+    <div class="form-group mb-3">
+      <label for="playerPosition" class="form-label">Position</label>
+      <input type="text" class="form-control" id="playerPosition" placeholder="E.g. Forward, Midfielder, etc.">
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="playerNumber" class="form-label">Shirt Number</label>
+          <input type="number" class="form-control" id="playerNumber" min="1" max="99">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="playerAge" class="form-label">Age</label>
+          <input type="number" class="form-control" id="playerAge" min="15" max="45">
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Insert player info fields before season year in the form
+  $(playerInfoHtml).insertBefore("#seasonInfoSection .form-group:first");
+}
+
+// Function to validate the season info section
+function validateSeasonInfoSection() {
+  const pattern = /^[0-9]{4}\/[0-9]{2}$/;
+  const isSeasonValid = pattern.test($("#seasonYear").val());
+  const isPlayerNameValid = $("#playerName").val().trim() !== "";
+  const isPositionValid = $("#playerPosition").val().trim() !== "";
+  console.log($("#playerName").val().trim());
+  console.log($("#playerPosition").val().trim());
+  const isValid = isSeasonValid && isPlayerNameValid && isPositionValid;
+  $("#seasonNextBtn").prop("disabled", !isValid);
+}
+
+// Function to save player info
+function savePlayerInfo() {
+  playerName = $("#playerName").val();
+  playerPosition = $("#playerPosition").val();
+  playerNumber = parseInt($("#playerNumber").val()) || null;
+  playerAge = parseInt($("#playerAge").val()) || null;
+  
+  playerData.playerInfo = {
+    name: playerName,
+    position: playerPosition,
+    number: playerNumber,
+    age: playerAge
+  };
+}
+
+// Function to generate competition cards based on league
+function generateCompetitionCards() {
+  const competitions = leagueCompetitions[selectedLeague];
+  let html = "";
+
+  competitions.forEach((comp) => {
+    // Initialize competition stats if not already
+    if (!competitionStats[comp.name]) {
+      competitionStats[comp.name] = {
+        appearances: 0,
+        goals: 0,
+        assists: 0,
+        rating: 0
+      };
+    }
+    
+    const stats = competitionStats[comp.name];
+    
+    html += `
+            <div class="competition-card" data-competition="${comp.name}">
+              <h5><i class="bi ${comp.icon} me-2"></i>${comp.name}</h5>
+              <div class="competition-stat-grid">
+                <div class="stat-input-group">
+                  <label class="form-label">Appearances</label>
+                  <input type="number" class="form-control comp-apps" min="0" value="${stats.appearances}">
+                </div>
+                <div class="stat-input-group">
+                  <label class="form-label">Goals</label>
+                  <input type="number" class="form-control comp-goals" min="0" value="${stats.goals}">
+                </div>
+                <div class="stat-input-group">
+                  <label class="form-label">Assists</label>
+                  <input type="number" class="form-control comp-assists" min="0" value="${stats.assists}">
+                </div>
+                <div class="stat-input-group">
+                  <label class="form-label">Average Rating</label>
+                  <input type="number" class="form-control comp-rating" min="0" max="10" step="0.1" value="${stats.rating}">
+                </div>
+              </div>
+            </div>
+          `;
+  });
+
+  $("#competitionStatsCards").html(html);
+}
+
+// Function to populate competition dropdown for golden boot
+function populateCompetitionDropdown() {
+  const competitions = leagueCompetitions[selectedLeague];
+  let options =
+    '<option value="" disabled selected>Select competition</option>';
+
+  competitions.forEach((comp) => {
+    options += `<option value="${comp.name}">${comp.name}</option>`;
+  });
+
+  $("#competitionForBoot").html(options);
+  $("#competitionForBestPlayer").html(options);
+}
+
+// Function to update other awards array
+function updateOtherAwards() {
+  otherAwards = [];
+  
+  $(".other-award-row").each(function() {
+    const awardName = $(this).find(".award-name").val();
+    const organization = $(this).find(".award-org").val();
+    
+    if (awardName && organization) {
+      otherAwards.push({
+        name: awardName,
+        organization: organization
+      });
+    }
+  });
+}
+
+// Function to save competition stats
+function saveCompetitionStats() {
+  // Update the playerData object with the current competition stats
+  playerData.competitions = JSON.parse(JSON.stringify(competitionStats));
+}
+
+// Function to save accolades
+function saveAccolades() {
+  playerData.accolades = [];
+
+  // Check for Ballon d'Or
+  if (hasBallonDOr) {
+    playerData.accolades.push({
+      name: "Ballon d'Or",
+      year: seasonYear.split("/")[0],
+    });
+  }
+
+  // Check for Golden Boot
+  if (hasGoldenBoot && goldenBootCompetition) {
+    playerData.accolades.push({
+      name: "Golden Boot",
+      competition: goldenBootCompetition,
+      goals: goldenBootGoals,
+    });
+  }
+
+  // Check for Best Player
+  if (hasBestPlayer && bestPlayerCompetition) {
+    playerData.accolades.push({
+      name: "Best Player",
+      competition: bestPlayerCompetition,
+    });
+  }
+
+  // Add other awards
+  playerData.accolades = [...playerData.accolades, ...otherAwards];
+}
+
+// Function to save international stats
+function saveInternationalStats() {
+  // Only save if there's a national team selected
+  if (nationalTeam) {
+    playerData.international = {
+      team: nationalTeam,
+      stats: {
+        tournament: internationalTournament,
+        appearances: internationalAppearances,
+        goals: internationalGoals,
+        assists: internationalAssists,
+      },
+    };
+  }
+}
+
+// Function to generate club trophies based on league
+function generateClubTrophies() {
+  let leagueTrophyName = "";
+  let cupTrophyName = "";
+  let superCupName = "";
+
+  switch (selectedLeague) {
+    case "premier-league":
+      leagueTrophyName = "Premier League";
+      cupTrophyName = "FA Cup";
+      superCupName = "FA Community Shield";
+      break;
+    case "laliga":
+      leagueTrophyName = "La Liga";
+      cupTrophyName = "Copa del Rey";
+      superCupName = "Supercopa de España";
+      break;
+    case "serie-a":
+      leagueTrophyName = "Serie A";
+      cupTrophyName = "Coppa Italia";
+      superCupName = "Supercoppa Italiana";
+      break;
+    case "bundesliga":
+      leagueTrophyName = "Bundesliga";
+      cupTrophyName = "DFB-Pokal";
+      superCupName = "DFL-Supercup";
+      break;
+    case "ligue-1":
+      leagueTrophyName = "Ligue 1";
+      cupTrophyName = "Coupe de France";
+      superCupName = "Trophée des Champions";
+      break;
+  }
+
+  // Update league trophy name
+  $("#leagueTrophyName").text(leagueTrophyName);
+  $("#domesticCupName").text(cupTrophyName);
+  $("#superCupName").text(superCupName);
+}
+
+// Function to save trophies
+function saveTrophies() {
+  playerData.trophies = [];
+
+  // Check for domestic league
+  if (hasDomesticLeague) {
+    playerData.trophies.push({
+      name: $("#leagueTrophyName").text(),
+      type: "club",
+    });
+  }
+
+  // Check for domestic cup
+  if (hasDomesticCup) {
+    playerData.trophies.push({
+      name: $("#domesticCupName").text(),
+      type: "club",
+    });
+  }
+
+  // Check for super cup
+  if (hasSuperCup) {
+    playerData.trophies.push({
+      name: $("#superCupName").text(),
+      type: "club",
+    });
+  }
+
+  // Check for continental cup
+  if (hasContinentalCup && continentalCupName) {
+    playerData.trophies.push({
+      name: continentalCupName,
+      type: "club",
+    });
+  }
+
+  // Check for World Cup
+  if (hasWorldCup) {
+    playerData.trophies.push({
+      name: "FIFA World Cup",
+      type: "international",
+    });
+  }
+
+  // Check for continental international trophy
+  if (hasContinentalInternational && continentalInternationalName) {
+    playerData.trophies.push({
+      name: continentalInternationalName,
+      type: "international",
+    });
+  }
+
+  // Check for other international trophy
+  if (hasOtherInternationalTrophy && otherInternationalTrophyName) {
+    playerData.trophies.push({
+      name: otherInternationalTrophyName,
+      type: "international",
+    });
+  }
+}
+
+// Function to update the consolidated playerData object
+function updatePlayerData() {
+  // Player info is already updated through input events
+  
+  // Make sure all other data is updated
+  saveCompetitionStats();
+  saveAccolades();
+  saveInternationalStats();
+  saveTrophies();
+}
+
+// Function to generate summary
+function generateSummary() {
+  // Update team and season display
+  $("#summaryTeam").text(playerData.team);
+  $("#summarySeason").text(playerData.season);
+  $("#summaryPlayerName").text(playerData.playerInfo.name);
+  $("#summaryPlayerPosition").text(playerData.playerInfo.position);
+
+  // Calculate total stats
+  let totalApps = 0;
+  let totalGoals = 0;
+  let totalAssists = 0;
+  let avgRating = 0;
+  let ratingCount = 0;
+
+  for (const comp in playerData.competitions) {
+    totalApps += playerData.competitions[comp].appearances;
+    totalGoals += playerData.competitions[comp].goals;
+    totalAssists += playerData.competitions[comp].assists;
+
+    if (playerData.competitions[comp].rating > 0) {
+      avgRating += playerData.competitions[comp].rating;
+      ratingCount++;
+    }
+  }
+
+  // Add international stats if available
+  if (playerData.international && playerData.international.team) {
+    totalApps += playerData.international.stats.appearances;
+    totalGoals += playerData.international.stats.goals;
+    totalAssists += playerData.international.stats.assists;
+  }
+
+  // Calculate average rating
+  if (ratingCount > 0) {
+    avgRating = (avgRating / ratingCount).toFixed(1);
+  } else {
+    avgRating = "N/A";
+  }
+
+  // Update summary statistics
+  $("#summaryApps").text(totalApps);
+  $("#summaryGoals").text(totalGoals);
+  $("#summaryAssists").text(totalAssists);
+  $("#summaryRating").text(avgRating);
+
+  // Generate trophies list
+  let trophiesHtml = "";
+
+  if (playerData.trophies.length > 0) {
+    playerData.trophies.forEach((trophy) => {
+      trophiesHtml += `<li>${trophy.name}</li>`;
+    });
+  } else {
+    trophiesHtml = "<li>No trophies won this season</li>";
+  }
+
+  $("#trophiesList").html(trophiesHtml);
+
+  // Generate accolades list
+  let accoladesHtml = "";
+
+  if (playerData.accolades.length > 0) {
+    playerData.accolades.forEach((accolade) => {
+      let accoladeText = accolade.name;
+
+      if (accolade.competition) {
+        accoladeText += ` (${accolade.competition})`;
+      } else if (accolade.organization) {
+        accoladeText += ` (${accolade.organization})`;
+      }
+
+      accoladesHtml += `<li>${accoladeText}</li>`;
+    });
+  } else {
+    accoladesHtml = "<li>No individual accolades this season</li>";
+  }
+
+  $("#accoladesList").html(accoladesHtml);
+
+  // Render season stats visualization
+  renderStatsChart();
+}
+
+// Function to render stats chart
+function renderStatsChart() {
+  const ctx = document.getElementById("statsChart").getContext("2d");
+  const competitions = Object.keys(playerData.competitions);
+  const appearances = competitions.map(
+    (comp) => playerData.competitions[comp].appearances
+  );
+  const goals = competitions.map((comp) => playerData.competitions[comp].goals);
+  const assists = competitions.map(
+    (comp) => playerData.competitions[comp].assists
+  );
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: competitions,
+      datasets: [
+        {
+          label: "Appearances",
+          data: appearances,
+          backgroundColor: "rgba(54, 162, 235, 0.7)",
+        },
+        {
+          label: "Goals",
+          data: goals,
+          backgroundColor: "rgba(255, 99, 132, 0.7)",
+        },
+        {
+          label: "Assists",
+          data: assists,
+          backgroundColor: "rgba(75, 192, 192, 0.7)",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        title: {
+          display: true,
+          text: "Performance by Competition",
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+}
+
+// Function to export data to JSON
+function exportToJSON() {
+  const dataStr = JSON.stringify(playerData, null, 2);
+  const dataUri =
+    "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+
+  const exportFileDefaultName = `${playerData.playerInfo.name}_${playerData.team}_${playerData.season.replace(
+    "/",
+    "-"
+  )}.json`;
+
+  const linkElement = document.createElement("a");
+  linkElement.setAttribute("href", dataUri);
+  linkElement.setAttribute("download", exportFileDefaultName);
+  linkElement.click();
+}
+</script>
+</body>
+</html>

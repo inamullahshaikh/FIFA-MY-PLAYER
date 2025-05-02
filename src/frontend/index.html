@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Virtual XI</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="assets/images/football.ico"
+      type="image/x-icon"
+      class="circular-favicon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+      :root {
+        --primary: #4f46e5;
+        --primary-light: #6366f1;
+        --primary-dark: #4338ca;
+        --accent: #f59e0b;
+        --dark: #0f172a;
+        --light: #f8fafc;
+        --gray: #64748b;
+        --surface: #ffffff;
+        --surface-dark: #1e293b;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        color: var(--dark);
+        line-height: 1.6;
+        overflow-x: hidden;
+        background-color: #f8fafc;
+      }
+
+      /* Utilities */
+      .gradient-text {
+        background: linear-gradient(90deg, var(--primary) 0%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .blur-bg {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      /* Navbar */
+      .navbar {
+        padding: 1.25rem 0;
+        background-color: transparent !important;
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+
+      .navbar.scrolled {
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        padding: 0.875rem 0;
+      }
+
+      .navbar-brand {
+        font-weight: 800;
+        font-size: 1.75rem;
+        color: white;
+        letter-spacing: -0.02em;
+      }
+
+      .navbar.scrolled .navbar-brand,
+      .navbar.scrolled .nav-link {
+        color: var(--dark);
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 600;
+        margin: 0 0.75rem;
+        position: relative;
+        transition: all 0.3s ease;
+        font-size: 1.0625rem;
+      }
+
+      .nav-link:hover {
+        color: white;
+      }
+
+      .navbar.scrolled .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .btn-login {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.6rem 1.75rem;
+        border-radius: 100px;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      .btn-login:hover {
+        background: white;
+        color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar.scrolled .btn-login {
+        background: var(--primary);
+        color: white;
+        border: none;
+      }
+
+      .navbar.scrolled .btn-login:hover {
+        background: var(--primary-dark);
+        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35);
+      }
+
+      /* Hero Section */
+      .hero {
+        min-height: 100vh;
+        background: linear-gradient(
+          125deg,
+          var(--primary) 0%,
+          #818cf8 50%,
+          #8b5cf6 100%
+        );
+        position: relative;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.6;
+      }
+
+      .hero-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 120px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23f8fafc' fill-opacity='1' d='M0,192L48,181.3C96,171,192,149,288,154.7C384,160,480,192,576,197.3C672,203,768,181,864,181.3C960,181,1056,203,1152,192C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .hero-content {
+        z-index: 10;
+        text-align: center;
+        padding: 0 1rem;
+      }
+
+      .hero-content h1 {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        color: white;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+
+      .hero-content p {
+        font-size: 1.35rem;
+        color: rgba(255, 255, 255, 0.9);
+        max-width: 600px;
+        margin: 0 auto 3rem;
+        font-weight: 500;
+      }
+
+      .hero-logo-container {
+        position: relative;
+        margin-bottom: 2.5rem;
+        display: inline-block;
+      }
+
+      .hero-logo {
+        width: 140px;
+        height: 140px;
+        border-radius: 32px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        background: white;
+        padding: 25px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-logo:hover {
+        transform: translateY(-10px) rotate(5deg);
+      }
+
+      .hero-logo-glow {
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 40px;
+        filter: blur(20px);
+        z-index: 1;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .btn-primary {
+        background: white;
+        color: var(--primary);
+        border: none;
+        padding: 0.9rem 2.5rem;
+        font-weight: 600;
+        border-radius: 100px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        font-size: 1.125rem;
+        letter-spacing: 0.01em;
+      }
+
+      .btn-primary:hover {
+        background: white;
+        color: var(--primary-dark);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      /* About Section */
+      .team-section {
+        padding: 120px 20px;
+        background: #f8fafc;
+        position: relative;
+      }
+
+      .about-container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        padding: 60px;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .about-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--primary) 0%, #8b5cf6 100%);
+      }
+
+      .about-container h2 {
+        font-size: 2.75rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 30px;
+        letter-spacing: -0.03em;
+      }
+
+      .about-container h2 span {
+        color: var(--primary);
+      }
+
+      .about-container p {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: var(--gray);
+        margin-bottom: 22px;
+      }
+
+      .about-container strong {
+        color: var(--dark);
+        font-weight: 600;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-top: 50px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 16px;
+        padding: 25px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+        background: white;
+      }
+
+      .feature-icon {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 15px;
+      }
+
+      .feature-title {
+        font-weight: 700;
+        font-size: 1.25rem;
+        margin-bottom: 10px;
+        color: var(--dark);
+      }
+
+      .feature-text {
+        font-size: 0.95rem;
+        color: var(--gray);
+        line-height: 1.6;
+      }
+
+      /* Footer */
+      footer {
+        background: var(--surface-dark);
+        color: white;
+        padding: 3rem 0;
+        position: relative;
+      }
+
+      .footer-wave {
+        position: absolute;
+        top: -100px;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%231e293b' fill-opacity='1' d='M0,256L48,240C96,224,192,192,288,186.7C384,181,480,203,576,213.3C672,224,768,224,864,202.7C960,181,1056,139,1152,117.3C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .footer-logo {
+        font-weight: 800;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .footer-link {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .footer-link:hover {
+        color: white;
+      }
+
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .social-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+
+      .social-icon:hover {
+        background: var(--primary);
+        transform: translateY(-3px);
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-15px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      .animate {
+        animation: fadeInUp 0.7s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+      }
+
+      .float {
+        animation: float 4s ease-in-out infinite;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 992px) {
+        .hero-content h1 {
+          font-size: 3.5rem;
+        }
+
+        .navbar-collapse {
+          background: rgba(255, 255, 255, 0.97);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border-radius: 20px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          padding: 1.25rem;
+          margin-top: 1rem;
+        }
+
+        .navbar-collapse .nav-link {
+          color: var(--dark) !important;
+        }
+
+        .btn-login {
+          background: var(--primary);
+          color: white;
+          border: none;
+          margin-top: 0.5rem;
+        }
+
+        .feature-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero-content h1 {
+          font-size: 3rem;
+        }
+
+        .hero-logo {
+          width: 110px;
+          height: 110px;
+        }
+
+        .about-container {
+          padding: 40px 30px;
+        }
+
+        .feature-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .hero-content h1 {
+          font-size: 2.5rem;
+        }
+
+        .hero-content p {
+          font-size: 1.1rem;
+        }
+
+        .hero-logo {
+          width: 90px;
+          height: 90px;
+          padding: 15px;
+        }
+
+        .btn-primary {
+          padding: 0.8rem 2rem;
+          font-size: 1rem;
+        }
+
+        .about-container h2 {
+          font-size: 2.25rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Virtual XI</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#features">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 hero-content">
+            <div class="hero-logo-container animate">
+              <div class="hero-logo-glow"></div>
+              <img
+                src="assets/images/football.png"
+                alt="Virtual XI Logo"
+                class="hero-logo"
+              />
+            </div>
+            <h1 class="animate" style="animation-delay: 0.2s">Virtual XI</h1>
+            <p class="animate" style="animation-delay: 0.4s">
+              Track Greatness. Build Your Legacy. Showcase Your FIFA Career.
+            </p>
+            <a
+              href="dashboard.html"
+              class="btn btn-primary animate"
+              style="animation-delay: 0.6s"
+              >Get Started <i class="bi bi-arrow-right ms-2"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-wave"></div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="team-section">
+      <div class="about-container">
+        <h2>⚽ About <span>Virtual XI</span></h2>
+        <p>
+          <strong>Virtual XI</strong> is your ultimate companion for tracking
+          and celebrating your FIFA "My Player" career. Whether you're a rising
+          star or a seasoned pro, this platform helps you document every season,
+          every stat, and every milestone.
+        </p>
+        <p>
+          Log your club and international performances, monitor your average
+          ratings, and build a legacy by showcasing trophies and awards—all in
+          one sleek dashboard.
+        </p>
+        <p>
+          Built for passionate FIFA Career Mode players,
+          <strong>Virtual XI</strong> transforms your in-game journey into a
+          story worth sharing.
+        </p>
+
+        <div id="features" class="feature-grid">
+          <div class="feature-card">
+            <i class="bi bi-graph-up feature-icon"></i>
+            <h3 class="feature-title">Track Stats</h3>
+            <p class="feature-text">
+              Record goals, assists, ratings and more from every match in your
+              career.
+            </p>
+          </div>
+          <div class="feature-card">
+            <i class="bi bi-trophy feature-icon"></i>
+            <h3 class="feature-title">Trophy Cabinet</h3>
+            <p class="feature-text">
+              Showcase your achievements and trophies across all competitions.
+            </p>
+          </div>
+          <div class="feature-card">
+            <i class="bi bi-bar-chart feature-icon"></i>
+            <h3 class="feature-title">Career Analytics</h3>
+            <p class="feature-text">
+              View detailed statistics and progression throughout your career.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-wave"></div>
+      <div class="container text-center">
+        <div class="footer-logo">Virtual XI</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Home</a>
+          <a href="#about" class="footer-link">About</a>
+          <a href="#features" class="footer-link">Features</a>
+          <a href="dashboard.html" class="footer-link">Login</a>
+        </div>
+        <div class="social-icons">
+          <a
+            href="https://www.linkedin.com/in/inam-ullah-shaikh"
+            target="_blank"
+            class="social-icon"
+            ><i class="bi bi-linkedin"></i
+          ></a>
+          <a
+            href="https://www.instagram.com/inam.290"
+            target="_blank"
+            class="social-icon"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a
+            href="https://www.youtube.com/@inamullahshaikh655"
+            class="social-icon"
+            target="_blank"
+            ><i class="bi bi-youtube"></i></a
+          ><a
+            href="https://mail.google.com/mail/?view=cm&to=inamullahshaikh@gmail.com"
+            class="social-icon"
+            target="_blank"
+            ><i class="bi bi-envelope"></i
+          ></a>
+        </div>
+        <p class="mb-0">&copy; 2025 Virtual XI. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Navbar scroll effect
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // Animation on scroll
+      const animateOnScroll = () => {
+        const elements = document.querySelectorAll(".feature-card");
+
+        elements.forEach((element, index) => {
+          const elementPosition = element.getBoundingClientRect().top;
+          const windowHeight = window.innerHeight;
+
+          if (elementPosition < windowHeight - 100) {
+            setTimeout(() => {
+              element.style.opacity = "1";
+              element.style.transform = "translateY(0)";
+            }, index * 100);
+          }
+        });
+      };
+
+      // Set initial styles for animation
+      document.addEventListener("DOMContentLoaded", () => {
+        const elements = document.querySelectorAll(".feature-card");
+
+        elements.forEach((element) => {
+          element.style.opacity = "0";
+          element.style.transform = "translateY(20px)";
+          element.style.transition =
+            "all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1)";
+        });
+
+        // Run animation on page load
+        animateOnScroll();
+      });
+
+      // Run animation on scroll
+      window.addEventListener("scroll", animateOnScroll);
+    </script>
+  </body>
+</html>
