@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Awards Dashboard - Virtual XI</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="icon"
+      href="assets/images/football.ico"
+      type="image/x-icon"
+      class="circular-favicon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
+    />
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #4cc9f0;
+        --dark: #2b2d42;
+        --light: #f8f9fa;
+        --danger: #ef476f;
+        --success: #06d6a0;
+        --warning: #ffd166;
+        --gray-dark: #343a40;
+        --gray: #6c757d;
+        --gray-light: #e9ecef;
+        --gold: #ffd700;
+        --silver: #c0c0c0;
+        --bronze: #cd7f32;
+        --transition: all 0.3s ease;
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        --border-radius: 0.75rem;
+      }
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #4cc9f0;
+        --dark: #2b2d42;
+        --light: #f8f9fa;
+        --danger: #ef476f;
+        --success: #06d6a0;
+        --warning: #ffd166;
+        --gray-dark: #343a40;
+        --gray: #6c757d;
+        --gray-light: #e9ecef;
+        --gold: #ffd700;
+        --silver: #c0c0c0;
+        --bronze: #cd7f32;
+        --transition: all 0.3s ease;
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        --border-radius: 0.75rem;
+        --gradient-gold: linear-gradient(135deg, #ffd700, #ffed4e);
+        --gradient-primary: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary)
+        );
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        color: var(--dark);
+        min-height: 100vh;
+        padding: 2rem;
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        background-color: var(--primary);
+        box-shadow: var(--shadow);
+        padding: 0.75rem 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1030;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        letter-spacing: -0.5px;
+        color: white;
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar-brand:before {
+        content: "";
+        display: inline-block;
+        width: 1.75rem;
+        height: 1.75rem;
+        margin-right: 0.75rem;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        position: relative;
+      }
+
+      .navbar-brand:after {
+        content: "";
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        background-color: white;
+        border-radius: 0.25rem;
+        transform: rotate(45deg);
+        margin-left: 0.375rem;
+      }
+
+      .navbar .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        transition: var(--transition);
+        border-radius: var(--border-radius);
+        margin: 0 0.25rem;
+      }
+
+      .navbar .nav-link:hover,
+      .navbar .nav-link.active {
+        color: white;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .logout-btn {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: white !important;
+        border-radius: var(--border-radius);
+        margin-left: 0.75rem;
+        padding: 0.5rem 1.25rem !important;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+      }
+
+      .logout-btn:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+      }
+      /* Hero Section */
+      .hero-section {
+        background: var(--gradient-gold);
+        border-radius: var(--border-radius);
+        padding: 4rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 3rem;
+      }
+
+      .hero-section::before {
+        content: "🏆";
+        position: absolute;
+        font-size: 15rem;
+        opacity: 0.1;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) translateY(0px);
+        }
+        50% {
+          transform: translate(-50%, -50%) translateY(-30px);
+        }
+      }
+
+      .hero-title {
+        font-size: 4rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, var(--dark), var(--primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-subtitle {
+        font-size: 1.4rem;
+        color: var(--gray-dark);
+        opacity: 0.8;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Major Awards Section */
+      .major-awards {
+        margin-bottom: 4rem;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 3rem;
+        color: var(--dark);
+        position: relative;
+      }
+
+      .section-title::after {
+        content: "";
+        display: block;
+        width: 100px;
+        height: 4px;
+        background: var(--gradient-gold);
+        margin: 1rem auto;
+        border-radius: 2px;
+      }
+
+      .major-awards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .major-award-card {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 2.5rem;
+        text-align: center;
+        box-shadow: var(--shadow-lg);
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        border-top: 5px solid var(--gold);
+      }
+
+      .major-award-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .major-award-card.ballon-dor {
+        border-top-color: #ffd700;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), white);
+      }
+
+      .major-award-card.golden-boot {
+        border-top-color: #ff6b35;
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), white);
+      }
+
+      .major-award-card.fifa-best {
+        border-top-color: #4361ee;
+        background: linear-gradient(135deg, rgba(67, 97, 238, 0.05), white);
+      }
+
+      .major-award-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        display: block;
+      }
+
+      .major-award-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--dark);
+      }
+
+      .major-award-count {
+        font-size: 3rem;
+        font-weight: 900;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+      }
+
+      .major-award-years {
+        color: var(--gray);
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      /* Statistics Overview */
+      .stats-overview {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+        box-shadow: var(--shadow);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+      }
+
+      .stat-card {
+        text-align: center;
+        padding: 1.5rem;
+        background: var(--light);
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+      }
+
+      .stat-card:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-5px);
+      }
+
+      .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-card:hover .stat-number {
+        color: white;
+      }
+
+      .stat-label {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--gray-dark);
+      }
+
+      .stat-card:hover .stat-label {
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      /* Detailed Analysis */
+      .detailed-analysis {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .analysis-card {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+      }
+
+      .analysis-card:hover {
+        box-shadow: var(--shadow-lg);
+      }
+
+      .analysis-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--dark);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .chart-container {
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--light);
+        border-radius: var(--border-radius);
+        margin-bottom: 1rem;
+      }
+
+      /* Awards by Category */
+      .category-breakdown {
+        margin-bottom: 3rem;
+      }
+
+      .category-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .category-card {
+        background: white;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+      }
+
+      .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .category-header {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+      }
+
+      .category-header h3 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.3rem;
+      }
+
+      .category-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .category-body {
+        padding: 1.5rem;
+      }
+
+      .award-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .award-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--gray-light);
+        transition: var(--transition);
+      }
+
+      .award-item:last-child {
+        border-bottom: none;
+      }
+
+      .award-item:hover {
+        background: var(--light);
+        padding-left: 1rem;
+        padding-right: 1rem;
+        border-radius: 0.5rem;
+      }
+
+      .award-name {
+        font-weight: 600;
+        color: var(--dark);
+      }
+
+      .award-badge {
+        background: var(--primary);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      /* Timeline Section */
+      .timeline-section {
+        margin-bottom: 3rem;
+      }
+
+      .timeline {
+        position: relative;
+        padding: 2rem 0;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--gradient-primary);
+        border-radius: 2px;
+        transform: translateX(-50%);
+      }
+
+      .timeline-item {
+        position: relative;
+        margin-bottom: 3rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .timeline-item:nth-child(odd) {
+        flex-direction: row-reverse;
+      }
+
+      .timeline-content {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        box-shadow: var(--shadow);
+        width: 45%;
+        transition: var(--transition);
+      }
+
+      .timeline-content:hover {
+        box-shadow: var(--shadow-lg);
+        transform: scale(1.02);
+      }
+
+      .timeline-year {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--primary);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 2rem;
+        font-weight: 700;
+        font-size: 1.1rem;
+        box-shadow: var(--shadow);
+        z-index: 2;
+      }
+
+      .season-awards {
+        margin-top: 1rem;
+      }
+
+      .season-award-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        color: var(--gray-dark);
+      }
+
+      .season-award-icon {
+        font-size: 1.25rem;
+        color: var(--gold);
+      }
+
+      /* Loading and Empty States */
+      .loading-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+      }
+
+      .loading-icon {
+        font-size: 4rem;
+        color: var(--primary);
+        animation: spin 1s linear infinite;
+        margin-bottom: 1.5rem;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .major-awards-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .detailed-analysis {
+          grid-template-columns: 1fr;
+        }
+
+        .timeline::before {
+          left: 2rem;
+        }
+
+        .timeline-item {
+          flex-direction: row !important;
+          padding-left: 4rem;
+        }
+
+        .timeline-content {
+          width: 100%;
+        }
+
+        .timeline-year {
+          left: 2rem;
+          padding: 0.75rem 1rem;
+          font-size: 1rem;
+        }
+      }
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background-color: #f5f7fa;
+        color: var(--dark);
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        background: white;
+        box-shadow: var(--shadow);
+        padding-top: 4.5rem;
+        z-index: 1020;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--gray);
+        margin: 0.75rem 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--gray-light);
+      }
+
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 0.875rem 1.5rem;
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+        margin: 0.25rem 0.75rem;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+      }
+
+      .sidebar a:hover,
+      .sidebar a.active {
+        background-color: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+      }
+
+      .sidebar a i {
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+        color: var(--gray);
+        transition: var(--transition);
+        width: 2rem;
+        text-align: center;
+      }
+
+      .sidebar a:hover i,
+      .sidebar a.active i {
+        color: var(--primary);
+      }
+
+      .sidebar-footer {
+        padding: 1.5rem;
+        border-top: 1px solid var(--gray-light);
+      }
+
+      .sidebar-footer .logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--gray-light);
+        color: var(--gray-dark) !important;
+        width: 100%;
+        padding: 0.75rem !important;
+        font-weight: 600;
+      }
+
+      .sidebar-footer .logout-btn:hover {
+        background-color: var(--danger);
+        color: white !important;
+      }
+
+      .sidebar-footer .logout-btn i {
+        color: inherit;
+      }
+
+      /* Sidebar Toggle Button */
+      .sidebar-toggle {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3.5rem;
+        height: 3.5rem;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-lg);
+        cursor: pointer;
+        z-index: 1040;
+        transition: var(--transition);
+      }
+
+      .sidebar-toggle:hover {
+        background-color: var(--primary-dark);
+        transform: scale(1.05);
+      }
+
+      .sidebar-toggle i {
+        font-size: 1.5rem;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 280px;
+        padding: 6rem 2rem 2rem;
+        min-height: 100vh;
+        transition: var(--transition);
+      }
+
+      /* Trophy Cabinet Specific Styles */
+      .trophy-header {
+        background: linear-gradient(135deg, var(--gold), #ffed4e);
+        border-radius: var(--border-radius);
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        color: var(--dark);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .trophy-header::before {
+        content: "🏆";
+        position: absolute;
+        font-size: 8rem;
+        opacity: 0.1;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .trophy-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      .trophy-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .summary-card {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+      }
+
+      .summary-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .summary-card.club {
+        border-top: 4px solid var(--success);
+      }
+
+      .summary-card.international {
+        border-top: 4px solid var(--primary);
+      }
+
+      .summary-card.total {
+        border-top: 4px solid var(--gold);
+      }
+
+      .summary-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .summary-card.club .summary-number {
+        color: var(--success);
+      }
+
+      .summary-card.international .summary-number {
+        color: var(--primary);
+      }
+
+      .summary-card.total .summary-number {
+        color: var(--gold);
+      }
+
+      .filter-section {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .filter-btn {
+        padding: 0.75rem 1.5rem;
+        background: white;
+        border: 2px solid var(--gray-light);
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+      }
+
+      .filter-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .filter-btn:hover {
+        border-color: var(--primary);
+      }
+
+      .trophies-section {
+        margin-bottom: 3rem;
+      }
+
+      .section-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--dark);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .trophy-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .trophy-card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: var(--transition);
+        border-left: 5px solid var(--gold);
+      }
+
+      .trophy-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .trophy-card.international {
+        border-left-color: var(--primary);
+      }
+
+      .trophy-header-section {
+        background: linear-gradient(135deg, var(--gold), #ffed4e);
+        padding: 1.5rem;
+        text-align: center;
+        position: relative;
+      }
+
+      .trophy-card.international .trophy-header-section {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+      }
+
+      .trophy-icon {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .trophy-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+
+      .trophy-season {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        font-weight: 600;
+      }
+
+      .trophy-details {
+        padding: 1.5rem;
+      }
+
+      .trophy-team {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .stat-box {
+        text-align: center;
+        background: var(--light);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+      }
+
+      .stat-value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+        color: var(--gray);
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-top: 0.25rem;
+      }
+
+      .team-trophies-section {
+        margin-top: 3rem;
+      }
+
+      .team-card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+        overflow: hidden;
+      }
+
+      .team-header {
+        background: var(--primary);
+        color: white;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .team-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .team-trophy-count {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        font-weight: 600;
+        margin-left: auto;
+      }
+
+      .team-trophies {
+        padding: 1.5rem;
+      }
+
+      .trophy-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+
+      .trophy-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--light);
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+      }
+
+      .trophy-item:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .trophy-item-icon {
+        font-size: 1.5rem;
+        color: var(--gold);
+      }
+
+      .trophy-item:hover .trophy-item-icon {
+        color: white;
+      }
+
+      .trophy-item-info h6 {
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .trophy-item-info small {
+        color: var(--gray);
+      }
+
+      .trophy-item:hover .trophy-item-info small {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .loading {
+        text-align: center;
+        padding: 3rem;
+        color: var(--gray);
+      }
+
+      .loading i {
+        font-size: 3rem;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .no-trophies {
+        text-align: center;
+        padding: 3rem;
+        color: var(--gray);
+      }
+
+      .no-trophies i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 992px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          padding: 5.5rem 1rem 1.5rem;
+        }
+
+        .trophy-header h1 {
+          font-size: 2rem;
+        }
+
+        .trophy-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .filter-section {
+          justify-content: center;
+        }
+
+        .filter-btn {
+          flex: 1;
+          text-align: center;
+          min-width: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Virtual XI</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html">
+                <i class="bi bi-house me-1"></i>Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="seasondata.html">
+                <i class="bi bi-bar-chart-steps me-1"></i>Season Data
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="yearlydata.html">
+                <i class="bi bi-bar-chart me-1"></i>Yearly Data
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="stats.html">
+                <i class="bi bi-graph-up-arrow me-1"></i>Stats
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="trophies.html">
+                <i class="bi bi-trophy me-1"></i>Trophy Cabinet
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link active" href="#">
+                <i class="bi bi-award me-1"></i>Awards
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link logout-btn" href="index.html">
+                <i class="bi bi-box-arrow-right me-1"></i>Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div>
+        <h4>Player Dashboard</h4>
+        <a href="dashboard.html"> <i class="bi bi-house"></i> Dashboard </a>
+        <a href="seasondata.html">
+          <i class="bi bi-bar-chart-steps"></i> Season Data
+        </a>
+        <a href="yearlydata.html">
+          <i class="bi bi-bar-chart"></i> Yearly Data
+        </a>
+        <a href="stats.html"> <i class="bi bi-graph-up-arrow"></i> Stats </a>
+        <a href="trophies.html">
+          <i class="bi bi-trophy"></i> Trophy Cabinet
+        </a>
+        <a href="#" class="active"> <i class="bi bi-award"></i> Awards </a>
+      </div>
+      <div class="sidebar-footer">
+        <a class="logout-btn" href="index.html">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Toggle Button -->
+    <div class="sidebar-toggle" onclick="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Major Awards Overview -->
+      <section class="major-awards">
+        <h2 class="section-title">🏆 Major Individual Honors</h2>
+        <div class="major-awards-grid">
+          <div class="major-award-card ballon-dor">
+            <span class="major-award-icon"><img src="assets/images/logos/ballon-dor.png" style="width: 100px; height: 100px; "></img></span>
+            <h3 class="major-award-title">Ballon d'Or</h3>
+            <div class="major-award-count" id="ballonDorCount">0</div>
+            <p class="major-award-years" id="ballonDorYears">-</p>
+          </div>
+          <div class="major-award-card golden-boot">
+            <span class="major-award-icon"><img src="assets/images/logos/golden-boot.png" style="width: 100px; height: 100px; "></img></span>
+            <h3 class="major-award-title">European Golden Shoe</h3>
+            <div class="major-award-count" id="goldenBootCount">0</div>
+            <p class="major-award-years" id="goldenBootYears">-</p>
+          </div>
+          <div class="major-award-card fifa-best">
+            <span class="major-award-icon"><img src="assets/images/logos/world-cup-qual.png" style="width: 100px; height: 100px; "></img></span>
+            <h3 class="major-award-title">FIFA Men's Best Player</h3>
+            <div class="major-award-count" id="fifaBestCount">0</div>
+            <p class="major-award-years" id="fifaBestYears">-</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Statistics Overview -->
+      <section class="stats-overview">
+        <h2 class="section-title">📊 Career Statistics Overview</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="totalAwards">0</div>
+            <div class="stat-label">Total Awards</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="uniqueAwards">0</div>
+            <div class="stat-label">Unique Awards</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="seasonsWithAwards">0</div>
+            <div class="stat-label">Award-Winning Seasons</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="averagePerSeason">0</div>
+            <div class="stat-label">Awards Per Season</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="momCount">0</div>
+            <div class="stat-label">Man of the Match</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="potmCount">0</div>
+            <div class="stat-label">Player of the Month</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Detailed Analysis -->
+      <section class="detailed-analysis">
+        <div class="analysis-card">
+          <h3 class="analysis-title">
+            <i class="bi bi-graph-up"></i>
+            Awards Progression
+          </h3>
+          <div class="chart-container">
+            <canvas id="progressionChart"></canvas>
+          </div>
+          <p>
+            Career trajectory showing consistent excellence and improvement over
+            time.
+          </p>
+        </div>
+        <div class="analysis-card">
+          <h3 class="analysis-title">
+            <i class="bi bi-pie-chart"></i>
+            Award Distribution
+          </h3>
+          <div class="chart-container">
+            <canvas id="distributionChart"></canvas>
+          </div>
+          <p>
+            Breakdown of awards by category, highlighting areas of dominance.
+          </p>
+        </div>
+      </section>
+
+      <!-- Awards by Category -->
+      <section class="category-breakdown">
+        <h2 class="section-title">📋 Awards by Category</h2>
+        <div class="category-cards" id="categoryCards">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- Career Timeline -->
+      <section class="timeline-section">
+        <h2 class="section-title">📅 Career Timeline</h2>
+        <div class="timeline" id="timeline">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let allAwards = [];
+      let analysisData = {};
+
+      // Award categories and mapping
+      const awardCategories = {
+        "Individual Excellence": {
+          icon: "🌟",
+          awards: [
+            "Ballon d'Or",
+            "FIFA Best Player",
+            "UEFA Best Player",
+            "Player of the Season",
+          ],
+        },
+        "Goalscoring Prowess": {
+          icon: "⚽",
+          awards: [
+            "Golden Boot",
+            "Pichichi",
+            "Top Goalscorer",
+            "Champions League Top Goalscorer",
+          ],
+        },
+        "Monthly Recognition": {
+          icon: "📅",
+          awards: ["Player of the Month"],
+        },
+        "Match Performance": {
+          icon: "🏅",
+          awards: ["Man of the Match"],
+        },
+        "Tournament Excellence": {
+          icon: "🏆",
+          awards: [
+            "World Cup Golden Ball",
+            "EURO Best Player",
+            "Copa del Rey Best Player",
+          ],
+        },
+        "Team Recognition": {
+          icon: "👥",
+          awards: ["Team of the Season", "FIFpro World XI"],
+        },
+      };
+
+      // Major awards mapping
+      const majorAwards = {
+        ballonDor: ["Ballon d'Or"],
+        goldenBoot: ["Golden Boot"],
+        fifaBest: ["FIFA Best Player", "FIFA Best"],
+      };
+
+      async function loadAwards() {
+        try {
+          const response = await fetch(
+            "http://localhost:5000/api/season-awards"
+          );
+          const awards = await response.json();
+
+          if (awards.length === 0) {
+            showNoAwardsState();
+            return;
+          }
+
+          allAwards = processAwardsData(awards);
+          generateAnalysis();
+          displayResults();
+          hideLoading();
+        } catch (error) {
+          console.error("Error loading awards:", error);
+          showNoAwardsState();
+        }
+      }
+
+      function processAwardsData(awards) {
+        return awards.map((award) => {
+          const cleanName = cleanAwardName(award.award);
+          const count = extractNumber(award.award);
+          const category = getAwardCategory(cleanName);
+
+          return {
+            ...award,
+            cleanName,
+            count,
+            category,
+            type: getAwardType(cleanName),
+          };
+        });
+      }
+
+      function cleanAwardName(awardName) {
+        return awardName
+          .replace(/^\d+x\s/i, "")
+          .replace(/^Laliga\s/i, "La Liga ")
+          .replace(/UEFA Champion League/i, "UEFA Champions League")
+          .replace(/FIFpro/i, "FIFPro")
+          .trim();
+      }
+
+      function extractNumber(awardName) {
+        const match = awardName.match(/(\d+)x/i);
+        return match ? parseInt(match[1]) : 1;
+      }
+
+      function getAwardCategory(awardName) {
+        for (const [category, data] of Object.entries(awardCategories)) {
+          if (
+            data.awards.some(
+              (award) =>
+                awardName.toLowerCase().includes(award.toLowerCase()) ||
+                award.toLowerCase().includes(awardName.toLowerCase())
+            )
+          ) {
+            return category;
+          }
+        }
+        return "Other Awards";
+      }
+
+      function getAwardType(awardName) {
+        const name = awardName.toLowerCase();
+        if (name.includes("player of the month")) return "monthly";
+        if (name.includes("man of the match")) return "match";
+        if (
+          name.includes("golden boot") ||
+          name.includes("pichichi") ||
+          name.includes("top goalscorer")
+        )
+          return "goalscoring";
+        return "individual";
+      }
+
+      function generateAnalysis() {
+        // Basic statistics
+        const totalAwards = allAwards.reduce(
+          (sum, award) => sum + award.count,
+          0
+        );
+        const uniqueAwards = new Set(allAwards.map((award) => award.cleanName))
+          .size;
+        const seasonsWithAwards = new Set(
+          allAwards.map((award) => award.season)
+        ).size;
+        const averagePerSeason = (totalAwards / seasonsWithAwards).toFixed(1);
+
+        // Match and monthly awards
+        const momCount = allAwards
+          .filter((award) =>
+            award.cleanName.toLowerCase() === "man of the match"
+          )
+          .reduce((sum, award) => sum + award.count, 0);
+
+        const potmCount = allAwards
+          .filter((award) =>
+            award.cleanName.toLowerCase().includes("player of the month")
+          )
+          .reduce((sum, award) => sum + award.count, 0);
+        // Major awards analysis
+        const majorAwardsData = {};
+        for (const [key, awardNames] of Object.entries(majorAwards)) {
+          const matchingAwards = allAwards.filter((award) =>
+            awardNames.some(
+              (name) => award.cleanName.toLowerCase() === name.toLowerCase()
+            )
+          );
+
+          const count = matchingAwards.reduce((sum, award) => sum + award.count, 0);
+          let years = matchingAwards.map((award) => {
+            if (award.cleanName.toLowerCase() === "ballon d'or" || award.cleanName.toLowerCase() === "fifa best player") {
+              const match = award.season.match(/^\d{4}/);
+              return match ? match[0] : award.season;
+            } else {
+              return award.season;
+            }
+          });
+
+          majorAwardsData[key] = {
+            count,
+            years: years.sort(),
+          };
+        }
+
+
+        // Category breakdown
+        const categoryBreakdown = {};
+        for (const [category, data] of Object.entries(awardCategories)) {
+          const categoryAwards = allAwards.filter(
+            (award) => award.category === category
+          );
+          if (categoryAwards.length > 0) {
+            categoryBreakdown[category] = {
+              ...data,
+              awards: categoryAwards.reduce((acc, award) => {
+                const existing = acc.find((a) => a.name === award.cleanName);
+                if (existing) {
+                  existing.count += award.count;
+                  existing.seasons.push(award.season);
+                } else {
+                  acc.push({
+                    name: award.cleanName,
+                    count: award.count,
+                    seasons: [award.season],
+                  });
+                }
+                return acc;
+              }, []),
+            };
+          }
+        }
+
+        // Timeline data
+        const timelineData = {};
+        allAwards.forEach((award) => {
+          if (!timelineData[award.season]) {
+            timelineData[award.season] = [];
+          }
+          timelineData[award.season].push({
+            name: award.cleanName,
+            count: award.count,
+            category: award.category,
+          });
+        });
+
+        analysisData = {
+          totalAwards,
+          uniqueAwards,
+          seasonsWithAwards,
+          averagePerSeason,
+          momCount,
+          potmCount,
+          majorAwards: majorAwardsData,
+          categoryBreakdown,
+          timelineData,
+        };
+      }
+
+      function displayResults() {
+        updateStatistics();
+        updateMajorAwards();
+        displayCategoryBreakdown();
+        displayTimeline();
+        createCharts();
+      }
+
+      function updateStatistics() {
+        document.getElementById("totalAwards").textContent =
+          analysisData.totalAwards;
+        document.getElementById("uniqueAwards").textContent =
+          analysisData.uniqueAwards;
+        document.getElementById("seasonsWithAwards").textContent =
+          analysisData.seasonsWithAwards;
+        document.getElementById("averagePerSeason").textContent =
+          analysisData.averagePerSeason;
+        document.getElementById("momCount").textContent = analysisData.momCount;
+        document.getElementById("potmCount").textContent =
+          analysisData.potmCount;
+      }
+
+      function updateMajorAwards() {
+        // Ballon d'Or
+        document.getElementById("ballonDorCount").textContent =
+          analysisData.majorAwards.ballonDor.count;
+        document.getElementById("ballonDorYears").textContent =
+          analysisData.majorAwards.ballonDor.years.join(", ") || "Not won yet";
+
+        // Golden Boot
+        document.getElementById("goldenBootCount").textContent =
+          analysisData.majorAwards.goldenBoot.count;
+        document.getElementById("goldenBootYears").textContent =
+          analysisData.majorAwards.goldenBoot.years.join(", ") || "Not won yet";
+
+        // FIFA Best
+        document.getElementById("fifaBestCount").textContent =
+          analysisData.majorA; // FIFA Best
+        document.getElementById("fifaBestCount").textContent =
+          analysisData.majorAwards.fifaBest.count;
+        document.getElementById("fifaBestYears").textContent =
+          analysisData.majorAwards.fifaBest.years.join(", ") || "Not won yet";
+      }
+
+      function displayCategoryBreakdown() {
+        const container = document.getElementById("categoryCards");
+        container.innerHTML = "";
+
+        for (const [categoryName, categoryData] of Object.entries(
+          analysisData.categoryBreakdown
+        )) {
+          const categoryCard = document.createElement("div");
+          categoryCard.className = "category-card";
+
+          const totalCount = categoryData.awards.reduce(
+            (sum, award) => sum + award.count,
+            0
+          );
+
+          categoryCard.innerHTML = `
+            <div class="category-header">
+              <div class="category-icon">${categoryData.icon}</div>
+              <h3>${categoryName}</h3>
+              <small>${totalCount} total awards</small>
+            </div>
+            <div class="category-body">
+              <ul class="award-list">
+                ${categoryData.awards
+                  .map(
+                    (award) => `
+                  <li class="award-item">
+                    <span class="award-name">${award.name}</span>
+                    <span class="award-badge">${award.count}x</span>
+                  </li>
+                `
+                  )
+                  .join("")}
+              </ul>
+            </div>
+          `;
+
+          container.appendChild(categoryCard);
+        }
+      }
+
+      function displayTimeline() {
+        const timeline = document.getElementById("timeline");
+        timeline.innerHTML = "";
+
+        const sortedSeasons = Object.keys(analysisData.timelineData).sort();
+
+        sortedSeasons.forEach((season, index) => {
+          const awards = analysisData.timelineData[season];
+          const timelineItem = document.createElement("div");
+          timelineItem.className = "timeline-item";
+
+          timelineItem.innerHTML = `
+            <div class="timeline-content">
+              <h4>${season} Season</h4>
+              <div class="season-awards">
+                ${awards
+                  .map(
+                    (award) => `
+                  <div class="season-award-item">
+                    <i class="bi bi-trophy season-award-icon"></i>
+                    <span>${award.count}x ${award.name}</span>
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
+              <small class="text-muted">${
+                awards.length
+              } different awards won</small>
+            </div>
+            <div class="timeline-year">${season}</div>
+          `;
+
+          timeline.appendChild(timelineItem);
+        });
+      }
+
+      function createCharts() {
+        createProgressionChart();
+        createDistributionChart();
+      }
+
+      function createProgressionChart() {
+        const ctx = document
+          .getElementById("progressionChart")
+          .getContext("2d");
+        const seasons = Object.keys(analysisData.timelineData).sort();
+        const data = seasons.map((season) =>
+          analysisData.timelineData[season].reduce(
+            (sum, award) => sum + award.count,
+            0
+          )
+        );
+
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: seasons,
+            datasets: [
+              {
+                label: "Awards Won",
+                data: data,
+                borderColor: "#4361ee",
+                backgroundColor: "rgba(67, 97, 238, 0.1)",
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function createDistributionChart() {
+        const ctx = document
+          .getElementById("distributionChart")
+          .getContext("2d");
+        const categories = Object.keys(analysisData.categoryBreakdown);
+        const data = categories.map((category) =>
+          analysisData.categoryBreakdown[category].awards.reduce(
+            (sum, award) => sum + award.count,
+            0
+          )
+        );
+
+        const colors = [
+          "#ffd700",
+          "#4361ee",
+          "#06d6a0",
+          "#ef476f",
+          "#ffd166",
+          "#4cc9f0",
+        ];
+
+        new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: categories,
+            datasets: [
+              {
+                data: data,
+                backgroundColor: colors.slice(0, categories.length),
+                borderWidth: 2,
+                borderColor: "#fff",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  padding: 20,
+                  usePointStyle: true,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function hideLoading() {
+        document.getElementById("loadingState").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+      }
+
+      function showNoAwardsState() {
+        document.getElementById("loadingState").innerHTML = ` <i class="bi bi-trophy" style="font-size: 4rem; color: var(--gray); margin-bottom: 1.5rem;"></i>
+          <h3>No Awards Data Found</h3>
+          <p>Start your career journey to begin collecting awards and achievements!</p>
+          <a href="dashboard.html" class="btn btn-primary">Return to Dashboard</a>
+        `;
+      }
+
+      // Initialize when page loads
+      document.addEventListener("DOMContentLoaded", loadAwards);
+    </script>
+  </body>
+</html>

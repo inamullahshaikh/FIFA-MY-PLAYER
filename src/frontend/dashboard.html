@@ -271,156 +271,385 @@
         background: var(--primary);
         border-radius: 2px;
       }
-
-      .dashboard-card {
-        background: white;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        transition: var(--transition);
-      }
-
-      .dashboard-card:hover {
-        box-shadow: var(--shadow-lg);
-        transform: translateY(-5px);
-      }
-
-      /* Buttons and UI Components */
-      .btn {
-        padding: 0.5rem 1.25rem;
-        font-weight: 500;
-        border-radius: var(--border-radius);
-        transition: var(--transition);
-      }
-
-      .btn-primary {
-        background-color: var(--primary);
-        border-color: var(--primary);
-      }
-
-      .btn-primary:hover {
-        background-color: var(--primary-dark);
-        border-color: var(--primary-dark);
-      }
-
-      .btn-danger {
-        background-color: var(--danger);
-        border-color: var(--danger);
-      }
-
-      .btn-success {
-        background-color: var(--success);
-        border-color: var(--success);
-      }
-
-      .btn-warning {
-        background-color: var(--warning);
-        border-color: var(--warning);
-        color: var(--dark);
-      }
-
-      .btn-outline {
-        background-color: transparent;
-        border: 1px solid currentColor;
-      }
-
-      .btn-outline-primary {
-        color: var(--primary);
-        border-color: var(--primary);
-      }
-
-      .btn-outline-primary:hover {
-        background-color: var(--primary);
-        color: white;
-      }
-
-      /* Responsive Design */
-      @media (max-width: 992px) {
-        .sidebar {
-          transform: translateX(-100%);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .sidebar.active {
-          transform: translateX(0);
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px 0;
         }
 
-        .main-content {
-          margin-left: 0;
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 8px 16px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
-      }
 
-      @media (max-width: 768px) {
-        .navbar-brand {
-          font-size: 1.25rem;
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 300% 100%;
+            animation: shimmer 3s ease-in-out infinite;
         }
 
-        .main-content {
-          padding: 5.5rem 1rem 1.5rem;
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
-        #requestsList,
-        #queriesList,
-        #eventCardsForAnalysis,
-        .remove-eventorg-grid {
-          grid-template-columns: 1fr;
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.15),
+                0 16px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
-      }
+
+        .dashboard-card h3 {
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .player-profile h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            border-radius: 2px;
+        }
+
+        .current-club h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #45b7d1, #96ceb4);
+            border-radius: 2px;
+        }
+
+        .player-avatar {
+            position: relative;
+        }
+
+        .player-avatar::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .player-avatar img {
+            border: 4px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .player-avatar:hover img {
+            transform: scale(1.05);
+        }
+
+        .player-info h4 {
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 1.4rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge {
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            background: linear-gradient(45deg, #667eea, #764ba2) !important;
+            border: none;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .flag-container {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .flag-container img {
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .player-stats {
+            margin-top: 24px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-item:hover::before {
+            left: 100%;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2c3e50;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .club-logo {
+            position: relative;
+            display: inline-block;
+        }
+
+        .club-logo::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            background: linear-gradient(45deg, #45b7d1, #96ceb4, #67b26f, #4ca2cd);
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0.3;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.05); opacity: 0.5; }
+        }
+
+        .club-logo img {
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .club-logo:hover img {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .club-info h4 {
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(4px);
+        }
+
+        .info-item i {
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .contract-info {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .contract-item {
+            flex: 1;
+            min-width: 200px;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .contract-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .contract-item i {
+            color: #45b7d1;
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+
+        .contract-item strong {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-card {
+                padding: 24px;
+                margin-bottom: 24px;
+            }
+            
+            .player-info {
+                text-align: center;
+            }
+            
+            .club-info {
+                text-align: center;
+                margin-top: 20px;
+            }
+            
+            .contract-info {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+        }
+
+        .loading {
+            opacity: 0.7;
+            animation: loading-pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading-pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
     </style>
   </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <div class="container">
-        <a id="wow" class="navbar-brand" href="#">Virtual XI</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">
-                <i class="bi bi-house me-1 active"></i>Dashboard
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="seasondata.html">
-                <i class="bi bi-bar-chart-steps me-1"></i>Season Data
-              </a>
-            </li class="nav-item">
-              <a class="nav-link" href="yearlydata.html">
-                <i class="bi bi-bar-chart me-1"></i>Yearly Data
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="stats.html">
-                <i class="bi bi-graph-up-arrow me-1"></i>Stats
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="trophies.html">
-                <i class="bi bi-trophy me-1"></i>Trophy Cabinet
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="awards.html">
-                <i class="bi bi-award me-1"></i>Awards
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link logout-btn" href="index.html">
-                <i class="bi bi-box-arrow-right me-1"></i>Logout
-              </a>
-            </li>
-          </ul>
-        </div>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a id="wow" class="navbar-brand" href="#">Virtual XI</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">
+              <i class="bi bi-house me-1 active"></i>Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="seasondata.html">
+              <i class="bi bi-bar-chart-steps me-1"></i>Season Data
+            </a>
+          </li class="nav-item">
+            <a class="nav-link" href="yearlydata.html">
+              <i class="bi bi-bar-chart me-1"></i>Yearly Data
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="stats.html">
+              <i class="bi bi-graph-up-arrow me-1"></i>Stats
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="trophies.html">
+              <i class="bi bi-trophy me-1"></i>Trophy Cabinet
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="awards.html">
+              <i class="bi bi-award me-1"></i>Awards
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link logout-btn" href="index.html">
+              <i class="bi bi-box-arrow-right me-1"></i>Logout
+            </a>
+          </li>
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
+  <body>
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
@@ -434,7 +663,7 @@
           <i class="bi bi-bar-chart"></i> Yearly Data
         </a>
         <a href="stats.html"> <i class="bi bi-graph-up-arrow"></i> Stats </a
-        ><a href="tophies.html">
+        ><a href="trophies.html">
           <i class="bi bi-trophy"></i> Trophy Cabinet
         </a>
         <a href="awards.html"> <i class="bi bi-award"></i> Awards </a>
@@ -490,31 +719,34 @@
         </div>
       </div>
 
-      <div class="col-lg-8 mb-4">
-        <div class="dashboard-card current-club">
-          <h3>Current Club</h3>
-          <div class="d-flex align-items-center mt-4">
-            <div class="club-logo me-3">
-              <img id="clubLogo" src="assets/images/FC Barcelona.png" alt="Club Logo" width="80" height="80">
-            </div>
-            <div>
-              <h4 id="clubName" class="mb-1">Loading...</h4>
-              <div class="d-flex align-items-center mb-2">
-                <img id="clubCountryFlag" src="assets/images/Spain.png" alt="Club Country" width="24" height="16" class="me-2">
-                <span id="clubLeague">League</span>
+          <div class="col-lg-8 mb-4">
+              <div class="dashboard-card current-club">
+                  <h3>Current Club</h3>
+                  <div class="d-flex align-items-center mt-4">
+                      <div class="club-logo me-4">
+                          <img id="clubLogo" src="assets/images/teams/Manchester City.png" alt="Club Logo" width="90" height="100">
+                      </div>
+                      <div class="club-info">
+                          <h4 id="clubName" class="mb-3 loading">Manchester City</h4>
+                          <div class="info-item mb-3">
+                              <img id="clubCountryFlag" src="assets/images/england.png" alt="Club Country" width="16" height="16" class="me-2">
+                              <span id="clubLeague">Premier League</span>
+                          </div>
+                          <div class="contract-info">
+                              <div class="contract-item">
+                                  <i class="bi bi-calendar-event"></i>
+                                  <strong>Joined:</strong> <span id="joinedDate">July 2022</span>
+                              </div>
+                              <div class="contract-item">
+                                  <i class="bi bi-file-text"></i>
+                                  <strong>Contract until:</strong> <span id="contractEnd">June 2027</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
               </div>
-              <div class="d-flex align-items-center">
-                <i class="bi bi-calendar-event me-2"></i>
-                <span>Joined: <span id="joinedDate">--</span></span>
-                <span class="mx-3">|</span>
-                <i class="bi bi-file-text me-2"></i>
-                <span>Contract until: <span id="contractEnd">--</span></span>
-              </div>
-            </div>
           </div>
-        </div>
       </div>
-    </div>
 
     <!-- G+A Per Season Section -->
     <div class="row mb-4">
@@ -523,6 +755,16 @@
           <h3>Goals + Assists Per Season</h3>
           <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
             <canvas id="gaPerSeasonChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="dashboard-card">
+          <h3>Goals + Assists Per Year</h3>
+          <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
+            <canvas id="gaPerYearChart"></canvas>
           </div>
         </div>
       </div>
@@ -583,7 +825,7 @@
             <div class="col-md-4 mb-4">
               <div class="trophy-category text-center">
                 <i class="bi bi-person-badge trophy-icon"></i>
-                <h5>Individual Awards</h5>
+                <h5>Major Honors</h5>
                 <div class="trophy-count" id="individualAwardCount">0</div>
                 <div class="trophy-list mt-3" id="individualAwardList">
                   <!-- Will be populated by JavaScript -->
@@ -667,15 +909,15 @@
     name: "Inam Ullah Shaikh",
     position: "Striker",
     nationality: "Spain",
-    age: 21,
-    rating: 93,
+    age: 28,
+    rating: 95,
     value: "€300M",
     currentClub: {
-      name: "FC Barcelona",
-      country: "Spain",
-      league: "Laliga",
-      joined: "July 2025",
-      contractUntil: "June 2030"
+      name: "Manchester City",
+      country: "England",
+      league: "Premier League",
+      joined: "July 2030",
+      contractUntil: "June 2035"
     },
     goalsAssistsPerSeason: [
       { season: "2018/19", goals: 28, assists: 10 },
@@ -690,11 +932,10 @@
       { season: "2023/24", goals: 105, assists: 11 }
     ],
     transferHistory: [
-      { date: "July 2009", from: "Manchester United", to: "Real Madrid", amount: "€94M" },
-      { date: "July 2018", from: "Real Madrid", to: "Juventus", amount: "€100M" },
-      { date: "August 2021", from: "Juventus", to: "Manchester United", amount: "€15M" },
-      { date: "January 2023", from: "Manchester United", to: "Al-Nassr FC", amount: "Free Transfer" }
+      { date: "July 2025", from: "Athletic Bilbao", to: "FC Barcelona", amount: "€280M" },
+      { date: "July 2030", from: "FC Barcelona", to: "Manchester City", amount: "€360M" },
     ],
+    goalsAssistsPerYear:[],
   };
 
   // Initialize the dashboard when the page is loaded
@@ -745,63 +986,646 @@
   }
 
   // Function to render the Goals+Assists chart
-  function renderGoalsAssistsChart() {
+  // Function to render the Goals+Assists charts
+  async function renderGoalsAssistsChart() {
+    // Render Season Chart
+    await renderSeasonChart();
+    
+    // Render Yearly Chart
+    await renderYearlyChart();
+  }
+
+// Function to render Season Goals+Assists chart
+  // 🎨 Beautiful Season Chart Renderer with Enhanced Animations
+async function renderSeasonChart() {
+  try {
+    // 🔄 Show elegant loading state
+    showChartLoading('gaPerSeasonChart');
+    
+    const [clubRes, intRes] = await Promise.all([
+      fetch("http://localhost:5000/api/season-data"),
+      fetch("http://localhost:5000/api/int-data")
+    ]);
+
+    const clubData = await clubRes.json();
+    const intData = await intRes.json();
+
+    const seasonMap = new Map();
+
+    const processEntry = (entry) => {
+      const { season, goals, assists } = entry;
+      if (!seasonMap.has(season)) {
+        seasonMap.set(season, { goals: 0, assists: 0 });
+      }
+      const seasonStats = seasonMap.get(season);
+      seasonStats.goals += goals;
+      seasonStats.assists += assists;
+    };
+
+    clubData.forEach(processEntry);
+    intData.forEach(processEntry);
+
+    // Convert map to array sorted by season
+    const combinedData = Array.from(seasonMap.entries())
+      .map(([season, stats]) => ({
+        season,
+        goals: stats.goals,
+        assists: stats.assists,
+        total: stats.goals + stats.assists
+      }))
+      .sort((a, b) => a.season.localeCompare(b.season));
+
+    // Update playerData
+    playerData.goalsAssistsPerSeason = combinedData;
+
+    console.log("📊 Goals + Assists Per Season:", combinedData);
+
+    // Hide loading and render the chart
+    hideChartLoading('gaPerSeasonChart');
     const ctx = document.getElementById('gaPerSeasonChart').getContext('2d');
     
-    // Extract data for the chart
-    const seasons = playerData.goalsAssistsPerSeason.map(item => item.season);
-    const goals = playerData.goalsAssistsPerSeason.map(item => item.goals);
-    const assists = playerData.goalsAssistsPerSeason.map(item => item.assists);
+    // Destroy existing chart if it exists
+    if (window.seasonChart && typeof window.seasonChart.destroy === 'function') {
+      window.seasonChart.destroy();
+    }
     
-    new Chart(ctx, {
+    // Extract data for the chart
+    const seasons = combinedData.map(item => item.season);
+    const goals = combinedData.map(item => item.goals);
+    const assists = combinedData.map(item => item.assists);
+    
+    // 🎨 Create beautiful gradient fills
+    const goalsGradient = ctx.createLinearGradient(0, 0, 0, 400);
+    goalsGradient.addColorStop(0, 'rgba(255, 107, 107, 0.8)');
+    goalsGradient.addColorStop(0.5, 'rgba(255, 107, 107, 0.4)');
+    goalsGradient.addColorStop(1, 'rgba(255, 107, 107, 0.1)');
+    
+    const assistsGradient = ctx.createLinearGradient(0, 0, 0, 400);
+    assistsGradient.addColorStop(0, 'rgba(78, 205, 196, 0.8)');
+    assistsGradient.addColorStop(0.5, 'rgba(78, 205, 196, 0.4)');
+    assistsGradient.addColorStop(1, 'rgba(78, 205, 196, 0.1)');
+    
+    window.seasonChart = new Chart(ctx, {
       type: 'line',
       data: {
         labels: seasons,
         datasets: [
           {
-            label: 'Goals',
+            label: '⚽ Goals',
             data: goals,
-            backgroundColor: 'rgba(67, 97, 238, 0.2)',
-            borderColor: 'rgba(67, 97, 238, 1)',
-            borderWidth: 2,
-            tension: 0.2,
-            fill: true
+            backgroundColor: goalsGradient,
+            borderColor: '#ff6b6b',
+            borderWidth: 3,
+            pointBackgroundColor: '#ff6b6b',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 3,
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            pointHoverBackgroundColor: '#ff6b6b',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            shadowOffsetX: 0,
+            shadowOffsetY: 4,
+            shadowBlur: 10,
+            shadowColor: 'rgba(255, 107, 107, 0.3)'
           },
           {
-            label: 'Assists',
+            label: '🎯 Assists',
             data: assists,
-            backgroundColor: 'rgba(76, 201, 240, 0.2)',
-            borderColor: 'rgba(76, 201, 240, 1)',
-            borderWidth: 2,
-            tension: 0.2,
-            fill: true
+            backgroundColor: assistsGradient,
+            borderColor: '#4ecdc4',
+            borderWidth: 3,
+            pointBackgroundColor: '#4ecdc4',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 3,
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            pointHoverBackgroundColor: '#4ecdc4',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            shadowOffsetX: 0,
+            shadowOffsetY: 4,
+            shadowBlur: 10,
+            shadowColor: 'rgba(78, 205, 196, 0.3)'
           }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+          duration: 2000,
+          easing: 'easeInOutCubic',
+          animateRotate: true,
+          animateScale: true
+        },
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
         plugins: {
           legend: {
             position: 'top',
+            labels: {
+              usePointStyle: true,
+              pointStyle: 'circle',
+              padding: 20,
+              font: {
+                size: 14,
+                weight: '600',
+                family: "'Segoe UI', sans-serif"
+              },
+              color: '#2c3e50'
+            }
           },
           tooltip: {
-            mode: 'index',
-            intersect: false,
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            titleColor: '#2c3e50',
+            bodyColor: '#2c3e50',
+            borderColor: 'rgba(0, 0, 0, 0.1)',
+            borderWidth: 1,
+            cornerRadius: 12,
+            displayColors: true,
+            padding: 12,
+            titleFont: {
+              size: 16,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 14
+            },
+            callbacks: {
+              title: function(context) {
+                return `Season ${context[0].label}`;
+              },
+              label: function(context) {
+                const emoji = context.dataset.label.includes('Goals') ? '⚽' : '🎯';
+                return `${emoji} ${context.dataset.label.replace(/[⚽🎯]/g, '').trim()}: ${context.parsed.y}`;
+              },
+              afterBody: function(context) {
+                const dataIndex = context[0].dataIndex;
+                const total = combinedData[dataIndex].total;
+                return [`📊 Total Contributions: ${total}`];
+              }
+            }
           }
         },
         scales: {
+          x: {
+            grid: {
+              display: true,
+              color: 'rgba(0, 0, 0, 0.05)',
+              lineWidth: 1
+            },
+            ticks: {
+              color: '#7f8c8d',
+              font: {
+                size: 12,
+                weight: '500'
+              },
+              maxRotation: 45
+            }
+          },
           y: {
             beginAtZero: true,
+            grid: {
+              display: true,
+              color: 'rgba(0, 0, 0, 0.05)',
+              lineWidth: 1
+            },
             ticks: {
-              precision: 0
+              precision: 0,
+              color: '#7f8c8d',
+              font: {
+                size: 12,
+                weight: '500'
+              },
+              callback: function(value) {
+                return value === 0 ? '0' : value;
+              }
             }
           }
         }
       }
     });
-  }
 
+    // 🎉 Success animation
+    //showSuccessNotification("Season chart loaded successfully!");
+
+  } catch (error) {
+    console.error("❌ Failed to load season data:", error);
+    hideChartLoading('gaPerSeasonChart');
+    showErrorNotification("Error loading player season stats.");
+  }
+}
+
+// 🎨 Beautiful Yearly Chart Renderer with Enhanced Animations
+async function renderYearlyChart() {
+  try {
+    // 🔄 Show elegant loading state
+    showChartLoading('gaPerYearChart');
+    
+    const yearlyRes = await fetch("http://localhost:5000/api/yearly-data");
+    const yearlyData = await yearlyRes.json();
+
+    const yearlyMap = new Map();
+
+    const processEntry = (entry) => {
+      const { year, goals, assists } = entry;
+      if (!yearlyMap.has(year)) {
+        yearlyMap.set(year, { goals: 0, assists: 0 });
+      }
+      const yearStats = yearlyMap.get(year);
+      yearStats.goals += goals;
+      yearStats.assists += assists;
+    };
+
+    yearlyData.forEach(processEntry);
+
+    // Convert map to array sorted by year
+    const combinedData = Array.from(yearlyMap.entries())
+      .map(([year, stats]) => ({
+        year,
+        goals: stats.goals,
+        assists: stats.assists,
+        total: stats.goals + stats.assists
+      }))
+      .sort((a, b) => parseInt(a.year) - parseInt(b.year));
+
+    // Update playerData
+    playerData.goalsAssistsPerYear = combinedData;
+
+    console.log("📊 Goals + Assists Per Year:", combinedData);
+
+    // Hide loading and render the yearly chart
+    hideChartLoading('gaPerYearChart');
+    const ctx1 = document.getElementById('gaPerYearChart').getContext('2d');
+    
+    // Destroy existing chart if it exists
+    if (window.yearlyChart && typeof window.yearlyChart.destroy === 'function') {
+      window.yearlyChart.destroy();
+    }
+    
+    // Extract data for the chart
+    const years = combinedData.map(item => item.year);
+    const goals = combinedData.map(item => item.goals);
+    const assists = combinedData.map(item => item.assists);
+    
+    // 🎨 Create beautiful gradient fills
+    const goalsGradient = ctx1.createLinearGradient(0, 0, 0, 400);
+    goalsGradient.addColorStop(0, 'rgba(239, 71, 111, 0.8)');
+    goalsGradient.addColorStop(0.5, 'rgba(239, 71, 111, 0.4)');
+    goalsGradient.addColorStop(1, 'rgba(239, 71, 111, 0.1)');
+    
+    const assistsGradient = ctx1.createLinearGradient(0, 0, 0, 400);
+    assistsGradient.addColorStop(0, 'rgba(6, 214, 160, 0.8)');
+    assistsGradient.addColorStop(0.5, 'rgba(6, 214, 160, 0.4)');
+    assistsGradient.addColorStop(1, 'rgba(6, 214, 160, 0.1)');
+    
+    window.yearlyChart = new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [
+          {
+            label: '🔥 Goals',
+            data: goals,
+            backgroundColor: goalsGradient,
+            borderColor: '#ef476f',
+            borderWidth: 3,
+            pointBackgroundColor: '#ef476f',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 3,
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            pointHoverBackgroundColor: '#ef476f',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            shadowOffsetX: 0,
+            shadowOffsetY: 4,
+            shadowBlur: 10,
+            shadowColor: 'rgba(239, 71, 111, 0.3)'
+          },
+          {
+            label: '✨ Assists',
+            data: assists,
+            backgroundColor: assistsGradient,
+            borderColor: '#06d6a0',
+            borderWidth: 3,
+            pointBackgroundColor: '#06d6a0',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 3,
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            pointHoverBackgroundColor: '#06d6a0',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            shadowOffsetX: 0,
+            shadowOffsetY: 4,
+            shadowBlur: 10,
+            shadowColor: 'rgba(6, 214, 160, 0.3)'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+          duration: 2000,
+          easing: 'easeInOutCubic',
+          animateRotate: true,
+          animateScale: true
+        },
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              usePointStyle: true,
+              pointStyle: 'circle',
+              padding: 20,
+              font: {
+                size: 14,
+                weight: '600',
+                family: "'Segoe UI', sans-serif"
+              },
+              color: '#2c3e50'
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            titleColor: '#2c3e50',
+            bodyColor: '#2c3e50',
+            borderColor: 'rgba(0, 0, 0, 0.1)',
+            borderWidth: 1,
+            cornerRadius: 12,
+            displayColors: true,
+            padding: 12,
+            titleFont: {
+              size: 16,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 14
+            },
+            callbacks: {
+              title: function(context) {
+                return `Year ${context[0].label}`;
+              },
+              label: function(context) {
+                const emoji = context.dataset.label.includes('Goals') ? '🔥' : '✨';
+                return `${emoji} ${context.dataset.label.replace(/[🔥✨]/g, '').trim()}: ${context.parsed.y}`;
+              },
+              afterBody: function(context) {
+                const dataIndex = context[0].dataIndex;
+                const total = combinedData[dataIndex].total;
+                return [`🎯 Total Contributions: ${total}`];
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: true,
+              color: 'rgba(0, 0, 0, 0.05)',
+              lineWidth: 1
+            },
+            ticks: {
+              color: '#7f8c8d',
+              font: {
+                size: 12,
+                weight: '500'
+              }
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: {
+              display: true,
+              color: 'rgba(0, 0, 0, 0.05)',
+              lineWidth: 1
+            },
+            ticks: {
+              precision: 0,
+              color: '#7f8c8d',
+              font: {
+                size: 12,
+                weight: '500'
+              },
+              callback: function(value) {
+                return value === 0 ? '0' : value;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // 🎉 Success animation
+    //showSuccessNotification("Yearly chart loaded successfully!");
+
+  } catch (error) {
+    console.error("❌ Failed to load yearly data:", error);
+    hideChartLoading('gaPerYearChart');
+    showErrorNotification("Error loading player yearly stats.");
+  }
+}
+
+// 🎨 Helper Functions for Enhanced UX
+
+function showChartLoading(chartId) {
+  const canvas = document.getElementById(chartId);
+  if (canvas) {
+    const container = canvas.parentElement;
+    
+    // Create loading overlay
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'chart-loading-overlay';
+    loadingOverlay.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="loading-text">Loading chart data...</div>
+      </div>
+    `;
+    
+    // Add loading styles if not already present
+    if (!document.getElementById('chart-loading-styles')) {
+      const styles = document.createElement('style');
+      styles.id = 'chart-loading-styles';
+      styles.textContent = `
+        .chart-loading-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(5px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          border-radius: 12px;
+        }
+        
+        .loading-spinner {
+          text-align: center;
+        }
+        
+        .spinner-ring {
+          width: 40px;
+          height: 40px;
+          border: 4px solid #f3f3f3;
+          border-top: 4px solid #667eea;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin: 0 auto 16px;
+        }
+        
+        .loading-text {
+          color: #667eea;
+          font-weight: 600;
+          font-size: 14px;
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `;
+      document.head.appendChild(styles);
+    }
+    
+    container.style.position = 'relative';
+    container.appendChild(loadingOverlay);
+  }
+}
+
+function hideChartLoading(chartId) {
+  const canvas = document.getElementById(chartId);
+  if (canvas) {
+    const container = canvas.parentElement;
+    const overlay = container.querySelector('.chart-loading-overlay');
+    if (overlay) {
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), 300);
+    }
+  }
+}
+
+function showSuccessNotification(message) {
+  createNotification(message, 'success', '✅');
+}
+
+function showErrorNotification(message) {
+  createNotification(message, 'error', '❌');
+}
+
+function createNotification(message, type, icon) {
+  // Add notification styles if not already present
+  if (!document.getElementById('notification-styles')) {
+    const styles = document.createElement('style');
+    styles.id = 'notification-styles';
+    styles.textContent = `
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 20px;
+        border-radius: 12px;
+        color: white;
+        font-weight: 600;
+        z-index: 10000;
+        transform: translateX(400px);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      .notification.success {
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.9), rgba(25, 135, 84, 0.9));
+      }
+      
+      .notification.error {
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(187, 31, 46, 0.9));
+      }
+      
+      .notification.show {
+        transform: translateX(0);
+      }
+    `;
+    document.head.appendChild(styles);
+  }
+  
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.innerHTML = `${icon} ${message}`;
+  
+  document.body.appendChild(notification);
+  
+  // Trigger animation
+  setTimeout(() => notification.classList.add('show'), 100);
+  
+  // Auto remove
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// 🎯 Enhanced Chart Resize Handler
+function handleChartResize() {
+  if (window.seasonChart) {
+    window.seasonChart.resize();
+  }
+  if (window.yearlyChart) {
+    window.yearlyChart.resize();
+  }
+}
+
+// Add resize listener
+window.addEventListener('resize', handleChartResize);
+
+// 🎨 Chart Theme Configuration
+const chartTheme = {
+  colors: {
+    primary: '#667eea',
+    secondary: '#764ba2',
+    success: '#28a745',
+    danger: '#dc3545',
+    warning: '#ffc107',
+    info: '#17a2b8',
+    goals: '#ff6b6b',
+    assists: '#4ecdc4',
+    goalsAlt: '#ef476f',
+    assistsAlt: '#06d6a0'
+  },
+  fonts: {
+    family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    size: {
+      small: 12,
+      medium: 14,
+      large: 16
+    }
+  },
+  animations: {
+    duration: 2000,
+    easing: 'easeInOutCubic'
+  }
+};
   // Function to load transfer history
   function loadTransferHistory() {
     const tableBody = document.getElementById('transferHistoryTable');
@@ -832,73 +1656,30 @@
   }
 
   // Function to load trophies
-  function loadTrophies() {
-    // Club trophies
-    const clubTrophyList = document.getElementById('clubTrophyList');
-    document.getElementById('clubTrophyCount').textContent = playerData.trophies.club.length;
-    
-    playerData.trophies.club.forEach(trophy => {
-      const trophyItem = document.createElement('div');
-      trophyItem.className = 'trophy-item';
-      
-      const trophyYear = document.createElement('span');
-      trophyYear.className = 'trophy-year';
-      trophyYear.textContent = trophy.year;
-      
-      const trophyName = document.createElement('span');
-      trophyName.className = 'trophy-name';
-      trophyName.textContent = trophy.name;
-      
-      trophyItem.appendChild(trophyYear);
-      trophyItem.appendChild(trophyName);
-      
-      clubTrophyList.appendChild(trophyItem);
-    });
-    
-    // International trophies
-    const internationalTrophyList = document.getElementById('internationalTrophyList');
-    document.getElementById('internationalTrophyCount').textContent = playerData.trophies.international.length;
-    
-    playerData.trophies.international.forEach(trophy => {
-      const trophyItem = document.createElement('div');
-      trophyItem.className = 'trophy-item';
-      
-      const trophyYear = document.createElement('span');
-      trophyYear.className = 'trophy-year';
-      trophyYear.textContent = trophy.year;
-      
-      const trophyName = document.createElement('span');
-      trophyName.className = 'trophy-name';
-      trophyName.textContent = trophy.name;
-      
-      trophyItem.appendChild(trophyYear);
-      trophyItem.appendChild(trophyName);
-      
-      internationalTrophyList.appendChild(trophyItem);
-    });
-    
-    // Individual awards
-    const individualAwardList = document.getElementById('individualAwardList');
-    document.getElementById('individualAwardCount').textContent = playerData.trophies.individual.length;
-    
-    playerData.trophies.individual.forEach(trophy => {
-      const trophyItem = document.createElement('div');
-      trophyItem.className = 'trophy-item';
-      
-      const trophyYear = document.createElement('span');
-      trophyYear.className = 'trophy-year';
-      trophyYear.textContent = trophy.year;
-      
-      const trophyName = document.createElement('span');
-      trophyName.className = 'trophy-name';
-      trophyName.textContent = trophy.name;
-      
-      trophyItem.appendChild(trophyYear);
-      trophyItem.appendChild(trophyName);
-      
-      individualAwardList.appendChild(trophyItem);
-    });
+  async function loadTrophies() {
+  try {
+    // Club trophies count
+    const clubResponse = await fetch("http://localhost:5000/api/season-trophies");
+    const clubTrophies = await clubResponse.json();
+    document.getElementById('clubTrophyCount').textContent = clubTrophies.length;
+
+    // International trophies count
+    const intResponse = await fetch("http://localhost:5000/api/int-trophies");
+    const intTrophies = await intResponse.json();
+    document.getElementById('internationalTrophyCount').textContent = intTrophies.length;
+
+    const awardresponse = await fetch("http://localhost:5000/api/season-awards");
+    const awards = await awardresponse.json();
+    const majorKeywords = ["Ballon d'Or", "Golden Boot", "FIFA Best Player", "Copa Trophy"];
+    const majorHonorCount = awards.filter(a =>
+      majorKeywords.some(keyword => a.award.trim().toLowerCase() === keyword.toLowerCase())
+    ).length;
+    document.getElementById('individualAwardCount').textContent = majorHonorCount;
+  } catch (error) {
+    console.error("Error loading trophy counts:", error);
   }
+}
+
 
   // Toggle sidebar function
   function toggleSidebar() {

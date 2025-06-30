@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trophy Cabinet - Virtual XI</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="icon"
+      href="assets/images/football.ico"
+      type="image/x-icon"
+      class="circular-favicon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
+    />
+    <style>
+      /* Team Section Layout - Full Width per Team */
+      .team-section {
+        width: 100%;
+        margin-bottom: 48px;
+        position: relative;
+      }
+
+      /* Mega Team Header */
+      .team-mega-header {
+        margin-bottom: 32px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .team-header-background {
+        background: linear-gradient(
+          135deg,
+          #667eea 0%,
+          #764ba2 50%,
+          #f093fb 100%
+        );
+        position: relative;
+        overflow: hidden;
+        border-radius: 16px; /* 👈 this adds curved edges */
+      }
+
+      .team-header-background::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.1) 25%,
+          transparent 25%,
+          transparent 75%,
+          rgba(255, 255, 255, 0.1) 75%
+        );
+        background-size: 60px 60px;
+        animation: backgroundMove 20s linear infinite;
+      }
+
+      @keyframes backgroundMove {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 60px 60px;
+        }
+      }
+
+      .team-header-content {
+        position: relative;
+        z-index: 2;
+        padding: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+      }
+
+      .team-main-info {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .team-mega-badge {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 36px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+      }
+
+      .team-mega-details {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .team-mega-title {
+        font-size: 42px;
+        font-weight: 800;
+        color: white;
+        margin: 0;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        letter-spacing: -1px;
+      }
+
+      .team-mega-subtitle {
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .team-mega-stats {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .mega-stat-item {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 20px 16px;
+        min-width: 80px;
+        transition: all 0.3s ease;
+      }
+
+      .mega-stat-item:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-4px);
+      }
+
+      .mega-stat-value {
+        display: block;
+        font-size: 32px;
+        font-weight: 800;
+        color: white;
+        line-height: 1;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .mega-stat-label {
+        display: block;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 8px;
+        font-weight: 600;
+      }
+
+      /* Trophy Cards Container */
+      .team-trophies-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        max-width: 100%;
+      }
+
+      /* Compact Trophy Cards */
+      .compact-trophy-card {
+        background: white;
+        border-radius: 20px;
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      }
+
+      .compact-trophy-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .compact-trophy-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .compact-trophy-card.continental::before {
+        background: linear-gradient(90deg, #667eea, #764ba2);
+      }
+
+      .compact-trophy-card.league::before {
+        background: linear-gradient(90deg, #ff9a9e, #fecfef);
+      }
+
+      .compact-trophy-card.domestic::before {
+        background: linear-gradient(90deg, #a8edea, #fed6e3);
+      }
+
+      .compact-trophy-card.other::before {
+        background: linear-gradient(90deg, #d299c2, #fef9d7);
+      }
+
+      /* Compact Trophy Header */
+      .compact-trophy-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .compact-trophy-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: white;
+        transition: all 0.3s ease;
+      }
+
+      .continental .compact-trophy-icon {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+      }
+
+      .league .compact-trophy-icon {
+        background: linear-gradient(135deg, #ff9a9e, #fecfef);
+      }
+
+      .domestic .compact-trophy-icon {
+        background: linear-gradient(135deg, #a8edea, #fed6e3);
+      }
+
+      .other .compact-trophy-icon {
+        background: linear-gradient(135deg, #d299c2, #fef9d7);
+      }
+
+      .compact-trophy-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: white;
+      }
+
+      .compact-trophy-badge.continental {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+      }
+
+      .compact-trophy-badge.league {
+        background: linear-gradient(135deg, #ff9a9e, #fecfef);
+      }
+
+      .compact-trophy-badge.domestic {
+        background: linear-gradient(135deg, #a8edea, #fed6e3);
+      }
+
+      .compact-trophy-badge.other {
+        background: linear-gradient(135deg, #d299c2, #fef9d7);
+      }
+
+      /* Compact Trophy Info */
+      .compact-trophy-info {
+        margin-bottom: 24px;
+      }
+
+      .compact-trophy-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0 0 8px 0;
+        line-height: 1.3;
+      }
+
+      .compact-trophy-season {
+        font-size: 16px;
+        color: #718096;
+        font-weight: 600;
+      }
+
+      /* Compact Stats Row */
+      .compact-stats-row {
+        display: flex;
+        justify-content: space-between;
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 16px 12px;
+      }
+
+      .compact-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        transition: all 0.3s ease;
+      }
+
+      .compact-stat:hover {
+        transform: scale(1.1);
+      }
+
+      .compact-stat-value {
+        font-size: 20px;
+        font-weight: 800;
+        color: #2d3748;
+        line-height: 1;
+      }
+
+      .compact-stat-label {
+        font-size: 11px;
+        color: #718096;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 4px;
+        font-weight: 600;
+      }
+
+      /* Trophy Glow Effect */
+      .compact-trophy-glow {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(102, 126, 234, 0.1) 0%,
+          transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+      }
+
+      .compact-trophy-card:hover .compact-trophy-glow {
+        opacity: 1;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1200px) {
+        .team-trophies-container {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (max-width: 992px) {
+        .team-header-content {
+          flex-direction: column;
+          gap: 32px;
+          text-align: center;
+          padding: 32px;
+        }
+
+        .team-mega-stats {
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+
+        .team-trophies-container {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .team-mega-title {
+          font-size: 32px;
+        }
+
+        .team-mega-subtitle {
+          font-size: 16px;
+        }
+
+        .team-mega-badge {
+          width: 64px;
+          height: 64px;
+          font-size: 28px;
+        }
+
+        .mega-stat-value {
+          font-size: 24px;
+        }
+
+        .mega-stat-item {
+          padding: 16px 12px;
+          min-width: 70px;
+        }
+
+        .team-trophies-container {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .team-section {
+          margin: 0 -16px 40px -16px;
+        }
+
+        .team-mega-header {
+          border-radius: 0;
+          margin-bottom: 24px;
+        }
+
+        .team-header-content {
+          padding: 24px 20px;
+        }
+
+        .team-main-info {
+          gap: 16px;
+        }
+
+        .team-mega-title {
+          font-size: 28px;
+        }
+
+        .team-mega-badge {
+          width: 56px;
+          height: 56px;
+          font-size: 24px;
+        }
+
+        .team-mega-stats {
+          gap: 12px;
+        }
+
+        .mega-stat-item {
+          padding: 12px 8px;
+          min-width: 60px;
+        }
+
+        .mega-stat-value {
+          font-size: 20px;
+        }
+
+        .team-trophies-container {
+          padding: 0 16px;
+        }
+
+        .compact-trophy-card {
+          padding: 20px;
+        }
+      }
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #4cc9f0;
+        --dark: #2b2d42;
+        --light: #f8f9fa;
+        --danger: #ef476f;
+        --success: #06d6a0;
+        --warning: #ffd166;
+        --gray-dark: #343a40;
+        --gray: #6c757d;
+        --gray-light: #e9ecef;
+        --gold: #ffd700;
+        --silver: #c0c0c0;
+        --bronze: #cd7f32;
+        --transition: all 0.3s ease;
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        --border-radius: 0.75rem;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background-color: #f5f7fa;
+        color: var(--dark);
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        background-color: var(--primary);
+        box-shadow: var(--shadow);
+        padding: 0.75rem 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1030;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        letter-spacing: -0.5px;
+        color: white;
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar-brand:before {
+        content: "";
+        display: inline-block;
+        width: 1.75rem;
+        height: 1.75rem;
+        margin-right: 0.75rem;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        position: relative;
+      }
+
+      .navbar-brand:after {
+        content: "";
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        background-color: white;
+        border-radius: 0.25rem;
+        transform: rotate(45deg);
+        margin-left: 0.375rem;
+      }
+
+      .navbar .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        transition: var(--transition);
+        border-radius: var(--border-radius);
+        margin: 0 0.25rem;
+      }
+
+      .navbar .nav-link:hover,
+      .navbar .nav-link.active {
+        color: white;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .logout-btn {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: white !important;
+        border-radius: var(--border-radius);
+        margin-left: 0.75rem;
+        padding: 0.5rem 1.25rem !important;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+      }
+
+      .logout-btn:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        background: white;
+        box-shadow: var(--shadow);
+        padding-top: 4.5rem;
+        z-index: 1020;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--gray);
+        margin: 0.75rem 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--gray-light);
+      }
+
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 0.875rem 1.5rem;
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+        margin: 0.25rem 0.75rem;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+      }
+
+      .sidebar a:hover,
+      .sidebar a.active {
+        background-color: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+      }
+
+      .sidebar a i {
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+        color: var(--gray);
+        transition: var(--transition);
+        width: 2rem;
+        text-align: center;
+      }
+
+      .sidebar a:hover i,
+      .sidebar a.active i {
+        color: var(--primary);
+      }
+
+      .sidebar-footer {
+        padding: 1.5rem;
+        border-top: 1px solid var(--gray-light);
+      }
+
+      .sidebar-footer .logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--gray-light);
+        color: var(--gray-dark) !important;
+        width: 100%;
+        padding: 0.75rem !important;
+        font-weight: 600;
+      }
+
+      .sidebar-footer .logout-btn:hover {
+        background-color: var(--danger);
+        color: white !important;
+      }
+
+      .sidebar-footer .logout-btn i {
+        color: inherit;
+      }
+
+      /* Sidebar Toggle Button */
+      .sidebar-toggle {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3.5rem;
+        height: 3.5rem;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-lg);
+        cursor: pointer;
+        z-index: 1040;
+        transition: var(--transition);
+      }
+
+      .sidebar-toggle:hover {
+        background-color: var(--primary-dark);
+        transform: scale(1.05);
+      }
+
+      .sidebar-toggle i {
+        font-size: 1.5rem;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 280px;
+        padding: 6rem 2rem 2rem;
+        min-height: 100vh;
+        transition: var(--transition);
+      }
+
+      /* Trophy Cabinet Specific Styles */
+      .trophy-header {
+        background: linear-gradient(135deg, var(--gold), #ffed4e);
+        border-radius: var(--border-radius);
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        color: var(--dark);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .trophy-header::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(255, 255, 255, 0.1) 10px,
+          rgba(255, 255, 255, 0.1) 20px
+        );
+        animation: shimmer 3s linear infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%) translateY(-100%);
+        }
+        100% {
+          transform: translateX(100%) translateY(100%);
+        }
+      }
+
+      .trophy-header h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .trophy-header p {
+        font-size: 1.2rem;
+        opacity: 0.8;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      .trophy-overview {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .trophy-stat-card {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .trophy-stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--gold), var(--primary));
+      }
+
+      .trophy-stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .trophy-count {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--gold);
+        margin-bottom: 0.5rem;
+        opacity: 0;
+        animation: countUp 2s ease-out forwards;
+      }
+
+      .trophy-count.club {
+        animation-delay: 0.2s;
+      }
+      .trophy-count.international {
+        animation-delay: 0.4s;
+      }
+      .trophy-count.total {
+        animation-delay: 0.6s;
+      }
+
+      @keyframes countUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .trophy-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--gray-dark);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .trophy-section {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+        overflow: hidden;
+      }
+
+      .section-header {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 1.5rem 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .section-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .section-header i {
+        font-size: 2rem;
+      }
+
+      .section-content {
+        padding: 2rem;
+      }
+
+      .club-overview {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .club-stat {
+        background: var(--light);
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        text-align: center;
+        transition: var(--transition);
+      }
+
+      .club-stat:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-3px);
+      }
+
+      .club-stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+      }
+
+      .club-stat:hover .club-stat-number {
+        color: white;
+      }
+
+      .club-stat-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--gray);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .club-stat:hover .club-stat-label {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .trophy-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .trophy-card {
+        background: var(--light);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        transition: var(--transition);
+        border-left: 4px solid var(--gold);
+        position: relative;
+      }
+
+      .trophy-card:hover {
+        background: white;
+        box-shadow: var(--shadow);
+        transform: translateY(-2px);
+      }
+
+      .trophy-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .trophy-season {
+        color: var(--gray);
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+
+      .trophy-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 0.75rem;
+        background: white;
+        border-radius: 0.5rem;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 0.25rem;
+      }
+
+      .stat-label {
+        font-size: 0.8rem;
+        color: var(--gray);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .team-trophy-card {
+        background: linear-gradient(135deg, var(--success), #00b894);
+        color: white;
+        border-left: 4px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .team-trophy-card .trophy-name {
+        color: white;
+      }
+
+      .team-trophy-card .trophy-season {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .team-trophy-card .stat-item {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .team-trophy-card .stat-value {
+        color: white;
+      }
+
+      .team-trophy-card .stat-label {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .loading {
+        text-align: center;
+        padding: 3rem;
+        color: var(--gray);
+      }
+
+      .loading i {
+        font-size: 3rem;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .no-trophies {
+        text-align: center;
+        padding: 3rem;
+        color: var(--gray);
+      }
+
+      .no-trophies i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      /* Team Trophy Styles - Updated for Horizontal Layout */
+      .team-card {
+        background: white;
+        border-radius: var(--border-radius);
+        margin-bottom: 2rem;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        display: flex;
+        flex-direction: row;
+        min-height: 200px;
+      }
+
+      .team-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .team-header {
+        background: linear-gradient(135deg, var(--success), #00b894);
+        color: white;
+        padding: 2rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        min-width: 220px;
+        text-align: center;
+      }
+
+      .team-header i {
+        font-size: 2.5rem;
+        margin: 0;
+      }
+
+      .team-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      .team-trophy-count {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .team-trophies {
+        padding: 1.5rem;
+        flex: 1;
+        overflow-x: auto;
+      }
+
+      .trophy-list {
+        display: flex;
+        gap: 1.5rem;
+        min-height: 160px;
+        align-items: flex-start;
+      }
+
+      .trophy-list .trophy-card {
+        min-width: 320px;
+        flex-shrink: 0;
+        height: fit-content;
+      }
+
+      /* Scrollbar styling for horizontal scroll */
+      .team-trophies::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .team-trophies::-webkit-scrollbar-track {
+        background: var(--gray-light);
+        border-radius: 4px;
+      }
+
+      .team-trophies::-webkit-scrollbar-thumb {
+        background: var(--gray);
+        border-radius: 4px;
+      }
+
+      .team-trophies::-webkit-scrollbar-thumb:hover {
+        background: var(--primary);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 992px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+      } /* Ensure team trophy text stays white on hover */
+      .team-card:hover,
+      .team-card:hover .trophy-name,
+      .team-card:hover .trophy-season,
+      .team-card:hover .stat-item,
+      .team-card:hover .stat-value,
+      .team-card:hover .stat-label {
+        color: white !important;
+      }
+
+      /* Prevent inner trophy-card background from turning white on hover */
+      .team-card .trophy-card:hover {
+        background: linear-gradient(135deg, var(--success), #00b894);
+        box-shadow: var(--shadow);
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.25rem;
+        }
+
+        .main-content {
+          padding: 5.5rem 1rem 1.5rem;
+        }
+
+        .trophy-header h1 {
+          font-size: 2rem;
+        }
+
+        .trophy-overview {
+          grid-template-columns: 1fr;
+        }
+
+        .trophy-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .club-overview {
+          grid-template-columns: 1fr;
+        }
+
+        /* Mobile adjustments for horizontal team cards */
+        .team-card {
+          flex-direction: column;
+          min-height: auto;
+        }
+
+        .team-header {
+          min-width: auto;
+          padding: 1.5rem;
+          flex-direction: row;
+          justify-content: space-between;
+        }
+
+        .team-header i {
+          font-size: 2rem;
+        }
+
+        .team-name {
+          font-size: 1.2rem;
+        }
+
+        .team-trophies {
+          padding: 1rem;
+        }
+
+        .trophy-list {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .trophy-list .trophy-card {
+          min-width: auto;
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .team-header {
+          flex-direction: column;
+          text-align: center;
+          gap: 0.5rem;
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Virtual XI</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html">
+                <i class="bi bi-house me-1"></i>Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="seasondata.html">
+                <i class="bi bi-bar-chart-steps me-1"></i>Season Data
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="yearlydata.html">
+                <i class="bi bi-bar-chart me-1"></i>Yearly Data
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="stats.html">
+                <i class="bi bi-graph-up-arrow me-1"></i>Stats
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">
+                <i class="bi bi-trophy me-1"></i>Trophy Cabinet
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="awards.html">
+                <i class="bi bi-award me-1"></i>Awards
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link logout-btn" href="index.html">
+                <i class="bi bi-box-arrow-right me-1"></i>Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div>
+        <h4>Player Dashboard</h4>
+        <a href="dashboard.html"> <i class="bi bi-house"></i> Dashboard </a>
+        <a href="seasondata.html">
+          <i class="bi bi-bar-chart-steps"></i> Season Data
+        </a>
+        <a href="yearlydata.html">
+          <i class="bi bi-bar-chart"></i> Yearly Data
+        </a>
+        <a href="stats.html"> <i class="bi bi-graph-up-arrow"></i> Stats </a>
+        <a href="#" class="active">
+          <i class="bi bi-trophy"></i> Trophy Cabinet
+        </a>
+        <a href="awards.html"> <i class="bi bi-award"></i> Awards </a>
+      </div>
+      <div class="sidebar-footer">
+        <a class="logout-btn" href="index.html">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Toggle Button -->
+    <div class="sidebar-toggle" onclick="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Trophy Header -->
+      <div class="trophy-header">
+        <h1><i class="bi bi-trophy me-3"></i>Trophy Cabinet</h1>
+        <p>A collection of achievements and honors throughout the career</p>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading" class="loading">
+        <i class="bi bi-arrow-clockwise"></i>
+        <p>Loading trophy data...</p>
+      </div>
+
+      <!-- Trophy Overview -->
+      <div id="trophy-overview" class="trophy-overview" style="display: none">
+        <div class="trophy-stat-card">
+          <div class="trophy-count club" id="club-count">0</div>
+          <div class="trophy-label">Club Trophies</div>
+        </div>
+        <div class="trophy-stat-card">
+          <div class="trophy-count international" id="int-count">0</div>
+          <div class="trophy-label">International Trophies</div>
+        </div>
+        <div class="trophy-stat-card">
+          <div class="trophy-count total" id="total-count">0</div>
+          <div class="trophy-label">Total Trophies</div>
+        </div>
+      </div>
+
+      <!-- Club Trophies Section -->
+      <div id="club-section" class="trophy-section" style="display: none">
+        <div class="section-header">
+          <i class="bi bi-building"></i>
+          <h2>Club Trophies</h2>
+        </div>
+        <div class="section-content">
+          <div class="club-overview">
+            <div class="club-stat">
+              <div class="club-stat-number" id="continental-count">0</div>
+              <div class="club-stat-label">Continental Trophies</div>
+            </div>
+            <div class="club-stat">
+              <div class="club-stat-number" id="league-count">0</div>
+              <div class="club-stat-label">League Titles</div>
+            </div>
+            <div class="club-stat">
+              <div class="club-stat-number" id="domestic-count">0</div>
+              <div class="club-stat-label">Domestic Cups</div>
+            </div>
+          </div>
+          <div class="trophy-grid" id="club-trophies"></div>
+        </div>
+      </div>
+
+      <!-- International Trophies Section -->
+      <div id="int-section" class="trophy-section" style="display: none">
+        <div class="section-header">
+          <i class="bi bi-globe"></i>
+          <h2>International Trophies</h2>
+        </div>
+        <div class="section-content">
+          <div class="trophy-grid" id="int-trophies"></div>
+        </div>
+      </div>
+
+      <!-- Team Trophies Section -->
+      <div id="team-section" class="trophy-section" style="display: none">
+        <div class="section-header">
+          <i class="bi bi-people"></i>
+          <h2>Team Achievements</h2>
+        </div>
+        <div class="section-content">
+          <div class="teams-container" id="team-trophies"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const API_BASE_URL = "http://localhost:5000/api";
+      // Sidebar toggle functionality
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("active");
+      }
+      const trophyImageMap = {
+        "pl-trophy": "assets/images/logos/premier-league.png",
+        "fa-trophy": "assets/images/logos/fa-cup.png",
+        "efl-trophy": "assets/images/logos/carabao-cup.png",
+        "ucl-trophy": "assets/images/logos/champions-league.png",
+        "uel-trophy": "assets/images/logos/uefa-europa-league.png", // Make sure this file exists!
+        "uecl-trophy": "assets/images/logos/uefa-conference-league.png", // Same here
+        "cs-trophy": "assets/images/logos/community-shield.png",
+        "uesc-trophy": "assets/images/logos/uefa-super-cup.png",
+        "ll-trophy": "assets/images/logos/la-liga.png",
+        "cdr-trophy": "assets/images/logos/copa-del-rey.png",
+        "sde-trophy": "assets/images/logos/super-copa-de-espana.png",
+        "sa-trophy": "assets/images/logos/serie-a.png",
+        "ci-trophy": "assets/images/logos/coppa-italia.png",
+        "si-trophy": "assets/images/logos/supercoppa-italiana.png",
+        "bl-trophy": "assets/images/logos/bundesliga.png",
+        "dfb-trophy": "assets/images/logos/dfb-pokal.png",
+        "dfl-trophy": "assets/images/logos/dfl-supercup.png",
+        "l1-trophy": "assets/images/logos/ligue-1.png",
+        "cdf-trophy": "assets/images/logos/coupe-de-france.png",
+        "tdc-trophy": "assets/images/logos/trophee-des-champions.png",
+        "world-cup": "assets/images/logos/world-cup.png",
+        "worldcup-qual-trophy": "assets/images/logos/world-cup-qual.png",
+        "european-championship": "assets/images/logos/euro.png",
+        "euro-qual-trophy": "assets/images/logos/euro-qual.png",
+        "int-friendlies-trophy":
+          "assets/images/logos/international-friendlies.png",
+      };
+
+      // Format trophy names
+      function formatTrophyName(competition) {
+        const trophyNames = {
+          "pl-trophy": "Premier League",
+          "fa-trophy": "FA Cup",
+          "efl-trophy": "EFL Cup",
+          "ucl-trophy": "UEFA Champions League",
+          "uel-trophy": "UEFA Europa League",
+          "uecl-trophy": "UEFA Conference League",
+          "cs-trophy": "FA Community Shield",
+          "uesc-trophy": "UEFA Super Cup",
+          "ll-trophy": "La Liga",
+          "cdr-trophy": "Copa del Rey",
+          "sde-trophy": "Supercopa de España",
+          "sa-trophy": "Serie A",
+          "ci-trophy": "Coppa Italia",
+          "si-trophy": "Supercoppa Italiana",
+          "bl-trophy": "Bundesliga",
+          "dfb-trophy": "DFB-Pokal",
+          "dfl-trophy": "DFL-Supercup",
+          "l1-trophy": "Ligue 1",
+          "cdf-trophy": "Coupe de France",
+          "tdc-trophy": "Trophée des Champions",
+          "european-championship": "UEFA EURO",
+          "world-cup": "FIFA World Cup",
+        };
+        return (
+          trophyNames[competition.toLowerCase()] ||
+          competition
+            .replace(/-/g, " ")
+            .replace(/\b\w/g, (l) => l.toUpperCase())
+        );
+      }
+
+      // Get competition code for int data
+      function getIntCompetitionCode(trophy) {
+        if (trophy.includes("european-championship")) return "euro";
+        if (trophy.includes("world-cup")) return "wc";
+        if (trophy.includes("nations-league")) return "nations";
+        if (trophy.includes("copa-america")) return "copa";
+        return trophy.split("-")[0];
+      }
+      const teamNameMap = {
+        // Premier League
+        "manchester-city": "Manchester City",
+        arsenal: "Arsenal FC",
+        liverpool: "Liverpool FC",
+        "manchester-united": "Manchester United",
+        chelsea: "Chelsea FC",
+        tottenham: "Tottenham Hotspur",
+
+        // La Liga
+        "real-madrid": "Real Madrid",
+        barcelona: "FC Barcelona",
+        "atletico-madrid": "Atlético de Madrid",
+        sevilla: "Sevilla FC",
+        "athletic-bilbao": "Athletic Bilbao",
+        villarreal: "Villarreal CF",
+
+        // Serie A
+        juventus: "Juventus FC",
+        "ac-milan": "AC Milan",
+        "inter-milan": "Inter Milan",
+        napoli: "SSC Napoli",
+        roma: "AS Roma",
+        lazio: "SS Lazio",
+
+        // Bundesliga
+        "bayern-munich": "Bayern Munich",
+        "borussia-dortmund": "Borussia Dortmund",
+        "rb-leipzig": "RB Leipzig",
+        "bayer-leverkusen": "Bayer 04 Leverkusen",
+        wolfsburg: "VfL Wolfsburg",
+        "eintracht-frankfurt": "Eintracht Frankfurt",
+
+        // Ligue 1
+        psg: "Paris Saint-Germain",
+        marseille: "Olympique Marseille",
+        monaco: "AS Monaco",
+        lyon: "Olympique Lyon",
+        nice: "OGC Nice",
+        lille: "LOSC Lille",
+      };
+      const teamImageMap = {
+        "paris-saint-germain": "assets/images/teams/Paris Saint-Germain.png",
+        "rb-leipzig": "assets/images/teams/RB Leipzig.png",
+        "real-madrid": "assets/images/teams/Real Madrid.png",
+        sevilla: "assets/images/teams/Sevilla FC.png",
+        "ss-lazio": "assets/images/teams/SS Lazio.png",
+        "ssc-napoli": "assets/images/teams/SSC Napoli.png",
+        "tottenham-hotspur": "assets/images/teams/Tottenham Hotspur.png",
+        valencia: "assets/images/teams/Valencia CF.png",
+        "vfl-wolfsburg": "assets/images/teams/VfL Wolfsburg.png",
+        villarreal: "assets/images/teams/Villarreal CF.png",
+        "ac-milan": "assets/images/teams/AC Milan.png",
+        arsenal: "assets/images/teams/Arsenal FC.png",
+        "as-monaco": "assets/images/teams/AS Monaco.png",
+        "as-roma": "assets/images/teams/AS Roma.png",
+        "aston-villa": "assets/images/teams/Aston Villa.png",
+        "athletic-bilbao": "assets/images/teams/Athletic Bilbao.png",
+        "atletico-madrid": "assets/images/teams/Atlético de Madrid.png",
+        "bayer-leverkusen": "assets/images/teams/Bayer 04 Leverkusen.png",
+        "bayern-munich": "assets/images/teams/Bayern Munich.png",
+        "borussia-dortmund": "assets/images/teams/Borussia Dortmund.png",
+        "borussia-monchengladbach":
+          "assets/images/teams/Borussia Mönchengladbach.png",
+        chelsea: "assets/images/teams/Chelsea FC.png",
+        "eintracht-frankfurt": "assets/images/teams/Eintracht Frankfurt.png",
+        barcelona: "assets/images/teams/FC Barcelona.png",
+        "inter-milan": "assets/images/teams/Inter Milan.png",
+        juventus: "assets/images/teams/Juventus FC.png",
+        liverpool: "assets/images/teams/Liverpool FC.png",
+        lille: "assets/images/teams/LOSC Lille.png",
+        "manchester-city": "assets/images/teams/Manchester City.png",
+        "manchester-united": "assets/images/teams/Manchester United.png",
+        "newcastle-united": "assets/images/teams/Newcastle United.png",
+        "ogc-nice": "assets/images/teams/OGC Nice.png",
+        "olympique-lyon": "assets/images/teams/Olympique Lyon.png",
+        "olympique-marseille": "assets/images/teams/Olympique Marseille.png",
+      };
+
+      // Categorize club trophies
+      function categorizeTrophy(competition) {
+        const continental = [
+          "ucl", // UEFA Champions League
+          "uel", // UEFA Europa League
+          "uecl", // UEFA Conference League
+          "uesc", // UEFA Super Cup
+        ];
+
+        const leagues = [
+          "pl", // Premier League
+          "ll", // La Liga
+          "sa", // Serie A
+          "bl", // Bundesliga
+          "l1", // Ligue 1
+        ];
+
+        const domestic = [
+          "fa", // FA Cup
+          "efl", // EFL Cup
+          "cs", // Community Shield
+          "cdr", // Copa del Rey
+          "sde", // Supercopa de España
+          "ci", // Coppa Italia
+          "si", // Supercoppa Italiana
+          "dfb", // DFB-Pokal
+          "dfl", // DFL-Supercup
+          "cdf", // Coupe de France
+          "tdc", // Trophée des Champions
+        ];
+
+        const comp = competition.toLowerCase();
+        if (continental.includes(comp)) return "continental";
+        if (leagues.includes(comp)) return "league";
+        if (domestic.includes(comp)) return "domestic";
+        return "other";
+      }
+
+      // Animate counter
+      function animateCounter(element, targetValue, duration = 2000) {
+        let startValue = 0;
+        const increment = targetValue / (duration / 16);
+
+        const updateCounter = () => {
+          startValue += increment;
+          if (startValue < targetValue) {
+            element.textContent = Math.floor(startValue);
+            requestAnimationFrame(updateCounter);
+          } else {
+            element.textContent = targetValue;
+          }
+        };
+
+        updateCounter();
+      }
+
+      // Fetch data from API
+      async function fetchData(endpoint) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/${endpoint}`);
+          if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          console.error(`Error fetching ${endpoint}:`, error);
+          return [];
+        }
+      }
+
+      // Create trophy card HTML
+      function createTrophyCard(trophy, stats, team = null) {
+        let trophyName = formatTrophyName(trophy.competition);
+        console.log(trophy.competition + stats.season);
+        if (trophyName === "FIFA World Cup" || trophyName === "UEFA EURO") {
+          if (stats.season && stats.season.includes("/")) {
+            const endYear = stats.season.split("/")[1];
+            trophyName += "20" + `${endYear}`;
+          }
+        }
+        const cardClass = team
+          ? "trophy-display-card team-trophy-display-card"
+          : "trophy-display-card";
+
+        let statsHtml = "";
+        if (stats) {
+          const goalContribution = (stats.goals || 0) + (stats.assists || 0);
+          const goalPerGame = stats.apps
+            ? ((stats.goals || 0) / stats.apps).toFixed(2)
+            : "0.00";
+          const assistPerGame = stats.apps
+            ? ((stats.assists || 0) / stats.apps).toFixed(2)
+            : "0.00";
+
+          statsHtml = `
+      <div class="trophy-display-stats">
+        <div class="trophy-main-stats">
+          <div class="trophy-stat-highlight">
+            <div class="trophy-stat-number">${stats.goals || 0}</div>
+            <div class="trophy-stat-text">Goals</div>
+          </div>
+          <div class="trophy-stat-highlight">
+            <div class="trophy-stat-number">${stats.assists || 0}</div>
+            <div class="trophy-stat-text">Assists</div>
+          </div>
+          <div class="trophy-stat-highlight">
+            <div class="trophy-stat-number">${stats.apps || 0}</div>
+            <div class="trophy-stat-text">Apps</div>
+          </div>
+          <div class="trophy-stat-highlight trophy-rating">
+            <div class="trophy-stat-number">${
+              stats.avgrating ? stats.avgrating.toFixed(1) : "N/A"
+            }</div>
+            <div class="trophy-stat-text">Rating</div>
+          </div>
+        </div>
+        
+        
+        <div class="trophy-per-game-stats">
+          ${
+            goalContribution > 0
+              ? `
+          <div class="trophy-mini-stat">
+            <span class="trophy-mini-value">${goalContribution}</span>
+            <span class="trophy-mini-label">Total Contributions</span>
+          </div>
+          `
+              : ""
+          }
+          ${
+            stats.starts
+              ? `
+          <div class="trophy-mini-stat">
+            <span class="trophy-mini-value">${stats.starts}</span>
+            <span class="trophy-mini-label">Starts</span>
+          </div>
+          `
+              : ""
+          }
+        </div>
+      </div>
+    `;
+        }
+
+        return `
+    <style>
+      .trophy-display-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 0;
+        margin: 16px 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e7eb;
+        transition: all 0.2s ease;
+        overflow: hidden;
+      }
+      
+      .trophy-display-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        border-color: #d1d5db;
+      }
+      
+      .team-trophy-display-card {
+        border-left: 4px solid #3b82f6;
+      }
+      
+      .trophy-display-name {
+        background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+        color: #ffffff;
+        padding: 20px 24px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      
+      .trophy-display-name i {
+        font-size: 22px;
+        margin-right: 12px;
+        color: #fbbf24;
+      }
+      
+      .trophy-display-season {
+        padding: 16px 24px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #6b7280;
+        background: #f9fafb;
+        margin: 0;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      
+      .trophy-display-stats {
+        padding: 24px;
+      }
+      
+      .trophy-main-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      
+      .trophy-stat-highlight {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px 16px;
+        text-align: center;
+        transition: all 0.15s ease;
+      }
+      
+      .trophy-stat-highlight:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+      }
+      
+      .trophy-stat-number {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 4px;
+        line-height: 1;
+      }
+      
+      .trophy-stat-text {
+        font-size: 12px;
+        font-weight: 500;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .trophy-rating .trophy-stat-number {
+        color: #f59e0b;
+        font-weight: 800;
+      }
+      
+      .trophy-per-game-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #e5e7eb;
+      }
+      
+      .trophy-mini-stat {
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 8px 12px;
+        text-align: center;
+        min-width: 80px;
+        flex: 1;
+        transition: all 0.15s ease;
+      }
+      
+      .trophy-mini-stat:hover {
+        background: #e2e8f0;
+      }
+      
+      .trophy-mini-value {
+        display: block;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 2px;
+      }
+      
+      .trophy-mini-label {
+        font-size: 10px;
+        font-weight: 500;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+      
+      @media (max-width: 768px) {
+        .trophy-display-card {
+          margin: 12px 0;
+        }
+        
+        .trophy-main-stats {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+        
+        .trophy-display-name {
+          font-size: 18px;
+          padding: 18px 20px;
+        }
+        
+        .trophy-display-stats {
+          padding: 20px;
+        }
+        
+        .trophy-stat-highlight {
+          padding: 16px 12px;
+        }
+        
+        .trophy-stat-number {
+          font-size: 22px;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .trophy-main-stats {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        }
+        
+        .trophy-stat-highlight {
+          padding: 14px 10px;
+        }
+        
+        .trophy-stat-number {
+          font-size: 20px;
+        }
+        
+        .trophy-stat-text {
+          font-size: 11px;
+        }
+        
+        .trophy-display-name {
+          padding: 16px 18px;
+        }
+        
+        .trophy-display-stats {
+          padding: 18px;
+        }
+      }
+    </style>
+    
+    <div class="${cardClass}">
+      <div class="trophy-display-name">
+        <img src="${
+          trophyImageMap[trophy.competition]
+        }" style="width: 40px; height: 40px; object-fit: contain;"></img>
+        ${trophyName}
+      </div>
+      <div class="trophy-display-season">${trophy.season}${
+          team ? ` • ${team}` : ""
+        }</div>
+      ${statsHtml}
+    </div>
+  `;
+      }
+
+      // Load and display trophy data
+      async function loadTrophyData() {
+        try {
+          // Fetch all required data
+          const [clubTrophies, intTrophies, seasonData, intData] =
+            await Promise.all([
+              fetchData("season-trophies"),
+              fetchData("int-trophies"),
+              fetchData("season-data"),
+              fetchData("int-data"),
+            ]);
+
+          // Calculate overview statistics
+          const clubCount = clubTrophies.length;
+          const intCount = intTrophies.length;
+          const totalCount = clubCount + intCount;
+
+          // Animate counters
+          setTimeout(() => {
+            animateCounter(document.getElementById("club-count"), clubCount);
+            animateCounter(document.getElementById("int-count"), intCount);
+            animateCounter(document.getElementById("total-count"), totalCount);
+          }, 500);
+
+          // Process club trophies
+          let continentalCount = 0;
+          let leagueCount = 0;
+          let domesticCount = 0;
+          let clubTrophiesHtml = "";
+
+          for (const trophy of clubTrophies) {
+            const competition = trophy.competition.split("-")[0];
+            const category = categorizeTrophy(competition);
+
+            if (category === "continental") continentalCount++;
+            else if (category === "league") leagueCount++;
+            else if (category === "domestic") domesticCount++;
+
+            // Find matching season data
+            const stats = seasonData.find(
+              (s) => s.season === trophy.season && s.competition === competition
+            );
+            clubTrophiesHtml += createTrophyCard(trophy, stats);
+          }
+
+          // Update club overview stats
+          document.getElementById("continental-count").textContent =
+            continentalCount;
+          document.getElementById("league-count").textContent = leagueCount;
+          document.getElementById("domestic-count").textContent = domesticCount;
+
+          // Process international trophies
+          let intTrophiesHtml = "";
+          for (const trophy of intTrophies) {
+            const competitionCode = getIntCompetitionCode(trophy.competition);
+            const stats = intData.find(
+              (s) =>
+                s.season === trophy.season && s.competition === competitionCode
+            );
+            intTrophiesHtml += createTrophyCard(trophy, stats);
+          }
+
+          // 👉 Process team trophies grouped by team
+          const teamTrophiesGrouped = {};
+
+          for (const trophy of clubTrophies) {
+            const competition = trophy.competition.split("-")[0];
+            const playerSeasonData = seasonData.find(
+              (s) => s.season === trophy.season && s.competition === competition
+            );
+
+            if (playerSeasonData && playerSeasonData.team) {
+              const team = playerSeasonData.team;
+
+              if (!teamTrophiesGrouped[team]) {
+                teamTrophiesGrouped[team] = [];
+              }
+
+              teamTrophiesGrouped[team].push({
+                trophy,
+                stats: playerSeasonData,
+              });
+            }
+          }
+
+          // Build HTML for team trophies
+          // Updated team trophies HTML generation (replace the existing team trophies section)
+          let teamTrophiesHtml = "";
+
+          Object.entries(teamTrophiesGrouped).forEach(
+            ([teamName, trophies]) => {
+              // Sort trophies by category priority and then by season
+              const sortedTrophies = trophies.sort((a, b) => {
+                const categoryPriority = {
+                  continental: 1,
+                  league: 2,
+                  domestic: 3,
+                  other: 4,
+                };
+                const categoryA = categorizeTrophy(
+                  a.trophy.competition.split("-")[0]
+                );
+                const categoryB = categorizeTrophy(
+                  b.trophy.competition.split("-")[0]
+                );
+
+                if (categoryA !== categoryB) {
+                  return (
+                    categoryPriority[categoryA] - categoryPriority[categoryB]
+                  );
+                }
+                return b.trophy.season.localeCompare(a.trophy.season);
+              });
+
+              // Calculate team statistics
+              const totalApps = trophies.reduce(
+                (sum, t) => sum + (t.stats?.apps || 0),
+                0
+              );
+              const totalGoals = trophies.reduce(
+                (sum, t) => sum + (t.stats?.goals || 0),
+                0
+              );
+              const totalAssists = trophies.reduce(
+                (sum, t) => sum + (t.stats?.assists || 0),
+                0
+              );
+              const avgRating =
+                trophies.reduce(
+                  (sum, t) => sum + (t.stats?.avgrating || 0),
+                  0
+                ) / trophies.length;
+
+              teamTrophiesHtml += `
+    <div class="team-section">
+      <div class="team-mega-header">
+        <div class="team-header-background">
+          <div class="team-header-content">
+            <div class="team-main-info">
+                <img src="${
+                  teamImageMap[teamName]
+                }" width="100" height="100"></i>
+              <div class="team-mega-details">
+                <h2 class="team-mega-title">${teamNameMap[teamName]}</h2>
+                <div class="team-mega-subtitle">${trophies.length} ${
+                trophies.length === 1 ? "Trophy" : "Trophies"
+              } Won</div>
+              </div>
+            </div>
+            <div class="team-mega-stats">
+              <div class="mega-stat-item">
+                <div class="mega-stat-value">${totalApps}</div>
+                <div class="mega-stat-label">Total Apps</div>
+              </div>
+              <div class="mega-stat-item">
+                <div class="mega-stat-value">${totalGoals}</div>
+                <div class="mega-stat-label">Total Goals</div>
+              </div>
+              <div class="mega-stat-item">
+                <div class="mega-stat-value">${totalAssists}</div>
+                <div class="mega-stat-label">Total Assists</div>
+              </div>
+              <div class="mega-stat-item">
+                <div class="mega-stat-value">${avgRating.toFixed(1)}</div>
+                <div class="mega-stat-label">Avg Rating</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="team-trophies-container">
+        ${sortedTrophies
+          .map(({ trophy, stats }) => {
+            const trophyName = formatTrophyName(trophy.competition);
+            const category = categorizeTrophy(trophy.competition.split("-")[0]);
+
+            return `
+            <div class="compact-trophy-card ${category}">
+              <div class="compact-trophy-header">
+                <div>
+                  <img src="${
+                    trophyImageMap[trophy.competition]
+                  }" alt="Trophy" style="width: 40px; height: 40px; object-fit: contain;">
+                </div>
+                <div class="compact-trophy-badge ${category}">
+                  ${getCategoryLabel(category)}
+                </div>
+              </div>
+              
+              <div class="compact-trophy-info">
+                <h4 class="compact-trophy-title">${trophyName}</h4>
+                <div class="compact-trophy-season">${trophy.season}</div>
+              </div>
+              
+              <div class="compact-stats-row">
+                <div class="compact-stat">
+                  <span class="compact-stat-value">${stats?.apps || 0}</span>
+                  <span class="compact-stat-label">Apps</span>
+                </div>
+                <div class="compact-stat">
+                  <span class="compact-stat-value">${stats?.goals || 0}</span>
+                  <span class="compact-stat-label">Goals</span>
+                </div>
+                <div class="compact-stat">
+                  <span class="compact-stat-value">${stats?.assists || 0}</span>
+                  <span class="compact-stat-label">Assists</span>
+                </div>
+                <div class="compact-stat">
+                  <span class="compact-stat-value" style="color:#f59e0b;">${
+                    stats?.avgrating ? stats.avgrating.toFixed(1) : "N/A"
+                  }</span>
+                  <span class="compact-stat-label">Rating</span>
+                </div>
+              </div>
+              
+              <div class="compact-trophy-glow"></div>
+            </div>
+          `;
+          })
+          .join("")}
+      </div>
+    </div>
+  `;
+            }
+          );
+
+          // Helper functions for trophy categorization
+          function getTrophyIcon(category) {
+            const icons = {
+              continental: "bi-globe",
+              league: "bi-trophy",
+              domestic: "bi-award",
+              other: "bi-star",
+            };
+            return icons[category] || "bi-trophy";
+          }
+
+          function getCategoryLabel(category) {
+            const labels = {
+              continental: "Continental",
+              league: "League",
+              domestic: "Domestic",
+              other: "Other",
+            };
+            return labels[category] || "Trophy";
+          }
+
+          // Update DOM
+          document.getElementById("club-trophies").innerHTML =
+            clubTrophiesHtml ||
+            '<div class="no-trophies"><i class="bi bi-trophy"></i><p>No club trophies yet</p></div>';
+
+          document.getElementById("int-trophies").innerHTML =
+            intTrophiesHtml ||
+            '<div class="no-trophies"><i class="bi bi-globe"></i><p>No international trophies yet</p></div>';
+
+          document.getElementById("team-trophies").innerHTML =
+            teamTrophiesHtml ||
+            '<div class="no-trophies"><i class="bi bi-people"></i><p>No team trophies data available</p></div>';
+
+          // Show sections
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("trophy-overview").style.display = "grid";
+
+          if (clubCount > 0) {
+            document.getElementById("club-section").style.display = "block";
+          }
+
+          if (intCount > 0) {
+            document.getElementById("int-section").style.display = "block";
+          }
+
+          if (Object.keys(teamTrophiesGrouped).length > 0) {
+            document.getElementById("team-section").style.display = "block";
+          }
+        } catch (error) {
+          console.error("Error loading trophy data:", error);
+          document.getElementById("loading").innerHTML = `
+      <i class="bi bi-exclamation-triangle"></i>
+      <p>Error loading trophy data. Please check your connection and try again.</p>
+    `;
+        }
+      }
+
+      // Initialize on page load
+      document.addEventListener("DOMContentLoaded", loadTrophyData);
+
+      // Responsive sidebar handling
+      window.addEventListener("resize", function () {
+        const sidebar = document.getElementById("sidebar");
+        if (window.innerWidth > 992) {
+          sidebar.classList.remove("active");
+        }
+      });
+
+      // Close sidebar when clicking outside on mobile
+      document.addEventListener("click", function (event) {
+        const sidebar = document.getElementById("sidebar");
+        const sidebarToggle = document.querySelector(".sidebar-toggle");
+
+        if (
+          window.innerWidth <= 992 &&
+          sidebar.classList.contains("active") &&
+          !sidebar.contains(event.target) &&
+          !sidebarToggle.contains(event.target)
+        ) {
+          sidebar.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>
