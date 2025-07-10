@@ -1701,322 +1701,238 @@
           ]);
 
           const combinedData = [...seasonData, ...intData];
-
           const container = document.getElementById("seasonDetailsContainer");
 
-          // Add comprehensive CSS styles with unique prefixes
+          // Professional, compact CSS styles
           const styles = `
       <style>
         .sd-container {
-          padding: 2rem;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 1.5rem;
+          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
           min-height: 100vh;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          color: #1e293b;
         }
 
         .sd-season-card {
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(20px);
-          border-radius: 24px;
-          margin-bottom: 2.5rem;
+          background: #ffffff;
+          border-radius: 12px;
+          margin-bottom: 1.5rem;
           box-shadow: 
-            0 25px 50px rgba(0, 0, 0, 0.15),
-            0 10px 20px rgba(0, 0, 0, 0.1),
-            inset 0 1px 0 rgba(255, 255, 255, 0.8);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-          position: relative;
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
+          border: 1px solid #e2e8f0;
+          transition: all 0.2s ease;
           overflow: hidden;
         }
 
-        .sd-season-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 5px;
-          background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #fd79a8);
-          background-size: 400% 400%;
-          animation: sdGradientFlow 10s ease infinite;
-        }
-
-        @keyframes sdGradientFlow {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-
         .sd-season-card:hover {
-          transform: translateY(-8px) scale(1.01);
           box-shadow: 
-            0 35px 70px rgba(0, 0, 0, 0.2),
-            0 15px 30px rgba(0, 0, 0, 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            0 10px 25px rgba(0, 0, 0, 0.1),
+            0 4px 6px rgba(0, 0, 0, 0.05);
+          transform: translateY(-2px);
         }
 
         .sd-season-header {
-          padding: 2.5rem 2.5rem 2rem 2.5rem;
-          border-bottom: 2px solid rgba(102, 126, 234, 0.1);
-          background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-          position: relative;
+          padding: 1.5rem;
+          border-bottom: 1px solid #f1f5f9;
+          background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
         }
 
         .sd-season-title {
           display: flex;
           align-items: center;
+          justify-content: space-between;
+          margin: 0 0 1rem 0;
+          flex-wrap: wrap;
           gap: 1rem;
-          font-size: 2rem;
-          font-weight: 800;
-          color: #2d3436;
-          margin: 0 0 2rem 0;
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          letter-spacing: -0.5px;
+        }
+
+        .sd-season-name {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          font-size: 1.375rem;
+          font-weight: 600;
+          color: #0f172a;
+          letter-spacing: -0.025em;
         }
 
         .sd-season-icon {
-          width: 40px;
-          height: 40px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          border-radius: 12px;
+          width: 32px;
+          height: 32px;
+          background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
           color: white;
-          font-size: 1.2rem;
-          box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+          font-size: 0.875rem;
         }
 
-        .sd-totals-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        .sd-totals-compact {
+          display: flex;
           gap: 1.5rem;
+          flex-wrap: wrap;
         }
 
         .sd-total-item {
-          background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
-          border-radius: 16px;
-          padding: 1.5rem;
-          text-align: center;
-          transition: all 0.3s ease;
-          border: 1px solid rgba(102, 126, 234, 0.1);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .sd-total-item::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-          transition: left 0.6s;
-        }
-
-        .sd-season-card:hover .sd-total-item::before {
-          left: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 0.75rem 1rem;
+          background: #f8fafc;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+          min-width: 80px;
+          transition: all 0.2s ease;
         }
 
         .sd-total-item:hover {
-          transform: translateY(-6px) scale(1.05);
-          box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
-          background: linear-gradient(135deg, #fff 0%, #f0f4ff 100%);
+          background: #f1f5f9;
+          transform: translateY(-1px);
         }
 
         .sd-total-number {
-          display: block;
-          font-size: 2rem;
-          font-weight: 800;
-          color: #667eea;
-          margin-bottom: 0.5rem;
-          text-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #3b82f6;
+          line-height: 1;
+          margin-bottom: 0.25rem;
         }
 
         .sd-total-label {
-          font-size: 0.85rem;
-          color: #636e72;
-          font-weight: 600;
+          font-size: 0.75rem;
+          color: #64748b;
+          font-weight: 500;
           text-transform: uppercase;
-          letter-spacing: 0.8px;
+          letter-spacing: 0.05em;
         }
 
         .sd-competitions-section {
-          padding: 2.5rem;
+          padding: 1.5rem;
         }
 
         .sd-competitions-grid {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
+          display: grid;
+          gap: 1rem;
         }
 
         .sd-competition-card {
-          background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-          border-radius: 18px;
-          padding: 2rem;
-          border: 1px solid rgba(102, 126, 234, 0.1);
-          transition: all 0.3s ease;
-          position: relative;
-          overflow: hidden;
-          /* Ensure consistent height and layout */
-          min-height: 120px;
+          background: #fafafa;
+          border-radius: 8px;
+          padding: 1.25rem;
+          border: 1px solid #f1f5f9;
+          transition: all 0.2s ease;
           display: flex;
-          flex-direction: column;
+          align-items: center;
           justify-content: space-between;
-        }
-
-        .sd-competition-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 4px;
-          height: 100%;
-          background: linear-gradient(180deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
-          transition: width 0.3s ease;
-        }
-
-        .sd-competition-card:hover::before {
-          width: 8px;
+          gap: 1rem;
+          min-height: 80px;
         }
 
         .sd-competition-card:hover {
-          transform: translateX(8px);
-          box-shadow: 0 15px 30px rgba(102, 126, 234, 0.15);
-          background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
-        }
-
-        .sd-competition-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 1.5rem;
-          flex-wrap: wrap;
-          gap: 1rem;
-          /* Ensure consistent spacing */
-          min-height: 60px;
+          background: #f8fafc;
+          border-color: #e2e8f0;
+          transform: translateX(4px);
         }
 
         .sd-competition-info {
-          flex: 1;
-          min-width: 200px;
-          /* Consistent spacing */
           display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
+          align-items: center;
+          gap: 1rem;
+          flex: 1;
+          min-width: 0;
+        }
+
+        .sd-competition-logo {
+          width: 36px;
+          height: 36px;
+          border-radius: 6px;
+          flex-shrink: 0;
+        }
+
+        .sd-competition-details {
+          flex: 1;
+          min-width: 0;
         }
 
         .sd-competition-name {
-          font-size: 1.3rem;
-          font-weight: 700;
-          color: #2d3436;
-          margin: 0;
-          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+          font-size: 1rem;
+          font-weight: 600;
+          color: #0f172a;
+          margin: 0 0 0.25rem 0;
           line-height: 1.2;
         }
 
         .sd-team-name {
-          font-size: 1rem;
-          color: #667eea;
-          font-weight: 600;
-          background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
-          display: inline-block;
-          border: 1px solid rgba(102, 126, 234, 0.2);
+          font-size: 0.875rem;
+          color: #64748b;
+          font-weight: 500;
           margin: 0;
-          width: fit-content;
         }
 
-        .sd-stats-badges {
+        .sd-stats-compact {
           display: flex;
-          flex-wrap: wrap;
-          gap: 0.8rem;
+          gap: 1rem;
           align-items: center;
-          /* Ensure consistent alignment */
-          justify-content: flex-end;
+          flex-shrink: 0;
         }
 
-        .sd-stat-badge {
-          padding: 0.6rem 1.2rem;
-          border-radius: 20px;
-          font-size: 0.9rem;
-          font-weight: 600;
+        .sd-stat-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-width: 50px;
+        }
+
+        .sd-stat-value {
+          font-size: 1.125rem;
+          font-weight: 700;
+          color: #0f172a;
+          line-height: 1;
+        }
+
+        .sd-stat-label {
+          font-size: 0.6875rem;
+          color: #64748b;
+          font-weight: 500;
           text-transform: uppercase;
-          letter-spacing: 0.5px;
-          transition: all 0.3s ease;
-          border: 2px solid transparent;
-          position: relative;
-          overflow: hidden;
-          white-space: nowrap;
+          letter-spacing: 0.05em;
+          margin-top: 0.125rem;
         }
 
-        .sd-stat-badge::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-          transition: left 0.5s;
-        }
-
-        .sd-stat-badge:hover::before {
-          left: 100%;
-        }
-
-        .sd-stat-badge:hover {
-          transform: translateY(-2px) scale(1.05);
-          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-        }
-
-        .sd-badge-apps {
-          background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        .sd-rating-badge {
+          background: linear-gradient(135度, #10b981 0%, #059669 100%);
           color: white;
-          box-shadow: 0 4px 15px rgba(116, 185, 255, 0.4);
-        }
-
-        .sd-badge-goals {
-          background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
-          color: white;
-          box-shadow: 0 4px 15px rgba(0, 184, 148, 0.4);
-        }
-
-        .sd-badge-assists {
-          background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
-          color: white;
-          box-shadow: 0 4px 15px rgba(253, 203, 110, 0.4);
-        }
-
-        .sd-badge-rating {
-          background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
-          color: white;
-          box-shadow: 0 4px 15px rgba(253, 121, 168, 0.4);
+          padding: 0.375rem 0.75rem;
+          border-radius: 20px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          letter-spacing: 0.025em;
+          box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
         }
 
         .sd-no-data {
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(20px);
-          border-radius: 24px;
-          padding: 4rem 2rem;
+          background: #ffffff;
+          border-radius: 12px;
+          padding: 3rem 2rem;
           text-align: center;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .sd-no-data-text {
-          font-size: 1.3rem;
-          color: #636e72;
-          font-weight: 600;
-          margin: 0;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          border: 1px solid #e2e8f0;
         }
 
         .sd-no-data-icon {
-          font-size: 3rem;
-          color: #ddd;
+          font-size: 2.5rem;
+          color: #cbd5e1;
           margin-bottom: 1rem;
+        }
+
+        .sd-no-data-text {
+          font-size: 1.125rem;
+          color: #64748b;
+          font-weight: 500;
+          margin: 0;
         }
 
         /* Responsive Design */
@@ -2026,50 +1942,53 @@
           }
 
           .sd-season-header {
-            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            padding: 1.25rem;
           }
 
           .sd-season-title {
-            font-size: 1.6rem;
             flex-direction: column;
-            text-align: center;
-            gap: 1.5rem;
+            align-items: flex-start;
           }
 
-          .sd-totals-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+          .sd-totals-compact {
+            justify-content: space-between;
+            width: 100%;
           }
 
           .sd-competitions-section {
-            padding: 1.5rem;
+            padding: 1.25rem;
           }
 
-          .sd-competition-header {
+          .sd-competition-card {
             flex-direction: column;
-            align-items: stretch;
+            align-items: flex-start;
+            gap: 1rem;
+            min-height: auto;
           }
 
-          .sd-stats-badges {
-            justify-content: center;
+          .sd-competition-info {
+            width: 100%;
           }
 
-          .sd-total-number {
-            font-size: 1.6rem;
+          .sd-stats-compact {
+            justify-content: space-between;
+            width: 100%;
           }
         }
 
         @media (max-width: 480px) {
           .sd-season-header {
-            padding: 1.5rem 1rem;
+            padding: 1rem;
           }
 
-          .sd-season-title {
-            font-size: 1.4rem;
+          .sd-season-name {
+            font-size: 1.25rem;
           }
 
-          .sd-totals-grid {
-            grid-template-columns: 1fr;
+          .sd-totals-compact {
+            grid-template-columns: repeat(2, 1fr);
+            display: grid;
+            gap: 0.75rem;
           }
 
           .sd-competitions-section {
@@ -2077,36 +1996,28 @@
           }
 
           .sd-competition-card {
-            padding: 1.5rem;
+            padding: 1rem;
           }
 
-          .sd-stats-badges {
-            gap: 0.5rem;
-          }
-
-          .sd-stat-badge {
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
+          .sd-stats-compact {
+            gap: 0.75rem;
           }
         }
 
-        /* Animation for staggered appearance */
+        /* Subtle animations */
         .sd-season-card {
-          animation: sdSlideUp 0.6s ease forwards;
+          animation: sdFadeIn 0.4s ease forwards;
           opacity: 0;
-          transform: translateY(30px);
         }
 
-        .sd-season-card:nth-child(1) { animation-delay: 0.1s; }
-        .sd-season-card:nth-child(2) { animation-delay: 0.2s; }
-        .sd-season-card:nth-child(3) { animation-delay: 0.3s; }
-        .sd-season-card:nth-child(4) { animation-delay: 0.4s; }
-        .sd-season-card:nth-child(5) { animation-delay: 0.5s; }
+        .sd-season-card:nth-child(1) { animation-delay: 0.05s; }
+        .sd-season-card:nth-child(2) { animation-delay: 0.1s; }
+        .sd-season-card:nth-child(3) { animation-delay: 0.15s; }
+        .sd-season-card:nth-child(4) { animation-delay: 0.2s; }
 
-        @keyframes sdSlideUp {
+        @keyframes sdFadeIn {
           to {
             opacity: 1;
-            transform: translateY(0);
           }
         }
       </style>
@@ -2162,37 +2073,39 @@
             html += `
         <div class="sd-season-card">
           <div class="sd-season-header">
-            <h5 class="sd-season-title">
-              <div class="sd-season-icon">📅</div>
-              ${seasonName}
-            </h5>
-            <div class="sd-totals-grid">
-              <div class="sd-total-item">
-                <span class="sd-total-number">${seasonTotals.apps}</span>
-                <span class="sd-total-label">Apps</span>
+            <div class="sd-season-title">
+              <div class="sd-season-name">
+                <div class="sd-season-icon">📅</div>
+                ${seasonName}
               </div>
-              <div class="sd-total-item">
-                <span class="sd-total-number">${seasonTotals.goals}</span>
-                <span class="sd-total-label">Goals</span>
-              </div>
-              <div class="sd-total-item">
-                <span class="sd-total-number">${seasonTotals.assists}</span>
-                <span class="sd-total-label">Assists</span>
-              </div>
-              <div class="sd-total-item">
-                <span class="sd-total-number">${
-                  avgRating > 0 ? avgRating.toFixed(2) : "N/A"
-                }</span>
-                <span class="sd-total-label">Rating</span>
+              <div class="sd-totals-compact">
+                <div class="sd-total-item">
+                  <span class="sd-total-number">${seasonTotals.apps}</span>
+                  <span class="sd-total-label">Apps</span>
+                </div>
+                <div class="sd-total-item">
+                  <span class="sd-total-number">${seasonTotals.goals}</span>
+                  <span class="sd-total-label">Goals</span>
+                </div>
+                <div class="sd-total-item">
+                  <span class="sd-total-number">${seasonTotals.assists}</span>
+                  <span class="sd-total-label">Assists</span>
+                </div>
+                <div class="sd-total-item">
+                  <span class="sd-total-number">${
+                    avgRating > 0 ? avgRating.toFixed(1) : "N/A"
+                  }</span>
+                  <span class="sd-total-label">Rating</span>
+                </div>
               </div>
             </div>
           </div>
           <div class="sd-competitions-section">
             <div class="sd-competitions-grid">`;
+
             // Add competitions
             competitions.forEach((competition) => {
               const compName = getCompetitionNameById(competition.competition);
-              // Use team name if available, otherwise use "Spain FA"
               const teamDisplayName =
                 competition.team && teamNameMap[competition.team]
                   ? teamNameMap[competition.team]
@@ -2200,34 +2113,35 @@
 
               html += `
           <div class="sd-competition-card">
-            <div class="sd-competition-header">
-              <div class="sd-competition-info">
-                <div><img src="${
-                  trophyImageMap[competition.competition]
-                }" style="width:40px; height:40px;"></img></div>
+            <div class="sd-competition-info">
+              <img src="${
+                trophyImageMap[competition.competition]
+              }" class="sd-competition-logo" alt="${compName}">
+              <div class="sd-competition-details">
                 <div class="sd-competition-name">${compName}</div>
                 <div class="sd-team-name">${teamDisplayName}</div>
               </div>
-              <div></div>
-              <div></div>
-              <div class="sd-stats-badges">
-                <span class="sd-stat-badge sd-badge-apps">${
-                  competition.apps || 0
-                } Apps</span>
-                <span class="sd-stat-badge sd-badge-goals">${
-                  competition.goals || 0
-                } Goals</span>
-                <span class="sd-stat-badge sd-badge-assists">${
-                  competition.assists || 0
-                } Assists</span>
-                ${
-                  competition.avgrating > 0
-                    ? `<span class="sd-stat-badge sd-badge-rating">${competition.avgrating.toFixed(
-                        2
-                      )} Rating</span>`
-                    : ""
-                }
+            </div>
+            <div class="sd-stats-compact">
+              <div class="sd-stat-item">
+                <span class="sd-stat-value">${competition.apps || 0}</span>
+                <span class="sd-stat-label">Apps</span>
               </div>
+              <div class="sd-stat-item">
+                <span class="sd-stat-value">${competition.goals || 0}</span>
+                <span class="sd-stat-label">Goals</span>
+              </div>
+              <div class="sd-stat-item">
+                <span class="sd-stat-value">${competition.assists || 0}</span>
+                <span class="sd-stat-label">Assists</span>
+              </div>
+              ${
+                competition.avgrating > 0
+                  ? `<div class="sd-rating-badge" style="color: #fbbf24;">${competition.avgrating.toFixed(
+                      1
+                    )}</div>`
+                  : ""
+              }
             </div>
           </div>`;
             });

@@ -68,6 +68,7 @@ const IntTrophy = mongoose.model("IntTrophy", IntTrophySchema);
 const SeasonAwardsSchema = new mongoose.Schema({
   season: String,
   award: String,
+  quantity: Number,
 });
 const SeasonAwards = mongoose.model("SeasonAwards", SeasonAwardsSchema);
 const TransferSchema = new mongoose.Schema({

@@ -1376,8 +1376,8 @@
         "fa-trophy": "assets/images/logos/fa-cup.png",
         "efl-trophy": "assets/images/logos/carabao-cup.png",
         "ucl-trophy": "assets/images/logos/champions-league.png",
-        "uel-trophy": "assets/images/logos/uefa-europa-league.png", // Make sure this file exists!
-        "uecl-trophy": "assets/images/logos/uefa-conference-league.png", // Same here
+        "uel-trophy": "assets/images/logos/uefa-europa-league.png",
+        "uecl-trophy": "assets/images/logos/uefa-conference-league.png",
         "cs-trophy": "assets/images/logos/community-shield.png",
         "uesc-trophy": "assets/images/logos/uefa-super-cup.png",
         "ll-trophy": "assets/images/logos/la-liga.png",
@@ -1597,7 +1597,7 @@
         if (trophyName === "FIFA World Cup" || trophyName === "UEFA EURO") {
           if (stats.season && stats.season.includes("/")) {
             const endYear = stats.season.split("/")[1];
-            trophyName += "20" + `${endYear}`;
+            trophyName += " 20" + `${endYear}`;
           }
         }
         const cardClass = team

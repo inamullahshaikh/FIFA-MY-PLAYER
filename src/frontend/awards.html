@@ -1370,18 +1370,18 @@
       function processAwardsData(awards) {
         return awards.map((award) => {
           const cleanName = cleanAwardName(award.award);
-          const count = extractNumber(award.award);
           const category = getAwardCategory(cleanName);
 
           return {
             ...award,
             cleanName,
-            count,
+            count: award.quantity || 1, // fallback to 1 just in case
             category,
             type: getAwardType(cleanName),
           };
         });
       }
+
 
       function cleanAwardName(awardName) {
         return awardName
@@ -1390,11 +1390,6 @@
           .replace(/UEFA Champion League/i, "UEFA Champions League")
           .replace(/FIFpro/i, "FIFPro")
           .trim();
-      }
-
-      function extractNumber(awardName) {
-        const match = awardName.match(/(\d+)x/i);
-        return match ? parseInt(match[1]) : 1;
       }
 
       function getAwardCategory(awardName) {
@@ -1441,7 +1436,7 @@
         // Match and monthly awards
         const momCount = allAwards
           .filter((award) =>
-            award.cleanName.toLowerCase() === "man of the match"
+            award.cleanName.toLowerCase().includes("man of the match")
           )
           .reduce((sum, award) => sum + award.count, 0);
 
