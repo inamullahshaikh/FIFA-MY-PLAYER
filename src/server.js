@@ -1,4 +1,3 @@
-// server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -13,6 +12,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
 // Load env vars
 dotenv.config();
 
@@ -25,7 +25,7 @@ mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: "mydatabase", // Optional: explicitly set DB name
+    dbName: "mydatabase", // Optional
   })
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
@@ -167,14 +167,14 @@ function createCrudRoutes(model, routeName) {
   });
 }
 
-// Register routes
+// Register routes (fixed: snake_case)
 createCrudRoutes(Player, "players");
-createCrudRoutes(SeasonData, "season-data");
-createCrudRoutes(YearlyData, "yearly-data");
-createCrudRoutes(SeasonTrophy, "season-trophies");
-createCrudRoutes(IntData, "int-data");
-createCrudRoutes(IntTrophy, "int-trophies");
-createCrudRoutes(SeasonAwards, "season-awards");
+createCrudRoutes(SeasonData, "season_data");
+createCrudRoutes(YearlyData, "yearly_data");
+createCrudRoutes(SeasonTrophy, "season_trophies");
+createCrudRoutes(IntData, "int_data");
+createCrudRoutes(IntTrophy, "int_trophies");
+createCrudRoutes(SeasonAwards, "season_awards");
 createCrudRoutes(Transfer, "transfers");
 
 app.use("/api", router);

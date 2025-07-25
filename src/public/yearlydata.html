@@ -1110,7 +1110,7 @@
       // Load yearly data from backend
       async function loadYearlyData() {
         try {
-          const response = await fetch(`${API_BASE_URL}/yearly-data`);
+          const response = await fetch(`${API_BASE_URL}/yearly_data`);
           if (!response.ok) throw new Error("Failed to fetch data");
 
           yearlyData = await response.json();
@@ -1142,7 +1142,7 @@
         const newData = { year, goals, assists };
 
         try {
-          const response = await fetch(`${API_BASE_URL}/yearly-data`, {
+          const response = await fetch(`${API_BASE_URL}/yearly_data`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -1338,7 +1338,7 @@
         const updatedData = { year, goals, assists };
 
         try {
-          const response = await fetch(`${API_BASE_URL}/yearly-data/${id}`, {
+          const response = await fetch(`${API_BASE_URL}/yearly_data/${id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -1367,7 +1367,7 @@
         if (!confirm("Are you sure you want to delete this record?")) return;
 
         try {
-          const response = await fetch(`${API_BASE_URL}/yearly-data/${id}`, {
+          const response = await fetch(`${API_BASE_URL}/yearly_data/${id}`, {
             method: "DELETE",
           });
 
@@ -1436,7 +1436,7 @@
 
         sampleData.forEach(async (data) => {
           try {
-            await fetch(`${API_BASE_URL}/yearly-data`, {
+            await fetch(`${API_BASE_URL}/yearly_data`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

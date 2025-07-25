@@ -1877,10 +1877,10 @@
           // Fetch all required data
           const [clubTrophies, intTrophies, seasonData, intData] =
             await Promise.all([
-              fetchData("season-trophies"),
-              fetchData("int-trophies"),
-              fetchData("season-data"),
-              fetchData("int-data"),
+              fetchData("season_trophies"),
+              fetchData("int_trophies"),
+              fetchData("season_data"),
+              fetchData("int_data"),
             ]);
 
           // Calculate overview statistics

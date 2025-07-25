@@ -1547,9 +1547,9 @@
       async function loadCareerTotals() {
         try {
           const [seasonData, intData, yearlyData] = await Promise.all([
-            fetchData("season-data"),
-            fetchData("int-data"),
-            fetchData("yearly-data"),
+            fetchData("season_data"),
+            fetchData("int_data"),
+            fetchData("yearly_data"),
           ]);
 
           const totalApps =
@@ -1605,7 +1605,7 @@
       // Load club stats
       async function loadClubStats() {
         try {
-          const seasonData = await fetchData("season-data");
+          const seasonData = await fetchData("season_data");
 
           const totalApps = seasonData.reduce(
             (sum, item) => sum + item.apps,
@@ -1662,7 +1662,7 @@
       // Load international stats
       async function loadIntStats() {
         try {
-          const intData = await fetchData("int-data");
+          const intData = await fetchData("int_data");
 
           const totalApps = intData.reduce((sum, item) => sum + item.apps, 0);
           const totalGoals = intData.reduce((sum, item) => sum + item.goals, 0);
@@ -1714,7 +1714,7 @@
       // Load yearly stats
       async function loadYearlyStats() {
         try {
-          const yearlyData = await fetchData("yearly-data");
+          const yearlyData = await fetchData("yearly_data");
           const container = document.getElementById("yearlyStatsContainer");
 
           if (!yearlyData || yearlyData.length === 0) {
@@ -1905,9 +1905,9 @@
       async function loadBestPerformances() {
         try {
           const [seasonData, intData, yearlyData] = await Promise.all([
-            fetchData("season-data"),
-            fetchData("int-data"),
-            fetchData("yearly-data"),
+            fetchData("season_data"),
+            fetchData("int_data"),
+            fetchData("yearly_data"),
           ]);
 
           // Combine club and international data
@@ -2017,8 +2017,8 @@
       async function loadSeasonDetails() {
         try {
           const [seasonData, intData] = await Promise.all([
-            fetchData("season-data"),
-            fetchData("int-data"),
+            fetchData("season_data"),
+            fetchData("int_data"),
           ]);
 
           const combinedData = [...seasonData, ...intData];
@@ -2485,8 +2485,8 @@
       async function loadCompetitionStats() {
         try {
           const [seasonData, intData] = await Promise.all([
-            fetchData("season-data"),
-            fetchData("int-data"),
+            fetchData("season_data"),
+            fetchData("int_data"),
           ]);
 
           const allData = [...seasonData, ...intData];
@@ -2908,7 +2908,7 @@
       // Load team stats
       async function loadTeamStats() {
         try {
-          const seasonData = await fetchData("season-data");
+          const seasonData = await fetchData("season_data");
 
           // Group by team and competition
           const teamStats = {};

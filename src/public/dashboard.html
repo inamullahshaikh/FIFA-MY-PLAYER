@@ -1003,8 +1003,8 @@ async function renderSeasonChart() {
     showChartLoading('gaPerSeasonChart');
     
     const [clubRes, intRes] = await Promise.all([
-      fetch("http://localhost:5000/api/season-data"),
-      fetch("http://localhost:5000/api/int-data")
+      fetch("http://localhost:5000/api/season_data"),
+      fetch("http://localhost:5000/api/int_data")
     ]);
 
     const clubData = await clubRes.json();
@@ -1229,7 +1229,7 @@ async function renderYearlyChart() {
     // 🔄 Show elegant loading state
     showChartLoading('gaPerYearChart');
     
-    const yearlyRes = await fetch("http://localhost:5000/api/yearly-data");
+    const yearlyRes = await fetch("http://localhost:5000/api/yearly_data");
     const yearlyData = await yearlyRes.json();
 
     const yearlyMap = new Map();
@@ -1659,16 +1659,16 @@ const chartTheme = {
   async function loadTrophies() {
   try {
     // Club trophies count
-    const clubResponse = await fetch("http://localhost:5000/api/season-trophies");
+    const clubResponse = await fetch("http://localhost:5000/api/season_trophies");
     const clubTrophies = await clubResponse.json();
     document.getElementById('clubTrophyCount').textContent = clubTrophies.length;
 
     // International trophies count
-    const intResponse = await fetch("http://localhost:5000/api/int-trophies");
+    const intResponse = await fetch("http://localhost:5000/api/int_trophies");
     const intTrophies = await intResponse.json();
     document.getElementById('internationalTrophyCount').textContent = intTrophies.length;
 
-    const awardresponse = await fetch("http://localhost:5000/api/season-awards");
+    const awardresponse = await fetch("http://localhost:5000/api/season_awards");
     const awards = await awardresponse.json();
     const majorKeywords = ["Ballon d'Or", "Golden Boot", "FIFA Best Player", "Copa Trophy"];
     const majorHonorCount = awards.filter(a =>
