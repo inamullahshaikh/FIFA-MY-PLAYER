@@ -1939,7 +1939,7 @@
 
         // POST Club Stats to /api/season-data
         for (const [base, payload] of clubPayloads) {
-          fetch("http://localhost:5000/api/season_data", {
+          fetch("https://virtualxi.onrender.com/api/season_data", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
@@ -1955,7 +1955,7 @@
 
         // POST International Stats to /api/int-data
         for (const [base, payload] of intPayloads) {
-          fetch("http://localhost:5000/api/int_data", {
+          fetch("https://virtualxi.onrender.com/api/int_data", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
@@ -1975,7 +1975,7 @@
             season: seasonData.season,
             competition: trophy,
           };
-          fetch("http://localhost:5000/api/season_trophies", {
+          fetch("https://virtualxi.onrender.com/api/season_trophies", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
@@ -1988,7 +1988,7 @@
             season: seasonData.season,
             competition: trophy,
           };
-          fetch("http://localhost:5000/api/int_trophies", {
+          fetch("https://virtualxi.onrender.com/api/int_trophies", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
@@ -2001,7 +2001,7 @@
             season: seasonData.season,
             award: award,
           };
-          fetch("http://localhost:5000/api/season_awards", {
+          fetch("https://virtualxi.onrender.com/api/season_awards", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
