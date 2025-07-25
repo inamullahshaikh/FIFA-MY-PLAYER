@@ -1109,6 +1109,9 @@
 
       // Load yearly data from backend
       async function loadYearlyData() {
+        fetch(`${API_BASE_URL}/test`)
+          .then((res) => res.json())
+          .then((data) => console.log(data));
         try {
           const response = await fetch(`${API_BASE_URL}/yearly_data`);
           if (!response.ok) throw new Error("Failed to fetch data");
@@ -1336,7 +1339,9 @@
         }
 
         const updatedData = { year, goals, assists };
-
+        fetch(`${API_BASE_URL}/test`)
+          .then((res) => res.json())
+          .then((data) => console.log(data));
         try {
           const response = await fetch(`${API_BASE_URL}/yearly_data/${id}`, {
             method: "PUT",

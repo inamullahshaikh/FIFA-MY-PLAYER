@@ -15,9 +15,9 @@ for %%p in (%ports%) do (
     )
 )
 echo Starting services...
-cd /d "%~dp0\src\backend\public"
+cd /d "%~dp0\src\"
 start /B npm run dev
-cd /d "%~dp0\src\frontend"
+cd /d "%~dp0\src\public"
 start /B python -m http.server 80
 start chrome "http://virtualxi.com"
 pause

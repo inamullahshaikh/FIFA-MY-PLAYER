@@ -5,42 +5,35 @@ const cors = require("cors");
 const path = require("path");
 const app = express();
 
-// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
-
-// Optional: fallback for SPA routes
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "public", "index.html"));
-// });
-
-// Load env vars
 dotenv.config();
 
-// App setup
 app.use(express.json());
-app.use(cors()); // You can configure with origin: "https://your-frontend.com" if needed
+app.use(cors());
 
-// MongoDB connection
+// ✅ MongoDB connection — fix dbName here
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: "mydatabase", // Optional
   })
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// ========== Schemas ==========
 const Schema = mongoose.Schema;
 
-const PlayerSchema = new Schema({
-  name: String,
-  rating: String,
-  nationality: String,
-  position: String,
-  value: Number,
-});
-const Player = mongoose.model("Player", PlayerSchema);
+// ✅ Add collection name as 3rd argument to avoid Mongoose pluralizing incorrectly
+const Player = mongoose.model(
+  "Player",
+  new Schema({
+    name: String,
+    rating: String,
+    nationality: String,
+    position: String,
+    value: Number,
+  }),
+  "players"
+);
 
 const SeasonData = mongoose.model(
   "SeasonData",
@@ -52,7 +45,8 @@ const SeasonData = mongoose.model(
     assists: Number,
     avgrating: Number,
     team: String,
-  })
+  }),
+  "seasondatas"
 );
 
 const YearlyData = mongoose.model(
@@ -61,7 +55,8 @@ const YearlyData = mongoose.model(
     year: String,
     goals: Number,
     assists: Number,
-  })
+  }),
+  "yearlydatas"
 );
 
 const SeasonTrophy = mongoose.model(
@@ -69,7 +64,8 @@ const SeasonTrophy = mongoose.model(
   new Schema({
     season: String,
     competition: String,
-  })
+  }),
+  "seasontrophies"
 );
 
 const IntData = mongoose.model(
@@ -81,7 +77,8 @@ const IntData = mongoose.model(
     goals: Number,
     assists: Number,
     avgrating: Number,
-  })
+  }),
+  "intdatas"
 );
 
 const IntTrophy = mongoose.model(
@@ -89,7 +86,8 @@ const IntTrophy = mongoose.model(
   new Schema({
     season: String,
     competition: String,
-  })
+  }),
+  "inttrophies"
 );
 
 const SeasonAwards = mongoose.model(
@@ -98,7 +96,8 @@ const SeasonAwards = mongoose.model(
     season: String,
     award: String,
     quantity: Number,
-  })
+  }),
+  "seasonawards"
 );
 
 const Transfer = mongoose.model(
@@ -108,10 +107,11 @@ const Transfer = mongoose.model(
     from: String,
     to: String,
     value: String,
-  })
+  }),
+  "transfers"
 );
 
-// ========== CRUD Generator ==========
+// ========= CRUD Generator ==========
 const router = express.Router();
 
 function createCrudRoutes(model, routeName) {
@@ -127,7 +127,7 @@ function createCrudRoutes(model, routeName) {
 
   router.get(`/${routeName}`, async (req, res) => {
     try {
-      const docs = await model.find();
+      const docs = await model.find({});
       res.json(docs);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -167,7 +167,7 @@ function createCrudRoutes(model, routeName) {
   });
 }
 
-// Register routes (fixed: snake_case)
+// ✅ Register API endpoints
 createCrudRoutes(Player, "players");
 createCrudRoutes(SeasonData, "season_data");
 createCrudRoutes(YearlyData, "yearly_data");
@@ -177,8 +177,21 @@ createCrudRoutes(IntTrophy, "int_trophies");
 createCrudRoutes(SeasonAwards, "season_awards");
 createCrudRoutes(Transfer, "transfers");
 
+// 🔎 Sample test route
+app.get("/api/test", async (req, res) => {
+  try {
+    const collections = await mongoose.connection.db
+      .listCollections()
+      .toArray();
+    res.json({
+      collections: collections.map((col) => col.name),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.use("/api", router);
 
-// Port from environment (Render will provide one)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
