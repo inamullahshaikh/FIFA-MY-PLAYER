@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
+const app = express();
+
 // Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -15,7 +17,6 @@ app.get("*", (req, res) => {
 dotenv.config();
 
 // App setup
-const app = express();
 app.use(express.json());
 app.use(cors()); // You can configure with origin: "https://your-frontend.com" if needed
 
