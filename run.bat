@@ -15,7 +15,7 @@ for %%p in (%ports%) do (
     )
 )
 echo Starting services...
-cd /d "%~dp0\src\backend\publi"
+cd /d "%~dp0\src\backend\public"
 start /B npm run dev
 cd /d "%~dp0\src\frontend"
 start /B python -m http.server 80
