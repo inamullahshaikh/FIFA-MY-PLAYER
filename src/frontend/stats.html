@@ -818,6 +818,206 @@
         border-radius: var(--border-radius);
         margin: 1rem 0;
       }
+      /* Enhanced Tab Navigation Styling */
+      .nav-tabs {
+        border-bottom: 2px solid #e9ecef;
+        padding: 0 1rem;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        border-radius: 0.5rem 0.5rem 0 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+      }
+
+      .nav-tabs .nav-item {
+        margin-bottom: -2px;
+        display: inline-block;
+      }
+
+      .nav-tabs .nav-link {
+        border: none;
+        border-radius: 0.5rem 0.5rem 0 0;
+        padding: 1rem 1.5rem;
+        margin-right: 0.2rem;
+        font-weight: 500;
+        color: #6c757d;
+        background: transparent;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        text-transform: capitalize;
+        letter-spacing: 0.5px;
+        min-width: max-content;
+      }
+
+      .nav-tabs .nav-link::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #007bff, #0056b3);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+
+      .nav-tabs .nav-link::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(0, 123, 255, 0.1),
+          transparent
+        );
+        transition: left 0.6s ease;
+      }
+
+      .nav-tabs .nav-link:hover {
+        color: #007bff;
+        background: rgba(0, 123, 255, 0.05);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+      }
+
+      .nav-tabs .nav-link:hover::before {
+        width: 80%;
+      }
+
+      .nav-tabs .nav-link:hover::after {
+        left: 100%;
+      }
+
+      /* Active tab styling */
+      .nav-tabs .nav-link.active {
+        color: #007bff;
+        background: linear-gradient(135deg, #ffffff, #f8f9fa);
+        border-bottom: 3px solid #007bff;
+        box-shadow: 0 -2px 10px rgba(0, 123, 255, 0.15);
+        transform: translateY(-1px);
+        font-weight: 600;
+      }
+
+      .nav-tabs .nav-link.active::before {
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #007bff, #0056b3);
+      }
+
+      /* Focus states for accessibility */
+      .nav-tabs .nav-link:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+      }
+
+      /* Add subtle pulse animation for active tab */
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 -2px 10px rgba(0, 123, 255, 0.15);
+        }
+        50% {
+          box-shadow: 0 -2px 15px rgba(0, 123, 255, 0.25);
+        }
+        100% {
+          box-shadow: 0 -2px 10px rgba(0, 123, 255, 0.15);
+        }
+      }
+
+      .nav-tabs .nav-link.active {
+        animation: pulse 2s infinite;
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .nav-tabs {
+          padding: 0 0.5rem;
+          border-radius: 0;
+        }
+
+        .nav-tabs .nav-link {
+          padding: 0.75rem 1rem;
+          font-size: 0.9rem;
+          margin-right: 0.125rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .nav-tabs {
+          padding: 0 0.25rem;
+        }
+
+        .nav-tabs .nav-link {
+          padding: 0.6rem 0.8rem;
+          font-size: 0.85rem;
+          margin-right: 0.1rem;
+        }
+      }
+
+      /* Smooth scrolling for horizontal overflow */
+      .nav-tabs::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      .nav-tabs::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 2px;
+      }
+
+      .nav-tabs::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 2px;
+      }
+
+      .nav-tabs::-webkit-scrollbar-thumb:hover {
+        background: #0056b3;
+      }
+
+      /* Loading animation for tabs */
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .nav-tabs .nav-item {
+        animation: slideInUp 0.4s ease forwards;
+      }
+
+      .nav-tabs .nav-item:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .nav-tabs .nav-item:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .nav-tabs .nav-item:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .nav-tabs .nav-item:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .nav-tabs .nav-item:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      .nav-tabs .nav-item:nth-child(6) {
+        animation-delay: 0.6s;
+      }
+      .nav-tabs .nav-item:nth-child(7) {
+        animation-delay: 0.7s;
+      }
+      .nav-tabs .nav-item:nth-child(8) {
+        animation-delay: 0.8s;
+      }
     </style>
   </head>
   <body>
@@ -902,106 +1102,217 @@
     </div>
 
     <!-- Main Content -->
+    <!-- Main Content with Tabs -->
     <div class="main-content">
-      <!-- Overall Stats Overview -->
-      <div class="section-header">
-        <h2>
-          <i class="bi bi-bar-chart-fill me-2"></i>Career Statistics Overview
-        </h2>
-        <p>Complete statistical summary of your football career</p>
-      </div>
+      <!-- Tabs Navigation -->
+      <ul class="nav nav-tabs" id="statsTabs" role="tablist">
+        <li class="nav-item">
+          <button
+            class="nav-link active"
+            id="career-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#career"
+            type="button"
+            role="tab"
+          >
+            Career
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="club-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#club"
+            type="button"
+            role="tab"
+          >
+            Club
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="international-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#international"
+            type="button"
+            role="tab"
+          >
+            International
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="yearly-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#yearly"
+            type="button"
+            role="tab"
+          >
+            Yearly
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="best-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#best"
+            type="button"
+            role="tab"
+          >
+            Best
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="season-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#season"
+            type="button"
+            role="tab"
+          >
+            Seasons
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="competition-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#competition"
+            type="button"
+            role="tab"
+          >
+            Competitions
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            id="team-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#team"
+            type="button"
+            role="tab"
+          >
+            Teams
+          </button>
+        </li>
+      </ul>
 
-      <div class="stat-card highlight-card">
-        <h5 style="color: white">
-          <i class="bi bi-trophy-fill" style="color: white"></i>Career Totals
-        </h5>
-        <div class="stat-grid" id="careerTotals">
-          <div class="loading">Loading career statistics...</div>
+      <!-- Tabs Content -->
+      <div class="tab-content pt-4" id="statsTabContent">
+        <!-- Career -->
+        <div class="tab-pane fade show active" id="career" role="tabpanel">
+          <div class="section-header">
+            <h2>
+              <i class="bi bi-bar-chart-fill me-2"></i>Career Statistics
+              Overview
+            </h2>
+            <p>Complete statistical summary of your football career</p>
+          </div>
+          <div class="stat-card highlight-card">
+            <h5 style="color: white">
+              <i class="bi bi-trophy-fill" style="color: white"></i>Career
+              Totals
+            </h5>
+            <div class="stat-grid" id="careerTotals">
+              <div class="loading">Loading career statistics...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Club -->
+        <div class="tab-pane fade" id="club" role="tabpanel">
+          <div class="section-header">
+            <h2><i class="bi bi-building me-2"></i>Club Career Statistics</h2>
+            <p>Your performance statistics across all club competitions</p>
+          </div>
+          <div class="stat-card">
+            <h5><i class="bi bi-building-fill"></i>Club Career Summary</h5>
+            <div class="stat-grid" id="clubStats">
+              <div class="loading">Loading club statistics...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- International -->
+        <div class="tab-pane fade" id="international" role="tabpanel">
+          <div class="section-header">
+            <h2>
+              <i class="bi bi-flag me-2"></i>International Career Statistics
+            </h2>
+            <p>Your performance statistics for your national team</p>
+          </div>
+          <div class="stat-card">
+            <h5><i class="bi bi-flag-fill"></i>International Career Summary</h5>
+            <div class="stat-grid" id="intStats">
+              <div class="loading">Loading international statistics...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Yearly -->
+        <div class="tab-pane fade" id="yearly" role="tabpanel">
+          <div class="section-header">
+            <h2><i class="bi bi-calendar me-2"></i>Statistics by Year</h2>
+            <p>Annual breakdown of goals and assists</p>
+          </div>
+          <div id="yearlyStatsContainer">
+            <div class="loading">Loading yearly statistics...</div>
+          </div>
+        </div>
+
+        <!-- Best -->
+        <div class="tab-pane fade" id="best" role="tabpanel">
+          <div class="section-header">
+            <h2><i class="bi bi-star me-2"></i>Best Performances</h2>
+            <p>Your standout seasons and years</p>
+          </div>
+          <div class="row" id="bestPerformances">
+            <div class="loading">Loading best performances...</div>
+          </div>
+        </div>
+
+        <!-- Seasons -->
+        <div class="tab-pane fade" id="season" role="tabpanel">
+          <div class="section-header">
+            <h2>
+              <i class="bi bi-calendar-week me-2"></i>Detailed Season Statistics
+            </h2>
+            <p>Complete breakdown of each season's performance</p>
+          </div>
+          <div id="seasonDetailsContainer">
+            <div class="loading">Loading detailed season statistics...</div>
+          </div>
+        </div>
+
+        <!-- Competitions -->
+        <div class="tab-pane fade" id="competition" role="tabpanel">
+          <div class="section-header">
+            <h2><i class="bi bi-trophy me-2"></i>Statistics by Competition</h2>
+            <p>Performance breakdown across different competitions</p>
+          </div>
+          <div id="competitionStatsContainer">
+            <div class="loading">Loading competition statistics...</div>
+          </div>
+        </div>
+
+        <!-- Teams -->
+        <div class="tab-pane fade" id="team" role="tabpanel">
+          <div class="section-header">
+            <h2><i class="bi bi-people me-2"></i>Statistics by Team</h2>
+            <p>Performance breakdown across different teams</p>
+          </div>
+          <div id="teamStatsContainer">
+            <div class="loading">Loading team statistics...</div>
+          </div>
         </div>
       </div>
-
-      <!-- Club Stats Overview -->
-      <div class="section-header mt-5">
-        <h2><i class="bi bi-building me-2"></i>Club Career Statistics</h2>
-        <p>Your performance statistics across all club competitions</p>
-      </div>
-
-      <div class="stat-card">
-        <h5><i class="bi bi-building-fill"></i>Club Career Summary</h5>
-        <div class="stat-grid" id="clubStats">
-          <div class="loading">Loading club statistics...</div>
-        </div>
-      </div>
-
-      <!-- International Stats Overview -->
-      <div class="section-header mt-5">
-        <h2><i class="bi bi-flag me-2"></i>International Career Statistics</h2>
-        <p>Your performance statistics for your national team</p>
-      </div>
-
-      <div class="stat-card">
-        <h5><i class="bi bi-flag-fill"></i>International Career Summary</h5>
-        <div class="stat-grid" id="intStats">
-          <div class="loading">Loading international statistics...</div>
-        </div>
-      </div>
-
-      <!-- Yearly Stats -->
-      <div class="section-header mt-5">
-        <h2><i class="bi bi-calendar me-2"></i>Statistics by Year</h2>
-        <p>Annual breakdown of goals and assists</p>
-      </div>
-
-      <div id="yearlyStatsContainer">
-        <div class="loading">Loading yearly statistics...</div>
-      </div>
-
-      <!-- Best Performances -->
-      <div class="section-header mt-5">
-        <h2><i class="bi bi-star me-2"></i>Best Performances</h2>
-        <p>Your standout seasons and years</p>
-      </div>
-
-      <div class="row" id="bestPerformances">
-        <div class="loading">Loading best performances...</div>
-      </div>
-
-      <!-- Detailed Season Stats -->
-      <div class="section-header mt-5">
-        <h2>
-          <i class="bi bi-calendar-week me-2"></i>Detailed Season Statistics
-        </h2>
-        <p>Complete breakdown of each season's performance</p>
-      </div>
-
-      <div id="seasonDetailsContainer">
-        <div class="loading">Loading detailed season statistics...</div>
-      </div>
-
-      <!-- Stats by Competition -->
-      <div class="section-header mt-5">
-        <h2><i class="bi bi-trophy me-2"></i>Statistics by Competition</h2>
-        <p>Performance breakdown across different competitions</p>
-      </div>
-
-      <div id="competitionStatsContainer">
-        <div class="loading">Loading competition statistics...</div>
-      </div>
-
-      <!-- Stats by Team -->
-      <div class="section-header mt-5">
-        <h2><i class="bi bi-people me-2"></i>Statistics by Team</h2>
-        <p>Performance breakdown across different teams</p>
-      </div>
-
-      <div id="teamStatsContainer">
-        <div class="loading">Loading team statistics...</div>
-      </div>
-    </div>
-
-    <!-- Sidebar Toggle Button -->
-    <div class="sidebar-toggle" onclick="toggleSidebar()">
-      <i class="bi bi-list"></i>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
@@ -1184,6 +1495,16 @@
         }
         return compId; // fallback if not found
       }
+      function getCompetitionIdByName(compName) {
+        for (const category in competitions) {
+          const match = competitions[category].find(
+            (comp) => comp.name === compName
+          );
+          if (match) return match.id;
+        }
+        return compName; // fallback if not found
+      }
+
       // Toggle sidebar for mobile
       function toggleSidebar() {
         document.getElementById("sidebar").classList.toggle("show");
@@ -2258,11 +2579,11 @@
               <div class="stat-value">${formatNumber(stats.apps)}</div>
               <div class="stat-label">Apps</div>
             </div>
-            <div class="comp-stat-item highlight">
+            <div class="comp-stat-item">
               <div class="stat-value">${formatNumber(stats.goals)}</div>
               <div class="stat-label">Goals</div>
             </div>
-            <div class="comp-stat-item highlight">
+            <div class="comp-stat-item">
               <div class="stat-value">${formatNumber(stats.assists)}</div>
               <div class="stat-label">Assists</div>
             </div>
@@ -2589,41 +2910,70 @@
         try {
           const seasonData = await fetchData("season-data");
 
-          // Group by team
+          // Group by team and competition
           const teamStats = {};
           seasonData.forEach((season) => {
             if (!teamStats[season.team]) {
               teamStats[season.team] = {
+                overall: {
+                  apps: 0,
+                  goals: 0,
+                  assists: 0,
+                  ratings: [],
+                  seasonsSet: new Set(),
+                  competitions: new Set(),
+                },
+                competitions: {},
+              };
+            }
+
+            const competitionName = getCompetitionNameById(season.competition);
+
+            // Initialize competition stats if not exists
+            if (!teamStats[season.team].competitions[competitionName]) {
+              teamStats[season.team].competitions[competitionName] = {
                 apps: 0,
                 goals: 0,
                 assists: 0,
                 ratings: [],
                 seasonsSet: new Set(),
-                competitions: new Set(),
               };
             }
 
-            teamStats[season.team].apps += season.apps || 0;
-            teamStats[season.team].goals += season.goals || 0;
-            teamStats[season.team].assists += season.assists || 0;
+            // Update overall stats
+            teamStats[season.team].overall.apps += season.apps || 0;
+            teamStats[season.team].overall.goals += season.goals || 0;
+            teamStats[season.team].overall.assists += season.assists || 0;
 
             if (season.avgrating > 0) {
-              teamStats[season.team].ratings.push(season.avgrating);
+              teamStats[season.team].overall.ratings.push(season.avgrating);
             }
 
-            // Track unique seasons per team
             if (season.season) {
-              teamStats[season.team].seasonsSet.add(season.season);
+              teamStats[season.team].overall.seasonsSet.add(season.season);
             }
 
-            teamStats[season.team].competitions.add(
-              getCompetitionNameById(season.competition)
-            );
+            teamStats[season.team].overall.competitions.add(competitionName);
+
+            // Update competition-specific stats
+            const compStats =
+              teamStats[season.team].competitions[competitionName];
+            compStats.apps += season.apps || 0;
+            compStats.goals += season.goals || 0;
+            compStats.assists += season.assists || 0;
+
+            if (season.avgrating > 0) {
+              compStats.ratings.push(season.avgrating);
+            }
+
+            if (season.season) {
+              compStats.seasonsSet.add(season.season);
+            }
           });
 
           const container = document.getElementById("teamStatsContainer");
 
-          // Add comprehensive CSS styles with unique prefixes
+          // Enhanced CSS styles with competition breakdown
           const styles = `
       <style>
         .ts-stats-container {
@@ -2715,9 +3065,29 @@
           letter-spacing: -0.5px;
         }
 
+        .ts-section-title {
+          font-size: 1.3rem;
+          font-weight: 700;
+          color: #2d3436;
+          margin: 2rem 0 1rem 0;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .ts-section-title::after {
+          content: '';
+          flex: 1;
+          height: 2px;
+          background: linear-gradient(90deg, #667eea, transparent);
+        }
+
         .ts-stat-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
           gap: 1.5rem;
           margin-bottom: 2rem;
         }
@@ -2771,16 +3141,24 @@
           letter-spacing: 0.5px;
         }
 
-        .ts-competitions-section {
-          background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
-          border-radius: 16px;
-          padding: 1.5rem;
-          margin-top: 1rem;
-          position: relative;
-          overflow: hidden;
+        .ts-competition-section {
+          margin-top: 2rem;
+          padding-top: 2rem;
+          border-top: 2px solid rgba(102, 126, 234, 0.1);
         }
 
-        .ts-competitions-section::before {
+        .ts-competition-card {
+          background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+          border-radius: 20px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 12px 24px rgba(108, 92, 231, 0.2);
+          transition: all 0.3s ease;
+        }
+
+        .ts-competition-card::before {
           content: '';
           position: absolute;
           top: -50%;
@@ -2796,24 +3174,61 @@
           to { transform: rotate(360deg); }
         }
 
-        .ts-competitions-title {
-          font-size: 0.9rem;
+        .ts-competition-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
+        }
+
+        .ts-competition-title {
+          font-size: 1.4rem;
           font-weight: 700;
           color: #fff;
-          margin-bottom: 0.8rem;
+          margin-bottom: 1.5rem;
           text-transform: uppercase;
           letter-spacing: 1px;
           position: relative;
           z-index: 1;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .ts-competitions-list {
-          font-size: 0.95rem;
-          color: rgba(255, 255, 255, 0.95);
-          line-height: 1.6;
-          font-weight: 500;
+        .ts-competition-stats {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 1rem;
           position: relative;
           z-index: 1;
+        }
+
+        .ts-competition-stat {
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(10px);
+          border-radius: 12px;
+          padding: 1rem;
+          text-align: center;
+          transition: all 0.3s ease;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .ts-competition-stat:hover {
+          background: rgba(255, 255, 255, 0.25);
+          transform: translateY(-2px);
+        }
+
+        .ts-competition-stat-number {
+          display: block;
+          font-size: 1.8rem;
+          font-weight: 800;
+          color: #fff;
+          margin-bottom: 0.3rem;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .ts-competition-stat-label {
+          font-size: 0.8rem;
+          color: rgba(255, 255, 255, 0.9);
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .ts-no-data-card {
@@ -2872,12 +3287,20 @@
           }
           
           .ts-stat-grid {
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 1rem;
           }
           
           .ts-stat-number {
             font-size: 1.8rem;
+          }
+
+          .ts-competition-stats {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          }
+
+          .ts-competition-stat-number {
+            font-size: 1.5rem;
           }
         }
 
@@ -2898,6 +3321,10 @@
           .ts-stat-grid {
             grid-template-columns: repeat(2, 1fr);
           }
+
+          .ts-competition-stats {
+            grid-template-columns: repeat(2, 1fr);
+          }
         }
       </style>
     `;
@@ -2908,10 +3335,13 @@
           let html = styles;
 
           Object.entries(teamStats).forEach(([team, stats]) => {
-            const avgRating = calculateAverage(stats.ratings);
-            const seasonCount = stats.seasonsSet.size;
+            const overallStats = stats.overall;
+            const avgRating = calculateAverage(overallStats.ratings);
+            const seasonCount = overallStats.seasonsSet.size;
             const goalsPerGame =
-              stats.apps > 0 ? (stats.goals / stats.apps).toFixed(2) : "0.00";
+              overallStats.apps > 0
+                ? (overallStats.goals / overallStats.apps).toFixed(2)
+                : "0.00";
 
             html += `
         <div class="ts-team-card">
@@ -2922,21 +3352,28 @@
             <h3 class="ts-team-name">${teamNameMap[team]}</h3>
           </div>
           
+          <div class="ts-section-title">Overall Statistics</div>
           <div class="ts-stat-grid">
             <div class="ts-stat-item">
               <span class="ts-stat-number">${seasonCount}</span>
               <span class="ts-stat-label">Seasons</span>
             </div>
             <div class="ts-stat-item">
-              <span class="ts-stat-number">${formatNumber(stats.apps)}</span>
+              <span class="ts-stat-number">${formatNumber(
+                overallStats.apps
+              )}</span>
               <span class="ts-stat-label">Appearances</span>
             </div>
             <div class="ts-stat-item">
-              <span class="ts-stat-number">${formatNumber(stats.goals)}</span>
+              <span class="ts-stat-number">${formatNumber(
+                overallStats.goals
+              )}</span>
               <span class="ts-stat-label">Goals</span>
             </div>
             <div class="ts-stat-item">
-              <span class="ts-stat-number">${formatNumber(stats.assists)}</span>
+              <span class="ts-stat-number">${formatNumber(
+                overallStats.assists
+              )}</span>
               <span class="ts-stat-label">Assists</span>
             </div>
             <div class="ts-stat-item">
@@ -2949,11 +3386,62 @@
             </div>
           </div>
           
-          <div class="ts-competitions-section">
-            <div class="ts-competitions-title">Competitions</div>
-            <div class="ts-competitions-list">${Array.from(
-              stats.competitions
-            ).join(" • ")}</div>
+          <div class="ts-competition-section">
+            <div class="ts-section-title">Competition Breakdown</div>
+            ${Object.entries(stats.competitions)
+              .map(([competition, compStats]) => {
+                const compAvgRating = calculateAverage(compStats.ratings);
+                const compGoalsPerGame =
+                  compStats.apps > 0
+                    ? (compStats.goals / compStats.apps).toFixed(2)
+                    : "0.00";
+                const compSeasonCount = compStats.seasonsSet.size;
+                console.log(competition);
+
+                return `
+              
+                <div class="sd-competition-card">
+            <div class="sd-competition-info">
+              <img src="${
+                trophyImageMap[getCompetitionIdByName(competition)]
+              }" class="sd-competition-logo" alt="${competition}">
+              <div class="sd-competition-details">
+                <div class="sd-competition-name">${competition}</div>
+              </div>
+            </div>
+            <div class="sd-stats-compact">
+              <div class="sd-stat-item">
+                <span class="sd-stat-value">${compSeasonCount || 0}</span>
+                <span class="sd-stat-label">Seasons</span>
+              </div>
+              <div class="sd-stat-item">
+                <span class="sd-stat-value">${
+                  formatNumber(compStats.apps) || 0
+                }</span>
+                <span class="sd-stat-label">Apps</span>
+              </div>
+              <div class="sd-stat-item">
+                <span class="sd-stat-value">${
+                  formatNumber(compStats.goals) || 0
+                }</span>
+                <span class="sd-stat-label">Goals</span>
+              </div>
+              <div class="sd-stat-item">
+                <span class="sd-stat-value">${
+                  formatNumber(compStats.assists) || 0
+                }</span>
+                <span class="sd-stat-label">Assists</span>
+              </div>
+              ${
+                compAvgRating > 0
+                  ? `<div class="sd-rating-badge" style="color: #fbbf24;">${compAvgRating}</div>`
+                  : ""
+              }
+            </div>
+          </div>
+                `;
+              })
+              .join("")}
           </div>
         </div>
       `;

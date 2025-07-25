@@ -1071,16 +1071,16 @@
               <div class="team-name">Lille</div>
             </div>
           </div>
-        </div>
-        <div class="section-buttons">
-          <button
-            class="btn btn-primary"
-            onclick="nextStep()"
-            id="teamNextBtn"
-            disabled
-          >
-            Next: Season <i class="bi bi-arrow-right ms-1"></i>
-          </button>
+          <div class="section-buttons">
+            <button
+              class="btn btn-primary"
+              onclick="nextStep()"
+              id="teamNextBtn"
+              disabled
+            >
+              Next: Season <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+          </div>
         </div>
       </div>
       <div class="section-card hidden" id="SeasonSelect">
@@ -1154,12 +1154,12 @@
           <div class="competition-grid">
             <div class="competition-card">
               <div class="competition-header">
-                <div class="competition-icon">
-                  <i class="bi bi-globe"></i>
+                <div>
+                  <img src="assets/images/logos/world-cup.png" style="width: 40px; height: 40px;"/>
                 </div>
                 <div>
-                  <h5>FIFA World Cup</h5>
-                  <small class="text-muted">International Tournament</small>
+                  <h5 style="margin-left: 20px;">FIFA World Cup</h5>
+                  <small class="text-muted" style="margin-left: 20px;">International Tournament</small>
                 </div>
               </div>
               <div class="stats-grid">
@@ -1205,12 +1205,12 @@
 
             <div class="competition-card">
               <div class="competition-header">
-                <div class="competition-icon">
-                  <i class="bi bi-star"></i>
+                <div>
+                  <img src="assets/images/logos/euro.png" style="width: 40px; height: 40px;"/>
                 </div>
                 <div>
-                  <h5>UEFA European Championship</h5>
-                  <small class="text-muted">Continental Tournament</small>
+                  <h5 style="margin-left: 20px;">UEFA European Championship</h5>
+                  <small class="text-muted" style="margin-left: 20px;">Continental Tournament</small>
                 </div>
               </div>
               <div class="stats-grid">
@@ -1253,65 +1253,14 @@
                 </div>
               </div>
             </div>
-
             <div class="competition-card">
               <div class="competition-header">
-                <div class="competition-icon">
-                  <i class="bi bi-trophy"></i>
+                <div>
+                  <img src="assets/images/logos/world-cup-qual.png" style="width: 40px; height: 40px;"/>
                 </div>
                 <div>
-                  <h5>UEFA Nations League</h5>
-                  <small class="text-muted">UEFA Competition</small>
-                </div>
-              </div>
-              <div class="stats-grid">
-                <div class="stat-input">
-                  <label>Matches</label>
-                  <input
-                    type="number"
-                    min="0"
-                    name="unl-matches"
-                    placeholder="0"
-                  />
-                </div>
-                <div class="stat-input">
-                  <label>Goals</label>
-                  <input
-                    type="number"
-                    min="0"
-                    name="unl-goals"
-                    placeholder="0"
-                  />
-                </div>
-                <div class="stat-input">
-                  <label>Assists</label>
-                  <input
-                    type="number"
-                    min="0"
-                    name="unl-assists"
-                    placeholder="0"
-                  />
-                </div>
-                <div class="stat-input">
-                  <label>Avg rating</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0.00"
-                    name="unl-avg-rating"
-                    placeholder="0.00"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="competition-card">
-              <div class="competition-header">
-                <div class="competition-icon">
-                  <i class="bi bi-trophy"></i>
-                </div>
-                <div>
-                  <h5>FIFA World Cup Qualifiers</h5>
-                  <small class="text-muted">FIFA Competition</small>
+                  <h5 style="margin-left: 20px;">FIFA World Cup Qualifiers</h5>
+                  <small class="text-muted" style="margin-left: 20px;">FIFA Competition</small>
                 </div>
               </div>
               <div class="stats-grid">
@@ -1357,12 +1306,12 @@
             
             <div class="competition-card">
               <div class="competition-header">
-                <div class="competition-icon">
-                  <i class="bi bi-trophy"></i>
+                <div>
+                  <img src="assets/images/logos/euro-qual.png" style="width: 40px; height: 40px;"/>
                 </div>
                 <div>
-                  <h5>EURO Qualifiers</h5>
-                  <small class="text-muted">UEFA Competition</small>
+                  <h5 style="margin-left: 20px;">EURO Qualifiers</h5>
+                  <small class="text-muted" style="margin-left: 20px;">UEFA Competition</small>
                 </div>
               </div>
               <div class="stats-grid">
@@ -1408,11 +1357,11 @@
             <div class="competition-card">
               <div class="competition-header">
                 <div class="competition-icon">
-                  <i class="bi bi-people"></i>
+                  <img src="assets/images/logos/international-friendlies.png" style="width: 40px; height: 40px;"></img>
                 </div>
                 <div>
-                  <h5>International Friendlies</h5>
-                  <small class="text-muted">Friendly Matches</small>
+                  <h5 style="margin-left: 20px;">International Friendlies</h5>
+                  <small class="text-muted" style="margin-left: 20px;">Friendly Matches</small>
                 </div>
               </div>
               <div class="stats-grid">
@@ -1477,31 +1426,21 @@
 
           <div class="trophy-list">
             <div class="trophy-item" data-trophy="world-cup">
-              <div class="trophy-icon">🏆</div>
+              <div class="trophy-icon">
+                <img src="assets/images/logos/world-cup.png" style="width: 40px; height: 40px;"/>
+              </div>
               <div>
                 <div class="fw-bold">FIFA World Cup</div>
                 <small class="text-muted">Ultimate Prize</small>
               </div>
             </div>
             <div class="trophy-item" data-trophy="european-championship">
-              <div class="trophy-icon">🏆</div>
+              <div class="trophy-icon">         
+                <img src="assets/images/logos/euro.png" style="width: 40px; height: 40px;"/>
+              </div>
               <div>
                 <div class="fw-bold">UEFA European Championship</div>
                 <small class="text-muted">Continental Championship</small>
-              </div>
-            </div>
-            <div class="trophy-item" data-trophy="nations-league">
-              <div class="trophy-icon">🏆</div>
-              <div>
-                <div class="fw-bold">UEFA Nations League</div>
-                <small class="text-muted">UEFA Competition</small>
-              </div>
-            </div>
-            <div class="trophy-item" data-trophy="olympic-gold">
-              <div class="trophy-icon">🥇</div>
-              <div>
-                <div class="fw-bold">Olympic Gold Medal</div>
-                <small class="text-muted">Olympic Games</small>
               </div>
             </div>
           </div>
@@ -1560,104 +1499,105 @@
       let accolades = [];
       let selectedClubTrophies = [];
       let selectedInternationalTrophies = [];
-
       const competitions = {
         "premier-league": [
-          { name: "Premier League", icon: "bi-trophy", id: "pl" },
-          { name: "FA Cup", icon: "bi-cup", id: "fa" },
-          { name: "EFL Cup", icon: "bi-cup-straw", id: "efl" },
-          { name: "UEFA Champions League", icon: "bi-star", id: "ucl" },
-          { name: "UEFA Europa League", icon: "bi-globe", id: "uel" },
-          { name: "UEFA Conference League", icon: "bi-globe2", id: "uecl" },
-          { name: "Community Shield", icon: "bi-cup", id: "cs" },
-          { name: "UEFA Super Cup", icon: "bi-globe2", id: "uesc" },
+          { name: "Premier League", icon: "./assets/images/logos/premier-league.png", id: "pl" },
+          { name: "FA Cup", icon: "./assets/images/logos/fa-cup.png", id: "fa" },
+          { name: "EFL Cup", icon: "./assets/images/logos/carabao-cup.png", id: "efl" },
+          { name: "UEFA Champions League", icon: "./assets/images/logos/x1.png", id: "ucl" },
+          { name: "UEFA Europa League", icon: "./assets/images/logos/europa-league.png", id: "uel" },
+          { name: "UEFA Conference League", icon: "./assets/images/logos/uefa-conference-league-logo.png", id: "uecl" },
+          { name: "Community Shield", icon: "./assets/images/logos/community-shield.png", id: "cs" },
+          { name: "UEFA Super Cup", icon: "./assets/images/logos/uefa-super-cup.png", id: "uesc" },
         ],
         "la-liga": [
-          { name: "La Liga", icon: "bi-trophy", id: "ll" },
-          { name: "Copa del Rey", icon: "bi-cup", id: "cdr" },
-          { name: "Supercopa de España", icon: "bi-award", id: "sde" },
-          { name: "UEFA Champions League", icon: "bi-star", id: "ucl" },
-          { name: "UEFA Europa League", icon: "bi-globe", id: "uel" },
-          { name: "UEFA Conference League", icon: "bi-globe2", id: "uecl" },
-          { name: "UEFA Super Cup", icon: "bi-globe2", id: "uesc" },
+          { name: "La Liga", icon: "./assets/images/logos/la-liga.png", id: "ll" },
+          { name: "Copa del Rey", icon: "./assets/images/logos/copa-del-rey.png", id: "cdr" },
+          { name: "Supercopa de España", icon: "./assets/images/logos/super-copa-de-espana.png", id: "sde" },
+          { name: "UEFA Champions League", icon: "./assets/images/logos/x1.png", id: "ucl" },
+          { name: "UEFA Europa League", icon: "./assets/images/logos/europa-league.png", id: "uel" },
+          { name: "UEFA Conference League", icon: "./assets/images/logos/uefa-conference-league-logo.png", id: "uecl" },
+          { name: "UEFA Super Cup", icon: "./assets/images/logos/uefa-super-cup.png", id: "uesc" },
         ],
         "serie-a": [
-          { name: "Serie A", icon: "bi-trophy", id: "sa" },
-          { name: "Coppa Italia", icon: "bi-cup", id: "ci" },
-          { name: "Supercoppa Italiana", icon: "bi-award", id: "si" },
-          { name: "UEFA Champions League", icon: "bi-star", id: "ucl" },
-          { name: "UEFA Europa League", icon: "bi-globe", id: "uel" },
-          { name: "UEFA Conference League", icon: "bi-globe2", id: "uecl" },
-          { name: "UEFA Super Cup", icon: "bi-globe2", id: "uesc" },
+          { name: "Serie A", icon: "./assets/images/logos/serie-a.png", id: "sa" },
+          { name: "Coppa Italia", icon: "./assets/images/logos/copa-italia.png", id: "ci" },
+          { name: "Supercoppa Italiana", icon: "./assets/images/logos/supercoppa_italiana.png", id: "si" },
+          { name: "UEFA Champions League", icon: "./assets/images/logos/x1.png", id: "ucl" },
+          { name: "UEFA Europa League", icon: "./assets/images/logos/europa-league.png", id: "uel" },
+          { name: "UEFA Conference League", icon: "./assets/images/logos/uefa-conference-league-logo.png", id: "uecl" },
+          { name: "UEFA Super Cup", icon: "./assets/images/logos/uefa-super-cup.png", id: "uesc" },
         ],
         bundesliga: [
-          { name: "Bundesliga", icon: "bi-trophy", id: "bl" },
-          { name: "DFB-Pokal", icon: "bi-cup", id: "dfb" },
-          { name: "DFL-Supercup", icon: "bi-award", id: "dfl" },
-          { name: "UEFA Champions League", icon: "bi-star", id: "ucl" },
-          { name: "UEFA Europa League", icon: "bi-globe", id: "uel" },
-          { name: "UEFA Conference League", icon: "bi-globe2", id: "uecl" },
-          { name: "UEFA Super Cup", icon: "bi-globe2", id: "uesc" },
+          { name: "Bundesliga", icon: "./assets/images/logos/bundesliga.png", id: "bl" },
+          { name: "DFB-Pokal", icon: "./assets/images/logos/dfb-pokal.png", id: "dfb" },
+          { name: "DFL-Supercup", icon: "./assets/images/logos/dfl-supercup.png", id: "dfl" }, // Placeholder image
+          { name: "UEFA Champions League", icon: "./assets/images/logos/x1.png", id: "ucl" },
+          { name: "UEFA Europa League", icon: "./assets/images/logos/europa-league.png", id: "uel" },
+          { name: "UEFA Conference League", icon: "./assets/images/logos/uefa-conference-league-logo.png", id: "uecl" },
+          { name: "UEFA Super Cup", icon: "./assets/images/logos/uefa-super-cup.png", id: "uesc" },
         ],
         "ligue-1": [
-          { name: "Ligue 1", icon: "bi-trophy", id: "l1" },
-          { name: "Coupe de France", icon: "bi-cup", id: "cdf" },
-          { name: "Trophée des Champions", icon: "bi-award", id: "tdc" },
-          { name: "UEFA Champions League", icon: "bi-star", id: "ucl" },
-          { name: "UEFA Europa League", icon: "bi-globe", id: "uel" },
-          { name: "UEFA Conference League", icon: "bi-globe2", id: "uecl" },
-          { name: "UEFA Super Cup", icon: "bi-globe2", id: "uesc" },
+          { name: "Ligue 1", icon: "./assets/images/logos/ligue-1.png", id: "l1" },
+          { name: "Coupe de France", icon: "./assets/images/logos/Coupe-de-France.png", id: "cdf" },
+          { name: "Trophée des Champions", icon: "./assets/images/logos/Trophee-des-Champions.png", id: "tdc" },
+          { name: "UEFA Champions League", icon: "./assets/images/logos/x1.png", id: "ucl" },
+          { name: "UEFA Europa League", icon: "./assets/images/logos/europa-league.png", id: "uel" },
+          { name: "UEFA Conference League", icon: "./assets/images/logos/uefa-conference-league-logo.png", id: "uecl" },
+          { name: "UEFA Super Cup", icon: "./assets/images/logos/uefa-super-cup.png", id: "uesc" },
         ],
       };
+
 
       const trophies = {
         "premier-league": [
-          { name: "Premier League", icon: "🏆", id: "pl-trophy" },
-          { name: "FA Cup", icon: "🏆", id: "fa-trophy" },
-          { name: "EFL Cup", icon: "🏆", id: "efl-trophy" },
-          { name: "UEFA Champions League", icon: "🏆", id: "ucl-trophy" },
-          { name: "UEFA Europa League", icon: "🏆", id: "uel-trophy" },
-          { name: "UEFA Conference League", icon: "🏆", id: "uecl-trophy" },
-          { name: "FA Community Shield", icon: "🏆", id: "cs-trophy" },
-          { name: "UEFA Super Cup", icon: "🏆", id: "uesc-trophy" },
+          { name: "Premier League", icon: "./assets/images/logos/premier-league.png", id: "pl-trophy" },
+          { name: "FA Cup", icon: "./assets/images/logos/fa-cup.png", id: "fa-trophy" },
+          { name: "EFL Cup", icon: "./assets/images/logos/carabao-cup.png", id: "efl-trophy" },
+          { name: "UEFA Champions League", icon: "./assets/images/logos/x1.png", id: "ucl-trophy" },
+          { name: "UEFA Europa League", icon: "./assets/images/logos/europa-league.png", id: "uel-trophy" },
+          { name: "UEFA Conference League", icon: "./assets/images/logos/uefa-conference-league-logo.png", id: "uecl-trophy" },
+          { name: "FA Community Shield", icon: "./assets/images/logos/community-shield.png", id: "cs-trophy" },
+          { name: "UEFA Super Cup", icon: "./assets/images/logos/uefa-super-cup.png", id: "uesc-trophy" },
         ],
         "la-liga": [
-          { name: "La Liga", icon: "🏆", id: "ll-trophy" },
-          { name: "Copa del Rey", icon: "🏆", id: "cdr-trophy" },
-          { name: "Supercopa de España", icon: "🏆", id: "sde-trophy" },
-          { name: "UEFA Champions League", icon: "🏆", id: "ucl-trophy" },
-          { name: "UEFA Europa League", icon: "🏆", id: "uel-trophy" },
-          { name: "UEFA Conference League", icon: "🏆", id: "uecl-trophy" },
-          { name: "UEFA Super Cup", icon: "🏆", id: "uesc-trophy" },
+          { name: "La Liga", icon: "./assets/images/logos/la-liga.png", id: "ll-trophy" },
+          { name: "Copa del Rey", icon: "./assets/images/logos/copa-del-rey.png", id: "cdr-trophy" },
+          { name: "Supercopa de España", icon: "./assets/images/logos/super-copa-de-espana.png", id: "sde-trophy" },
+          { name: "UEFA Champions League", icon: "./assets/images/logos/x1.png", id: "ucl-trophy" },
+          { name: "UEFA Europa League", icon: "./assets/images/logos/europa-league.png", id: "uel-trophy" },
+          { name: "UEFA Conference League", icon: "./assets/images/logos/uefa-conference-league-logo.png", id: "uecl-trophy" },
+          { name: "UEFA Super Cup", icon: "./assets/images/logos/uefa-super-cup.png", id: "uesc-trophy" },
         ],
         "serie-a": [
-          { name: "Serie A", icon: "🏆", id: "sa-trophy" },
-          { name: "Coppa Italia", icon: "🏆", id: "ci-trophy" },
-          { name: "Supercoppa Italiana", icon: "🏆", id: "si-trophy" },
-          { name: "UEFA Champions League", icon: "🏆", id: "ucl-trophy" },
-          { name: "UEFA Europa League", icon: "🏆", id: "uel-trophy" },
-          { name: "UEFA Conference League", icon: "🏆", id: "uecl-trophy" },
-          { name: "UEFA Super Cup", icon: "🏆", id: "uesc-trophy" },
+          { name: "Serie A", icon: "./assets/images/logos/serie-a.png", id: "sa-trophy" },
+          { name: "Coppa Italia", icon: "./assets/images/logos/copa-italia.png", id: "ci-trophy" },
+          { name: "Supercoppa Italiana", icon: "./assets/images/logos/supercoppa_italiana.png", id: "si-trophy" },
+          { name: "UEFA Champions League", icon: "./assets/images/logos/x1.png", id: "ucl-trophy" },
+          { name: "UEFA Europa League", icon: "./assets/images/logos/europa-league.png", id: "uel-trophy" },
+          { name: "UEFA Conference League", icon: "./assets/images/logos/uefa-conference-league-logo.png", id: "uecl-trophy" },
+          { name: "UEFA Super Cup", icon: "./assets/images/logos/uefa-super-cup.png", id: "uesc-trophy" },
         ],
         bundesliga: [
-          { name: "Bundesliga", icon: "🏆", id: "bl-trophy" },
-          { name: "DFB-Pokal", icon: "🏆", id: "dfb-trophy" },
-          { name: "DFL-Supercup", icon: "🏆", id: "dfl-trophy" },
-          { name: "UEFA Champions League", icon: "🏆", id: "ucl-trophy" },
-          { name: "UEFA Europa League", icon: "🏆", id: "uel-trophy" },
-          { name: "UEFA Conference League", icon: "🏆", id: "uecl-trophy" },
-          { name: "UEFA Super Cup", icon: "🏆", id: "uesc-trophy" },
+          { name: "Bundesliga", icon: "./assets/images/logos/bundesliga.png", id: "bl-trophy" },
+          { name: "DFB-Pokal", icon: "./assets/images/logos/dfb-pokal.png", id: "dfb-trophy" },
+          { name: "DFL-Supercup", icon: "./assets/images/logos/dfl-supercup.png", id: "dfl-trophy" }, // Placeholder image
+          { name: "UEFA Champions League", icon: "./assets/images/logos/x1.png", id: "ucl-trophy" },
+          { name: "UEFA Europa League", icon: "./assets/images/logos/europa-league.png", id: "uel-trophy" },
+          { name: "UEFA Conference League", icon: "./assets/images/logos/uefa-conference-league-logo.png", id: "uecl-trophy" },
+          { name: "UEFA Super Cup", icon: "./assets/images/logos/uefa-super-cup.png", id: "uesc-trophy" },
         ],
         "ligue-1": [
-          { name: "Ligue 1", icon: "🏆", id: "l1-trophy" },
-          { name: "Coupe de France", icon: "🏆", id: "cdf-trophy" },
-          { name: "Trophée des Champions", icon: "🏆", id: "tdc-trophy" },
-          { name: "UEFA Champions League", icon: "🏆", id: "ucl-trophy" },
-          { name: "UEFA Europa League", icon: "🏆", id: "uel-trophy" },
-          { name: "UEFA Conference League", icon: "🏆", id: "uecl-trophy" },
-          { name: "UEFA Super Cup", icon: "🏆", id: "uesc-trophy" },
+          { name: "Ligue 1", icon: "./assets/images/logos/ligue-1.png", id: "l1-trophy" },
+          { name: "Coupe de France", icon: "./assets/images/logos/Coupe-de-France.png", id: "cdf-trophy" },
+          { name: "Trophée des Champions", icon: "./assets/images/logos/Trophee-des-Champions.png", id: "tdc-trophy" },
+          { name: "UEFA Champions League", icon: "./assets/images/logos/champions-league.png", id: "ucl-trophy" },
+          { name: "UEFA Europa League", icon: "./assets/images/logos/europa-league.png", id: "uel-trophy" },
+          { name: "UEFA Conference League", icon: "./assets/images/logos/uefa-conference-league-logo.png", id: "uecl-trophy" },
+          { name: "UEFA Super Cup", icon: "./assets/images/logos/uefa-super-cup.png", id: "uesc-trophy" },
         ],
       };
+
 
       // Event Listeners
       document.addEventListener("DOMContentLoaded", function () {
@@ -1813,12 +1753,12 @@
           competitionCard.className = "competition-card";
           competitionCard.innerHTML = `
                     <div class="competition-header">
-                        <div class="competition-icon">
-                            <i class="${comp.icon}"></i>
+                        <div>
+                          <img src="${comp.icon}" style="width: 40px; height: 40px; object-fit: contain; display: block;" />
                         </div>
                         <div>
-                            <h5>${comp.name}</h5>
-                            <small class="text-muted">Competition Statistics</small>
+                          <h5 style="margin-left: 20px;">${comp.name}</h5>
+                            <small class="text-muted" style="margin-left: 20px;">Competition Statistics</small>
                         </div>
                     </div>
                     <div class="stats-grid">
@@ -1856,7 +1796,9 @@
           trophyItem.className = "trophy-item";
           trophyItem.dataset.trophy = trophy.id;
           trophyItem.innerHTML = `
-                    <div class="trophy-icon">${trophy.icon}</div>
+                    <div class="trophy-icon">
+                      <img src="${trophy.icon}" style="width: 40px; height: 40px;"/>
+                    </div>
                     <div>
                         <div class="fw-bold">${trophy.name}</div>
                         <small class="text-muted">Club Trophy</small>

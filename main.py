@@ -8,6 +8,10 @@ collection = db["seasonawards"]
 
 # Update documents
 for doc in collection.find():
+    # Skip if quantity already exists
+    if "quantity" in doc:
+        continue
+
     award = doc["award"]
     match = re.search(r"(\d+)[xX]", award)
     if match:
