@@ -1,83 +1,118 @@
+// server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const path = require("path");
+// Serve static files
+app.use(express.static(path.join(__dirname, "public")));
+
+// Optional: fallback for SPA routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+// Load env vars
 dotenv.config();
 
+// App setup
 const app = express();
-const router = express.Router();
 app.use(express.json());
-app.use(cors());
+app.use(cors()); // You can configure with origin: "https://your-frontend.com" if needed
+
 // MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    dbName: "mydatabase", // Optional: explicitly set DB name
   })
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-const PlayerSchema = new mongoose.Schema({
+// ========== Schemas ==========
+const Schema = mongoose.Schema;
+
+const PlayerSchema = new Schema({
   name: String,
   rating: String,
   nationality: String,
   position: String,
   value: Number,
 });
-
 const Player = mongoose.model("Player", PlayerSchema);
-const SeasonDataSchema = new mongoose.Schema({
-  season: String,
-  competition: String,
-  apps: Number,
-  goals: Number,
-  assists: Number,
-  avgrating: Number,
-  team: String,
-});
 
-const SeasonData = mongoose.model("SeasonData", SeasonDataSchema);
-const YearlyDataSchema = new mongoose.Schema({
-  year: String,
-  goals: Number,
-  assists: Number,
-});
+const SeasonData = mongoose.model(
+  "SeasonData",
+  new Schema({
+    season: String,
+    competition: String,
+    apps: Number,
+    goals: Number,
+    assists: Number,
+    avgrating: Number,
+    team: String,
+  })
+);
 
-const YearlyData = mongoose.model("YearlyData", YearlyDataSchema);
-const SeasonTrophySchema = new mongoose.Schema({
-  season: String,
-  competition: String,
-});
-const SeasonTrophy = mongoose.model("SeasonTrophy", SeasonTrophySchema);
-const IntDataSchema = new mongoose.Schema({
-  season: String,
-  competition: String,
-  apps: Number,
-  goals: Number,
-  assists: Number,
-  avgrating: Number,
-});
+const YearlyData = mongoose.model(
+  "YearlyData",
+  new Schema({
+    year: String,
+    goals: Number,
+    assists: Number,
+  })
+);
 
-const IntData = mongoose.model("IntData", IntDataSchema);
-const IntTrophySchema = new mongoose.Schema({
-  season: String,
-  competition: String,
-});
-const IntTrophy = mongoose.model("IntTrophy", IntTrophySchema);
+const SeasonTrophy = mongoose.model(
+  "SeasonTrophy",
+  new Schema({
+    season: String,
+    competition: String,
+  })
+);
 
-const SeasonAwardsSchema = new mongoose.Schema({
-  season: String,
-  award: String,
-  quantity: Number,
-});
-const SeasonAwards = mongoose.model("SeasonAwards", SeasonAwardsSchema);
-const TransferSchema = new mongoose.Schema({
-  season: String,
-  from: String,
-  to: String,
-  value: String,
-});
-const Transfer = mongoose.model("Transfer", TransferSchema);
+const IntData = mongoose.model(
+  "IntData",
+  new Schema({
+    season: String,
+    competition: String,
+    apps: Number,
+    goals: Number,
+    assists: Number,
+    avgrating: Number,
+  })
+);
+
+const IntTrophy = mongoose.model(
+  "IntTrophy",
+  new Schema({
+    season: String,
+    competition: String,
+  })
+);
+
+const SeasonAwards = mongoose.model(
+  "SeasonAwards",
+  new Schema({
+    season: String,
+    award: String,
+    quantity: Number,
+  })
+);
+
+const Transfer = mongoose.model(
+  "Transfer",
+  new Schema({
+    season: String,
+    from: String,
+    to: String,
+    value: String,
+  })
+);
+
+// ========== CRUD Generator ==========
+const router = express.Router();
+
 function createCrudRoutes(model, routeName) {
   router.post(`/${routeName}`, async (req, res) => {
     try {
@@ -88,6 +123,7 @@ function createCrudRoutes(model, routeName) {
       res.status(400).json({ error: err.message });
     }
   });
+
   router.get(`/${routeName}`, async (req, res) => {
     try {
       const docs = await model.find();
@@ -96,6 +132,7 @@ function createCrudRoutes(model, routeName) {
       res.status(500).json({ error: err.message });
     }
   });
+
   router.get(`/${routeName}/:id`, async (req, res) => {
     try {
       const doc = await model.findById(req.params.id);
@@ -105,6 +142,7 @@ function createCrudRoutes(model, routeName) {
       res.status(500).json({ error: err.message });
     }
   });
+
   router.put(`/${routeName}/:id`, async (req, res) => {
     try {
       const doc = await model.findByIdAndUpdate(req.params.id, req.body, {
@@ -116,6 +154,7 @@ function createCrudRoutes(model, routeName) {
       res.status(400).json({ error: err.message });
     }
   });
+
   router.delete(`/${routeName}/:id`, async (req, res) => {
     try {
       const doc = await model.findByIdAndDelete(req.params.id);
@@ -126,6 +165,8 @@ function createCrudRoutes(model, routeName) {
     }
   });
 }
+
+// Register routes
 createCrudRoutes(Player, "players");
 createCrudRoutes(SeasonData, "season-data");
 createCrudRoutes(YearlyData, "yearly-data");
@@ -133,8 +174,10 @@ createCrudRoutes(SeasonTrophy, "season-trophies");
 createCrudRoutes(IntData, "int-data");
 createCrudRoutes(IntTrophy, "int-trophies");
 createCrudRoutes(SeasonAwards, "season-awards");
-createCrudRoutes(Transfer, "transfer");
+createCrudRoutes(Transfer, "transfers");
 
 app.use("/api", router);
-const PORT = 5000;
+
+// Port from environment (Render will provide one)
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
