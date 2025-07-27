@@ -3,41 +3,36 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
+
+dotenv.config();
 const app = express();
 
 app.use(express.static(path.join(__dirname, "public")));
-dotenv.config();
-
 app.use(express.json());
 app.use(cors());
 
-// ✅ MongoDB connection — fix dbName here
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+// ✅ Connect to Atlas and Local MongoDB
+const atlasConn = mongoose.createConnection(process.env.MONGO_URI, {
+  dbName: "FifaMyPlayer",
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const localConn = mongoose.createConnection("mongodb://127.0.0.1:27017", {
+  dbName: "FifaMyPlayer",
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-const Schema = mongoose.Schema;
-
-// ✅ Add collection name as 3rd argument to avoid Mongoose pluralizing incorrectly
-const Player = mongoose.model(
-  "Player",
-  new Schema({
+// ✅ Schema Definitions
+const schemas = {
+  players: {
     name: String,
     rating: String,
     nationality: String,
     position: String,
     value: Number,
-  }),
-  "players"
-);
-
-const SeasonData = mongoose.model(
-  "SeasonData",
-  new Schema({
+  },
+  season_data: {
     season: String,
     competition: String,
     apps: Number,
@@ -45,81 +40,64 @@ const SeasonData = mongoose.model(
     assists: Number,
     avgrating: Number,
     team: String,
-  }),
-  "seasondatas"
-);
-
-const YearlyData = mongoose.model(
-  "YearlyData",
-  new Schema({
+  },
+  yearly_data: {
     year: String,
     goals: Number,
     assists: Number,
-  }),
-  "yearlydatas"
-);
-
-const SeasonTrophy = mongoose.model(
-  "SeasonTrophy",
-  new Schema({
+  },
+  season_trophies: {
     season: String,
     competition: String,
-  }),
-  "seasontrophies"
-);
-
-const IntData = mongoose.model(
-  "IntData",
-  new Schema({
+  },
+  int_data: {
     season: String,
     competition: String,
     apps: Number,
     goals: Number,
     assists: Number,
     avgrating: Number,
-  }),
-  "intdatas"
-);
-
-const IntTrophy = mongoose.model(
-  "IntTrophy",
-  new Schema({
+  },
+  int_trophies: {
     season: String,
     competition: String,
-  }),
-  "inttrophies"
-);
-
-const SeasonAwards = mongoose.model(
-  "SeasonAwards",
-  new Schema({
+  },
+  season_awards: {
     season: String,
     award: String,
     quantity: Number,
-  }),
-  "seasonawards"
-);
-
-const Transfer = mongoose.model(
-  "Transfer",
-  new Schema({
+  },
+  transfers: {
     season: String,
     from: String,
     to: String,
     value: String,
-  }),
-  "transfers"
-);
+  },
+};
 
-// ========= CRUD Generator ==========
+// ✅ Model Registration (for Atlas and Local both)
+const defineModel = (conn, name, schemaDef, collection) =>
+  conn.model(name, new mongoose.Schema(schemaDef), collection);
+
+const models = {};
+for (const [name, schema] of Object.entries(schemas)) {
+  models[name] = {
+    atlas: defineModel(atlasConn, name, schema, name),
+    local: defineModel(localConn, name, schema, name),
+  };
+}
+
+// ✅ API Generator with full sync (POST, GET, PUT, DELETE)
 const router = express.Router();
 
-function createCrudRoutes(model, routeName) {
+function createDualCrudRoutes(routeName, modelAtlas, modelLocal) {
   router.post(`/${routeName}`, async (req, res) => {
     try {
-      const doc = new model(req.body);
-      await doc.save();
-      res.status(201).json(doc);
+      const data = req.body;
+      const docAtlas = new modelAtlas(data);
+      const docLocal = new modelLocal(data);
+      await Promise.all([docAtlas.save(), docLocal.save()]);
+      res.status(201).json(docAtlas);
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
@@ -127,7 +105,7 @@ function createCrudRoutes(model, routeName) {
 
   router.get(`/${routeName}`, async (req, res) => {
     try {
-      const docs = await model.find({});
+      const docs = await modelAtlas.find({});
       res.json(docs);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -136,7 +114,7 @@ function createCrudRoutes(model, routeName) {
 
   router.get(`/${routeName}/:id`, async (req, res) => {
     try {
-      const doc = await model.findById(req.params.id);
+      const doc = await modelAtlas.findById(req.params.id);
       if (!doc) return res.status(404).json({ error: "Not found" });
       res.json(doc);
     } catch (err) {
@@ -146,11 +124,13 @@ function createCrudRoutes(model, routeName) {
 
   router.put(`/${routeName}/:id`, async (req, res) => {
     try {
-      const doc = await model.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
-      if (!doc) return res.status(404).json({ error: "Not found" });
-      res.json(doc);
+      const data = req.body;
+      const [updatedAtlas, updatedLocal] = await Promise.all([
+        modelAtlas.findByIdAndUpdate(req.params.id, data, { new: true }),
+        modelLocal.findByIdAndUpdate(req.params.id, data, { new: true }),
+      ]);
+      if (!updatedAtlas) return res.status(404).json({ error: "Not found" });
+      res.json(updatedAtlas);
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
@@ -158,8 +138,11 @@ function createCrudRoutes(model, routeName) {
 
   router.delete(`/${routeName}/:id`, async (req, res) => {
     try {
-      const doc = await model.findByIdAndDelete(req.params.id);
-      if (!doc) return res.status(404).json({ error: "Not found" });
+      const [deletedAtlas, deletedLocal] = await Promise.all([
+        modelAtlas.findByIdAndDelete(req.params.id),
+        modelLocal.findByIdAndDelete(req.params.id),
+      ]);
+      if (!deletedAtlas) return res.status(404).json({ error: "Not found" });
       res.json({ message: "Deleted successfully" });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -167,31 +150,13 @@ function createCrudRoutes(model, routeName) {
   });
 }
 
-// ✅ Register API endpoints
-createCrudRoutes(Player, "players");
-createCrudRoutes(SeasonData, "season_data");
-createCrudRoutes(YearlyData, "yearly_data");
-createCrudRoutes(SeasonTrophy, "season_trophies");
-createCrudRoutes(IntData, "int_data");
-createCrudRoutes(IntTrophy, "int_trophies");
-createCrudRoutes(SeasonAwards, "season_awards");
-createCrudRoutes(Transfer, "transfers");
-
-// 🔎 Sample test route
-app.get("/api/test", async (req, res) => {
-  try {
-    const collections = await mongoose.connection.db
-      .listCollections()
-      .toArray();
-    res.json({
-      collections: collections.map((col) => col.name),
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+// ✅ Register all CRUD routes
+for (const [route, model] of Object.entries(models)) {
+  createDualCrudRoutes(route, model.atlas, model.local);
+}
 
 app.use("/api", router);
 
+// ✅ Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
