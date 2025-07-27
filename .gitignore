@@ -1,7 +1,7 @@
 # Ignore .env files
 .env
 *.env
-src/backend/.env
+src/.env
 
 # Ignore batch files
 *.bat
