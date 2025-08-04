@@ -2369,109 +2369,117 @@
           let html = styles + '<div class="sd-container">';
 
           // Process each season
-          Object.keys(groupedBySeason).forEach((seasonName) => {
-            const competitions = groupedBySeason[seasonName];
+          Object.keys(groupedBySeason)
+            .sort((a, b) => {
+              const aYear = parseInt(a.split("/")[0]);
+              const bYear = parseInt(b.split("/")[0]);
+              return aYear - bYear;
+            })
+            .forEach((seasonName) => {
+              const competitions = groupedBySeason[seasonName];
 
-            // Calculate season totals
-            const seasonTotals = competitions.reduce(
-              (totals, comp) => {
-                totals.apps += comp.apps || 0;
-                totals.goals += comp.goals || 0;
-                totals.assists += comp.assists || 0;
-                totals.ratingSum += (comp.avgrating || 0) * (comp.apps || 0);
-                totals.totalApps += comp.apps || 0;
-                return totals;
-              },
-              { apps: 0, goals: 0, assists: 0, ratingSum: 0, totalApps: 0 }
-            );
+              // Calculate season totals
+              const seasonTotals = competitions.reduce(
+                (totals, comp) => {
+                  totals.apps += comp.apps || 0;
+                  totals.goals += comp.goals || 0;
+                  totals.assists += comp.assists || 0;
+                  totals.ratingSum += (comp.avgrating || 0) * (comp.apps || 0);
+                  totals.totalApps += comp.apps || 0;
+                  return totals;
+                },
+                { apps: 0, goals: 0, assists: 0, ratingSum: 0, totalApps: 0 }
+              );
 
-            // Weighted average rating
-            const avgRating =
-              seasonTotals.totalApps > 0
-                ? seasonTotals.ratingSum / seasonTotals.totalApps
-                : 0;
-
-            html += `
-        <div class="sd-season-card">
-          <div class="sd-season-header">
-            <div class="sd-season-title">
-              <div class="sd-season-name">
-                <div class="sd-season-icon">📅</div>
-                ${seasonName}
-              </div>
-              <div class="sd-totals-compact">
-                <div class="sd-total-item">
-                  <span class="sd-total-number">${seasonTotals.apps}</span>
-                  <span class="sd-total-label">Apps</span>
-                </div>
-                <div class="sd-total-item">
-                  <span class="sd-total-number">${seasonTotals.goals}</span>
-                  <span class="sd-total-label">Goals</span>
-                </div>
-                <div class="sd-total-item">
-                  <span class="sd-total-number">${seasonTotals.assists}</span>
-                  <span class="sd-total-label">Assists</span>
-                </div>
-                <div class="sd-total-item">
-                  <span class="sd-total-number">${
-                    avgRating > 0 ? avgRating.toFixed(1) : "N/A"
-                  }</span>
-                  <span class="sd-total-label">Rating</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="sd-competitions-section">
-            <div class="sd-competitions-grid">`;
-
-            // Add competitions
-            competitions.forEach((competition) => {
-              const compName = getCompetitionNameById(competition.competition);
-              const teamDisplayName =
-                competition.team && teamNameMap[competition.team]
-                  ? teamNameMap[competition.team]
-                  : "Spain FA";
+              // Weighted average rating
+              const avgRating =
+                seasonTotals.totalApps > 0
+                  ? seasonTotals.ratingSum / seasonTotals.totalApps
+                  : 0;
 
               html += `
-          <div class="sd-competition-card">
-            <div class="sd-competition-info">
-              <img src="${
-                trophyImageMap[competition.competition]
-              }" class="sd-competition-logo" alt="${compName}">
-              <div class="sd-competition-details">
-                <div class="sd-competition-name">${compName}</div>
-                <div class="sd-team-name">${teamDisplayName}</div>
-              </div>
+    <div class="sd-season-card">
+      <div class="sd-season-header">
+        <div class="sd-season-title">
+          <div class="sd-season-name">
+            <div class="sd-season-icon">📅</div>
+            ${seasonName}
+          </div>
+          <div class="sd-totals-compact">
+            <div class="sd-total-item">
+              <span class="sd-total-number">${seasonTotals.apps}</span>
+              <span class="sd-total-label">Apps</span>
             </div>
-            <div class="sd-stats-compact">
-              <div class="sd-stat-item">
-                <span class="sd-stat-value">${competition.apps || 0}</span>
-                <span class="sd-stat-label">Apps</span>
-              </div>
-              <div class="sd-stat-item">
-                <span class="sd-stat-value">${competition.goals || 0}</span>
-                <span class="sd-stat-label">Goals</span>
-              </div>
-              <div class="sd-stat-item">
-                <span class="sd-stat-value">${competition.assists || 0}</span>
-                <span class="sd-stat-label">Assists</span>
-              </div>
-              ${
-                competition.avgrating > 0
-                  ? `<div class="sd-rating-badge" style="color: #fbbf24;">${competition.avgrating.toFixed(
-                      1
-                    )}</div>`
-                  : ""
-              }
+            <div class="sd-total-item">
+              <span class="sd-total-number">${seasonTotals.goals}</span>
+              <span class="sd-total-label">Goals</span>
             </div>
-          </div>`;
-            });
-
-            html += `
+            <div class="sd-total-item">
+              <span class="sd-total-number">${seasonTotals.assists}</span>
+              <span class="sd-total-label">Assists</span>
+            </div>
+            <div class="sd-total-item">
+              <span class="sd-total-number">${
+                avgRating > 0 ? avgRating.toFixed(1) : "N/A"
+              }</span>
+              <span class="sd-total-label">Rating</span>
             </div>
           </div>
-        </div>`;
-          });
+        </div>
+      </div>
+      <div class="sd-competitions-section">
+        <div class="sd-competitions-grid">`;
+
+              // Add competitions
+              competitions.forEach((competition) => {
+                const compName = getCompetitionNameById(
+                  competition.competition
+                );
+                const teamDisplayName =
+                  competition.team && teamNameMap[competition.team]
+                    ? teamNameMap[competition.team]
+                    : "Spain FA";
+
+                html += `
+      <div class="sd-competition-card">
+        <div class="sd-competition-info">
+          <img src="${
+            trophyImageMap[competition.competition]
+          }" class="sd-competition-logo" alt="${compName}">
+          <div class="sd-competition-details">
+            <div class="sd-competition-name">${compName}</div>
+            <div class="sd-team-name">${teamDisplayName}</div>
+          </div>
+        </div>
+        <div class="sd-stats-compact">
+          <div class="sd-stat-item">
+            <span class="sd-stat-value">${competition.apps || 0}</span>
+            <span class="sd-stat-label">Apps</span>
+          </div>
+          <div class="sd-stat-item">
+            <span class="sd-stat-value">${competition.goals || 0}</span>
+            <span class="sd-stat-label">Goals</span>
+          </div>
+          <div class="sd-stat-item">
+            <span class="sd-stat-value">${competition.assists || 0}</span>
+            <span class="sd-stat-label">Assists</span>
+          </div>
+          ${
+            competition.avgrating > 0
+              ? `<div class="sd-rating-badge" style="color: #fbbf24;">${competition.avgrating.toFixed(
+                  1
+                )}</div>`
+              : ""
+          }
+        </div>
+      </div>`;
+              });
+
+              html += `
+        </div>
+      </div>
+    </div>`;
+            });
 
           html += "</div>";
           container.innerHTML = html;
