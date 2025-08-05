@@ -1314,7 +1314,7 @@
           <div class="trophy-label">Total Trophies</div>
         </div>
       </div>
-
+      <div id="trophy-count" style="display: none"></div>
       <!-- Club Trophies Section -->
       <div id="club-section" class="trophy-section" style="display: none">
         <div class="section-header">
@@ -1433,6 +1433,541 @@
             .replace(/\b\w/g, (l) => l.toUpperCase())
         );
       }
+      async function countAndDisplayTrophies() {
+        try {
+          const trophyImageMap = {
+            "pl-trophy": "assets/images/logos/premier-league.png",
+            "fa-trophy": "assets/images/logos/fa-cup.png",
+            "efl-trophy": "assets/images/logos/carabao-cup.png",
+            "ucl-trophy": "assets/images/logos/champions-league.png",
+            "uel-trophy": "assets/images/logos/uefa-europa-league.png",
+            "uecl-trophy": "assets/images/logos/uefa-conference-league.png",
+            "cs-trophy": "assets/images/logos/community-shield.png",
+            "uesc-trophy": "assets/images/logos/uefa-super-cup.png",
+            "ll-trophy": "assets/images/logos/la-liga.png",
+            "cdr-trophy": "assets/images/logos/copa-del-rey.png",
+            "sde-trophy": "assets/images/logos/super-copa-de-espana.png",
+            "sa-trophy": "assets/images/logos/serie-a.png",
+            "ci-trophy": "assets/images/logos/coppa-italia.png",
+            "si-trophy": "assets/images/logos/supercoppa-italiana.png",
+            "bl-trophy": "assets/images/logos/bundesliga.png",
+            "dfb-trophy": "assets/images/logos/dfb-pokal.png",
+            "dfl-trophy": "assets/images/logos/dfl-supercup.png",
+            "l1-trophy": "assets/images/logos/ligue-1.png",
+            "cdf-trophy": "assets/images/logos/coupe-de-france.png",
+            "tdc-trophy": "assets/images/logos/trophee-des-champions.png",
+            "world-cup": "assets/images/logos/world-cup.png",
+            "worldcup-qual-trophy": "assets/images/logos/world-cup-qual.png",
+            "european-championship": "assets/images/logos/euro.png",
+            "euro-qual-trophy": "assets/images/logos/euro-qual.png",
+            "int-friendlies-trophy":
+              "assets/images/logos/international-friendlies.png",
+          };
+
+          // Define trophy categories
+          const internationalTrophies = [
+            "world-cup",
+            "worldcup-qual-trophy",
+            "european-championship",
+            "euro-qual-trophy",
+            "int-friendlies-trophy",
+          ];
+
+          const continentalTrophies = [
+            "ucl-trophy",
+            "uel-trophy",
+            "uecl-trophy",
+            "uesc-trophy",
+          ];
+
+          const leagueTrophies = [
+            "pl-trophy",
+            "ll-trophy",
+            "sa-trophy",
+            "bl-trophy",
+            "l1-trophy",
+          ];
+
+          const domesticCupTrophies = [
+            "fa-trophy",
+            "efl-trophy",
+            "cs-trophy",
+            "cdr-trophy",
+            "sde-trophy",
+            "ci-trophy",
+            "si-trophy",
+            "dfb-trophy",
+            "dfl-trophy",
+            "cdf-trophy",
+            "tdc-trophy",
+          ];
+
+          const [seasonRes, intRes] = await Promise.all([
+            fetch(`${API_BASE_URL}/season_trophies`),
+            fetch(`${API_BASE_URL}/int_trophies`),
+          ]);
+
+          const seasonTrophies = await seasonRes.json();
+          const intTrophies = await intRes.json();
+          const allTrophies = [...seasonTrophies, ...intTrophies];
+
+          const continentalTrophyCountMap = {};
+          const leagueTrophyCountMap = {};
+          const domesticCupTrophyCountMap = {};
+          const internationalTrophyCountMap = {};
+
+          allTrophies.forEach((trophy) => {
+            const name = formatTrophyName(trophy.competition);
+            const trophyKey = getTrophyKeyFromName(name);
+
+            if (internationalTrophies.includes(trophyKey)) {
+              internationalTrophyCountMap[name] =
+                (internationalTrophyCountMap[name] || 0) + 1;
+            } else if (continentalTrophies.includes(trophyKey)) {
+              continentalTrophyCountMap[name] =
+                (continentalTrophyCountMap[name] || 0) + 1;
+            } else if (leagueTrophies.includes(trophyKey)) {
+              leagueTrophyCountMap[name] =
+                (leagueTrophyCountMap[name] || 0) + 1;
+            } else if (domesticCupTrophies.includes(trophyKey)) {
+              domesticCupTrophyCountMap[name] =
+                (domesticCupTrophyCountMap[name] || 0) + 1;
+            } else {
+              // Fallback to domestic cups for any unclassified club trophies
+              domesticCupTrophyCountMap[name] =
+                (domesticCupTrophyCountMap[name] || 0) + 1;
+            }
+          });
+
+          // Sort all categories alphabetically
+          const sortedContinentalTrophies = Object.entries(
+            continentalTrophyCountMap
+          ).sort((a, b) => a[0].localeCompare(b[0]));
+
+          const sortedLeagueTrophies = Object.entries(
+            leagueTrophyCountMap
+          ).sort((a, b) => a[0].localeCompare(b[0]));
+
+          const sortedDomesticCupTrophies = Object.entries(
+            domesticCupTrophyCountMap
+          ).sort((a, b) => a[0].localeCompare(b[0]));
+
+          const sortedInternationalTrophies = Object.entries(
+            internationalTrophyCountMap
+          ).sort((a, b) => a[0].localeCompare(b[0]));
+
+          // Get the trophy count div
+          const trophyDiv = document.getElementById("trophy-count");
+
+          // Show the div
+          trophyDiv.style.display = "block";
+
+          // Main container with colored background
+          trophyDiv.style.cssText = `
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 20px;
+      padding: 40px;
+      margin: 32px 0;
+      box-shadow: 
+        0 20px 40px rgba(102, 126, 234, 0.3),
+        0 10px 25px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      max-width: 900px;
+      position: relative;
+      overflow: hidden;
+    `;
+
+          // Add subtle animated background pattern
+          const pattern = document.createElement("div");
+          pattern.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.06) 0%, transparent 50%);
+      pointer-events: none;
+    `;
+          trophyDiv.appendChild(pattern);
+
+          // Calculate totals
+          const totalContinentalTrophies = sortedContinentalTrophies.reduce(
+            (sum, [, count]) => sum + count,
+            0
+          );
+          const totalLeagueTrophies = sortedLeagueTrophies.reduce(
+            (sum, [, count]) => sum + count,
+            0
+          );
+          const totalDomesticCupTrophies = sortedDomesticCupTrophies.reduce(
+            (sum, [, count]) => sum + count,
+            0
+          );
+          const totalClubTrophies =
+            totalContinentalTrophies +
+            totalLeagueTrophies +
+            totalDomesticCupTrophies;
+          const totalInternationalTrophies = sortedInternationalTrophies.reduce(
+            (sum, [, count]) => sum + count,
+            0
+          );
+          const totalTrophies = totalClubTrophies + totalInternationalTrophies;
+
+          // Function to get trophy key from name (reverse mapping)
+          function getTrophyKeyFromName(trophyName) {
+            const reverseMap = {};
+            Object.keys(trophyImageMap).forEach((key) => {
+              const formattedName = formatTrophyName(key);
+              reverseMap[formattedName] = key;
+            });
+            return reverseMap[trophyName];
+          }
+
+          // Create the HTML content with colored header
+          let htmlContent = `
+      <div style="
+        margin-bottom: 40px;
+        position: relative;
+        z-index: 1;
+        text-align: center;
+      ">
+        <!-- Colored Header -->
+        <div style="
+          background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+          border-radius: 16px;
+          padding: 32px;
+          margin-bottom: 32px;
+          box-shadow: 
+            0 10px 25px rgba(79, 70, 229, 0.3),
+            0 4px 15px rgba(0,0,0,0.1);
+        ">
+          <div style="
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+          ">
+            <div style="
+              font-size: 32px;
+              filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            ">🏆</div>
+            <h2 style="
+              color: #ffffff;
+              font-size: 32px;
+              font-weight: 700;
+              margin: 0;
+              letter-spacing: -0.02em;
+              text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            ">Trophies</h2>
+          </div>
+          <div style="
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            padding: 12px 24px;
+            display: inline-block;
+          ">
+            <p style="
+              color: #ffffff;
+              font-size: 16px;
+              margin: 0;
+              font-weight: 600;
+              text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            ">${totalTrophies} total • ${totalClubTrophies} club • ${totalInternationalTrophies} international</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+          // Function to render trophy section
+          function renderTrophySection(
+            trophies,
+            title,
+            emoji,
+            startColorIndex = 0
+          ) {
+            if (trophies.length === 0) return "";
+
+            let sectionHTML = `
+        <div style="
+          margin-bottom: 40px;
+          position: relative;
+          z-index: 1;
+        ">
+          <!-- Section Header (also colored) -->
+          <div style="
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
+          ">
+            <div style="
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            ">
+              <div style="
+                font-size: 24px;
+                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+              ">${emoji}</div>
+              <h3 style="
+                color: #ffffff;
+                font-size: 24px;
+                font-weight: 700;
+                margin: 0;
+                letter-spacing: -0.01em;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+              ">${title}</h3>
+              <div style="
+                background: rgba(255,255,255,0.2);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.3);
+                border-radius: 15px;
+                padding: 4px 12px;
+                font-size: 14px;
+                font-weight: 600;
+                color: #ffffff;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+              ">${trophies.reduce((sum, [, count]) => sum + count, 0)}</div>
+            </div>
+          </div>
+          
+          <div style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+          ">
+      `;
+
+            trophies.forEach(([name, count], index) => {
+              const trophyKey = getTrophyKeyFromName(name);
+              const trophyImage = trophyKey ? trophyImageMap[trophyKey] : null;
+
+              sectionHTML += `
+          <div style="
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 16px;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+              0 4px 12px rgba(0,0,0,0.08),
+              0 2px 6px rgba(0,0,0,0.04);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+          " 
+          onmouseover="
+            this.style.transform='translateY(-4px) scale(1.02)'; 
+            this.style.boxShadow='0 12px 24px rgba(0,0,0,0.15), 0 6px 16px rgba(0,0,0,0.1)';
+            this.style.borderColor='#3b82f6';
+          " 
+          onmouseout="
+            this.style.transform='translateY(0) scale(1)'; 
+            this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04)';
+            this.style.borderColor='#e5e7eb';
+          ">
+            
+            ${
+              trophyImage
+                ? `
+              <div style="
+                width: 48px;
+                height: 48px;
+                background: #f8fafc;
+                border: 2px solid #e2e8f0;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                z-index: 1;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+              ">
+                <img src="${trophyImage}" alt="${name}" style="
+                  width: 32px;
+                  height: 32px;
+                  object-fit: contain;
+                " onerror="this.style.display='none';">
+              </div>
+            `
+                : `
+              <div style="
+                width: 48px;
+                height: 48px;
+                background: #f8fafc;
+                border: 2px solid #e2e8f0;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                z-index: 1;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                font-size: 24px;
+              ">🏆</div>
+            `
+            }
+            
+            <span style="
+              color: #1e40af;
+              font-size: 16px;
+              font-weight: 600;
+              line-height: 1.4;
+              position: relative;
+              z-index: 1;
+            ">${name}</span>
+            
+            <div style="
+              background: #dbeafe;
+              border: 1px solid #93c5fd;
+              color: #1e40af;
+              font-size: 16px;
+              font-weight: 700;
+              padding: 8px 16px;
+              border-radius: 20px;
+              min-width: 32px;
+              text-align: center;
+              position: relative;
+              z-index: 1;
+              box-shadow: 0 2px 6px rgba(30, 64, 175, 0.1);
+            ">${count}</div>
+          </div>
+        `;
+            });
+
+            sectionHTML += `</div></div>`;
+            return sectionHTML;
+          }
+
+          // Add club trophy sections in correct order: Continental first, then League, then Domestic Cups
+          let colorIndex = 0;
+
+          // Only add sections that have trophies
+          if (sortedContinentalTrophies.length > 0) {
+            htmlContent += renderTrophySection(
+              sortedContinentalTrophies,
+              "Continental Trophies",
+              "🌟",
+              colorIndex
+            );
+            colorIndex += sortedContinentalTrophies.length;
+          }
+
+          if (sortedLeagueTrophies.length > 0) {
+            htmlContent += renderTrophySection(
+              sortedLeagueTrophies,
+              "League Titles",
+              "🏆",
+              colorIndex
+            );
+            colorIndex += sortedLeagueTrophies.length;
+          }
+
+          if (sortedDomesticCupTrophies.length > 0) {
+            htmlContent += renderTrophySection(
+              sortedDomesticCupTrophies,
+              "Domestic Cups",
+              "🥇",
+              colorIndex
+            );
+            colorIndex += sortedDomesticCupTrophies.length;
+          }
+
+          // Add international trophies section
+          if (sortedInternationalTrophies.length > 0) {
+            htmlContent += renderTrophySection(
+              sortedInternationalTrophies,
+              "International Trophies",
+              "🌍",
+              colorIndex
+            );
+          }
+
+          // Create content container
+          const contentDiv = document.createElement("div");
+          contentDiv.innerHTML = htmlContent;
+          contentDiv.style.cssText = `
+      position: relative;
+      z-index: 1;
+    `;
+
+          // Clear and add new content
+          trophyDiv.innerHTML = "";
+          trophyDiv.appendChild(pattern);
+          trophyDiv.appendChild(contentDiv);
+
+          // Console log for debugging
+          console.log("🏆 Trophy Count:");
+          console.log("🌟 Continental Trophies:");
+          sortedContinentalTrophies.forEach(([name, count]) => {
+            console.log(`- ${name}: ${count}`);
+          });
+          console.log("🏆 League Titles:");
+          sortedLeagueTrophies.forEach(([name, count]) => {
+            console.log(`- ${name}: ${count}`);
+          });
+          console.log("🥇 Domestic Cups:");
+          sortedDomesticCupTrophies.forEach(([name, count]) => {
+            console.log(`- ${name}: ${count}`);
+          });
+          console.log("🌍 International Trophies:");
+          sortedInternationalTrophies.forEach(([name, count]) => {
+            console.log(`- ${name}: ${count}`);
+          });
+          console.log(
+            `📊 Total: ${totalTrophies} (${totalClubTrophies} club [${totalContinentalTrophies} continental, ${totalLeagueTrophies} league, ${totalDomesticCupTrophies} domestic cups], ${totalInternationalTrophies} international)`
+          );
+        } catch (err) {
+          console.error("❌ Failed to fetch or process trophies:", err);
+
+          // Display beautiful error state
+          const trophyDiv = document.getElementById("trophy-count");
+          trophyDiv.style.display = "block";
+          trophyDiv.style.cssText = `
+      background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+      border: none;
+      border-radius: 20px;
+      padding: 40px;
+      margin: 32px 0;
+      text-align: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      box-shadow: 
+        0 20px 40px rgba(255, 107, 107, 0.3),
+        0 10px 25px rgba(0,0,0,0.15);
+    `;
+          trophyDiv.innerHTML = `
+      <div style="font-size: 48px; margin-bottom: 16px;">😔</div>
+      <h3 style="
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 12px 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      ">Unable to load trophies</h3>
+      <p style="
+        color: rgba(255,255,255,0.9);
+        font-size: 16px;
+        margin: 0;
+        font-weight: 500;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      ">${err.message || "Failed to fetch trophy data"}</p>
+    `;
+        }
+      }
+      // Run it
+      countAndDisplayTrophies();
 
       // Get competition code for int data
       function getIntCompetitionCode(trophy) {
