@@ -1456,37 +1456,54 @@
         </div>
 
         <!-- Step 6: Accolades -->
-        <div class="section-card hidden" id="accolades">
-          <h2><i class="bi bi-star-fill me-2"></i>Individual Accolades</h2>
-          <p class="text-muted">
-            Add all the individual awards and accolades you received this season
-          </p>
+       <div class="section-card hidden" id="accolades">
+  <h2><i class="bi bi-star-fill me-2"></i>Individual Accolades</h2>
+  <p class="text-muted">
+    Add all the individual awards and accolades you received this season
+  </p>
 
-          <div class="accolade-input">
-            <input
-              type="text"
-              id="accoladeInput"
-              placeholder="Enter an accolade (e.g., Player of the Month, Golden Boot, etc.)"
-              onkeypress="handleAccoladeInput(event)"
-            />
-            <button class="btn btn-primary mt-2" onclick="addAccolade()">
-              <i class="bi bi-plus me-1"></i> Add Accolade
-            </button>
-          </div>
+  <div class="accolade-input">
+    <div class="row g-2">
+      <div class="col-md-8">
+        <input
+          type="text"
+          id="accoladeInput"
+          class="form-control"
+          placeholder="Enter an accolade (e.g., Player of the Month, Golden Boot, etc.)"
+          onkeypress="handleAccoladeInput(event)"
+        />
+      </div>
+      <div class="col-md-2">
+        <input
+          type="number"
+          id="accoladeQuantity"
+          class="form-control"
+          placeholder="Qty"
+          min="1"
+          value="1"
+        />
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary w-100" onclick="addAccolade()">
+          <i class="bi bi-plus me-1"></i> Add
+        </button>
+      </div>
+    </div>
+  </div>
 
-          <div class="accolade-tags" id="accoladeTags">
-            <!-- Accolade tags will be added here -->
-          </div>
+  <div class="accolade-tags" id="accoladeTags">
+    <!-- Accolade tags will be added here -->
+  </div>
 
-          <div class="section-buttons">
-            <button class="btn btn-secondary" onclick="prevStep()">
-              <i class="bi bi-arrow-left me-1"></i> Previous
-            </button>
-            <button class="btn btn-success" onclick="completeSeasonData()">
-              <i class="bi bi-check-circle me-1"></i> Complete Season Data
-            </button>
-          </div>
-        </div>
+  <div class="section-buttons">
+    <button class="btn btn-secondary" onclick="prevStep()">
+      <i class="bi bi-arrow-left me-1"></i> Previous
+    </button>
+    <button class="btn btn-success" onclick="completeSeasonData()">
+      <i class="bi bi-check-circle me-1"></i> Complete Season Data
+    </button>
+  </div>
+</div>
       </div>
     </div>
 
@@ -1808,42 +1825,81 @@
         });
       }
 
-      function handleAccoladeInput(event) {
-        if (event.key === "Enter") {
-          addAccolade();
-        }
-      }
+function handleAccoladeInput(event) {
+  if (event.key === "Enter") {
+    addAccolade();
+  }
+}
 
-      function addAccolade() {
-        const input = document.getElementById("accoladeInput");
-        const accolade = input.value.trim();
+function addAccolade() {
+  const nameInput = document.getElementById("accoladeInput");
+  const quantityInput = document.getElementById("accoladeQuantity");
+  
+  const accoladeName = nameInput.value.trim();
+  const accoladeQuantity = parseInt(quantityInput.value) || 1;
 
-        if (accolade && !accolades.includes(accolade)) {
-          accolades.push(accolade);
-          input.value = "";
-          renderAccolades();
-        }
-      }
+  if (accoladeName && !accolades.some(acc => acc.name === accoladeName)) {
+    accolades.push({
+      name: accoladeName,
+      quantity: accoladeQuantity,
+      id: Date.now() // Simple unique ID
+    });
+    
+    // Clear inputs
+    nameInput.value = "";
+    quantityInput.value = "1";
+    
+    renderAccolades();
+  }
+}
 
-      function removeAccolade(index) {
-        accolades.splice(index, 1);
-        renderAccolades();
-      }
+function removeAccolade(id) {
+  accolades = accolades.filter(acc => acc.id !== id);
+  renderAccolades();
+}
 
-      function renderAccolades() {
-        const accoladeTags = document.getElementById("accoladeTags");
-        accoladeTags.innerHTML = "";
+function increaseQuantity(id) {
+  const accolade = accolades.find(acc => acc.id === id);
+  if (accolade) {
+    accolade.quantity++;
+    renderAccolades();
+  }
+}
 
-        accolades.forEach((accolade, index) => {
-          const tag = document.createElement("div");
-          tag.className = "accolade-tag";
-          tag.innerHTML = `
-                    ${accolade}
-                    <div class="remove-tag" onclick="removeAccolade(${index})">×</div>
-                `;
-          accoladeTags.appendChild(tag);
-        });
-      }
+function decreaseQuantity(id) {
+  const accolade = accolades.find(acc => acc.id === id);
+  if (accolade && accolade.quantity > 1) {
+    accolade.quantity--;
+    renderAccolades();
+  }
+}
+
+function renderAccolades() {
+  const accoladeTags = document.getElementById("accoladeTags");
+  accoladeTags.innerHTML = "";
+
+  accolades.forEach((accolade) => {
+    const tag = document.createElement("div");
+    tag.className = "accolade-tag";
+    tag.dataset.id = accolade.id;
+    tag.innerHTML = `
+      <span class="accolade-name">${accolade.name}</span>
+      <div class="quantity-controls">
+        <button class="quantity-btn" onclick="decreaseQuantity(${accolade.id})">
+          <i class="bi bi-dash"></i>
+        </button>
+        <span class="accolade-quantity">${accolade.quantity}</span>
+        <button class="quantity-btn" onclick="increaseQuantity(${accolade.id})">
+          <i class="bi bi-plus"></i>
+        </button>
+      </div>
+      <button class="remove-btn" onclick="removeAccolade(${accolade.id})">
+        <i class="bi bi-x"></i>
+      </button>
+    `;
+    accoladeTags.appendChild(tag);
+  });
+}
       function collectAllData() {
         const data = {
           team: selectedTeam,
@@ -1996,16 +2052,24 @@
         });
 
         // POST Accolades to /api/season-awards
-        seasonData.accolades.forEach((award) => {
+        seasonData.accolades.forEach((accolade) => {
           const payload = {
             season: seasonData.season,
-            award: award,
+            award: accolade.name,
+            quantity: accolade.quantity,
           };
           fetch("https://virtualxi.onrender.com/api/season_awards", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
-          });
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(`✅ AWARD ${accolade.name} (${accolade.quantity}x) saved:`, data);
+            })
+            .catch((err) => {
+              console.error(`❌ Error saving AWARD ${accolade.name}:`, err);
+            });
         });
         //window.location = "seasondata.html";
         // Final totals
